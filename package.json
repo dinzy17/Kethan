@@ -1,0 +1,25 @@
+{
+    "name": "kethan",
+    "version": "1.0.0",
+    "description": "Kethan",
+    "main": "index.js",
+    "scripts": {
+        "start": "node app.js",
+        "starts": "nodemon app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Dinesh Patil",
+    "license": "ISC",
+    "dependencies": {
+        "aws-sdk": "^2.545.0",
+        "body-parser": "^1.19.0",
+        "consolidate": "^0.15.1",
+        "express": "^4.17.1",
+        "fs": "0.0.1-security",
+        "http": "0.0.0",
+        "multer": "^1.4.2",
+        "querystring": "^0.2.0",
+        "request": "^2.88.0",
+        "swig": "^1.4.2"
+    }
+}

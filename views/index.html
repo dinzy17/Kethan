@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
+        <link rel="stylesheet" href="/css/starter-template.css" type="text/css"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+          <a class="navbar-brand" href="#">Kethan</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li> -->
+            </ul>
+            
+          </div>
+        </nav>
+        
+        <main role="main" class="container">
+        
+          <div class="starter-template">
+            <h1> Demo</h1>
+            <p class="lead">
+                <form class="form" method="POST" action="/"  enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>
+                            Please Upload file
+                            <input type="file" name="image" class="form-control" />
+                        </label>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </p>
+          </div>
+          <div class="container">
+            <div id="initial" class="alert alert-info">
+                Please upload image to get started.
+            </div>
+            <div id="no-result"  class="alert alert-danger">
+                No Result found....
+            </div>
+            <div id="result">
+                <div id="img-container">
+                    <img id="img-direct" />
+                    <div id="area-border"></div>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Implant Name</th>
+                        <td id="implant_name"></td>
+                    </tr>
+                    <tr>
+                        <th>Score</th>
+                        <td id="implant_score"></td>
+                    </tr>
+                    <!-- <tr>
+                        <th>Manufacturer: </th>
+                        <td id="implant_manufacturer"></td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td id="implant_description"></td>
+                    </tr> -->
+                </table>
+            </div>
+          </div>
+        
+        </main><!-- /.container -->
+        
+    </body>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        var objects = "{{objects}}"
+        objects = objects.replace(/&quot;/g, '"')
+        objects = JSON.parse(objects)
+        console.log(objects)
+        console.log(objects.length)
+        if(objects.length == 0) {
+            $("#no-result").show()
+            $("#result").hide()
+            $("#initial").hide()
+        } else if(objects[0].object == "init") {
+            $("#initial").show()
+            $("#result").hide()
+            $("#no-result").hide()
+        } else {
+            $("#result").show()
+            $("#implant_name").text(objects[0].object)
+            var score = (Number(objects[0].score) * 100).toFixed(2)
+
+            $("#implant_score").text(score + "%")
+            // $("#implant_manufacturer").text("Dummy Manufacturer of " + objects[0].object)
+            // $("#implant_description").text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum")
+            $("#no-result").hide()
+            $("#initial").hide()
+            var imgUrl = "{{imgUrl}}"
+            // $("#img-container").css({ background: "url('" + imgUrl + "')" })
+            $("#img-direct").attr({ src: imgUrl })
+            var dimensions = "{{dimensions}}"
+            dimensions = dimensions.replace(/&quot;/g, '"')
+            dimensions = JSON.parse(dimensions)
+            console.log(dimensions)
+            var imgLocation = objects[0].location
+            if(dimensions.height < 300) {
+                var relativeHeight = (imgLocation.height / dimensions.height) * 300
+                var relativeWidth = (imgLocation.width / dimensions.width) * 300
+                var relativeTop = (imgLocation.top / dimensions.height) * 300
+                var relativeLeft = (imgLocation.left / dimensions.width) * 300
+                $("#area-border").css({ width: relativeWidth, height: relativeHeight, top: relativeTop, left: relativeLeft })
+            } else {
+                let widthDivider = Math.floor(dimensions.width / 300) + 1
+                let heightDivider = Math.floor(dimensions.height / 300) + 1
+                heightDivider = widthDivider
+                // $("#img-container").css({ width: dimensions.width / widthDivider , height: dimensions.height / heightDivider })
+                $("#img-direct").css({ width: dimensions.width / widthDivider , height: dimensions.height / heightDivider })
+                $("#area-border").css({ width: imgLocation.width / widthDivider, height: imgLocation.height / heightDivider, top: imgLocation.top / heightDivider, left: imgLocation.left / widthDivider })
+            }
+            
+        }
+        
+    </script>
+</html>
