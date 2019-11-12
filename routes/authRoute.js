@@ -1,16 +1,11 @@
 var express = require('express')
 var router = express.Router()
 var passport = require('passport')
-var request = require('request')
-var jwt = require('express-jwt')
 const mongoose = require('mongoose')
 var _ = require('lodash');
 var async = require('async')
 var fs = require('fs')
-const {
-  isEmpty
-} = require('lodash')
-const Busboy = require('busboy')
+const { isEmpty } = require('lodash')
 
 const User = require('./../models/User')
 const EmailTemplate = require('./../models/EmailTemplate')
@@ -20,8 +15,6 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const jwtHelper = require('../helpers/jwtHelper');
-var dateFormat = require('dateformat');
-var now = new Date();
 
 
 //function to create or register new user
@@ -43,11 +36,11 @@ async function signUp(req, res) {
         res.send(resFormat.rSuccess(newUser))
       }
     })
-  }else{
-    user.username = req.body.email
+  } else {
+    user.email = req.body.email
     if(req.body.email == '' || req.body.email == undefined ) {
       res.status(500).send(resFormat.rError("Please fill all required details."))
-    }else{
+    } else {
       User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1}, function(err, result) {
         if (err) {
           res.status(500).send(resFormat.rError(err))
@@ -86,19 +79,18 @@ async function signUp(req, res) {
           res.send(resFormat.rError(`You are already registered` ))
         }
       })
-    }  
-  } 
+    }
+  }
 }
-
 
 //function to check and signin user details
 function signin(req, res) {
   if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
-    User.findOne({ $or: [ {socialMediaToken: req.body.socialMediaToken}, {username: req.body.username} ] }, async function(err,user){
+    User.findOne({ $or: [ { socialMediaToken: req.body.socialMediaToken }, { email: req.body.email } ] }, async function(err,user){
       if (err) {
         res.status(404).send(resFormat.rError(err))
       } else if (user) {
-        if(dayeFormate(user.subscription_expired_date, "mm/dd/yyyy") < dateFormat(now, "mm/dd/yyyy")){
+        if(new Date(user.subscription_expired_date) < new Date()){
           var token = user.generateJwt();
 
           deviceTokens = user.deviceTokens
@@ -117,7 +109,7 @@ function signin(req, res) {
             accessToken: token,
             deviceTokens: deviceTokens
           }
-      
+
           let updatedUser = await User.updateOne({
             _id: user._id
           }, {
@@ -138,22 +130,22 @@ function signin(req, res) {
           } else {
             res.send(resFormat.rError({message:"Invalid email"}))
           }
-        }else{
+        } else {
           res.send(resFormat.rError({message:"your subscription is expired"}))
         }
-       
+
       } else {
         res.send(resFormat.rError("You do not have account connected with this email ID. Please signup instead."))
       }
     }) // end of user find
-  }else{
-    passport.authenticate('appUser', {type: "test"},async function (err, user, info) {
+  } else {
+    passport.authenticate('allUsers', async function (err, user, info) {
       if (err) {
         res.status(404).send(resFormat.rError(err))
       } else if (info) {
         res.status(404).send(resFormat.rError(info))
       } else if (user) {
-          if(dayeFormate(user.subscription_expired_date, "mm/dd/yyyy") < dateFormat(now, "mm/dd/yyyy")){
+          if(new Date(user.subscription_expired_date) < new Date()){
             var token = user.generateJwt();
 
             deviceTokens = user.deviceTokens
@@ -172,7 +164,7 @@ function signin(req, res) {
               accessToken: token,
               deviceTokens: deviceTokens
             }
-        
+
             let updatedUser = await User.updateOne({
               _id: user._id
             }, {
@@ -196,14 +188,13 @@ function signin(req, res) {
           }else{
             res.send(resFormat.rError({message:"your subscription is expired"}))
           }
-          
+
       } else {
         res.status(404).send(resFormat.rError({message:"Please enter correct password."}))
       }
     })(req, res)
   }
 }
-
 
 //logout
 async function signout(req, res) {
@@ -226,7 +217,6 @@ async function signout(req, res) {
           })
         }
         res.send(resFormat.rSuccess())
-        //console.log(upatedUser)
       } else {
         res.status(404).send(resFormat.rError({message:"User not found"}))
       }
@@ -360,13 +350,13 @@ async function changePassword(req, res) {
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 // function to change users Email Id
 async function changeEmail( req, res) {
 
-  
+
   User.find(set, { _id: 1}, function(err, checkUsers){
     if (err) {
       res.send(resFormat.rError(err))
@@ -448,29 +438,30 @@ async function setPassword(req, res) {
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 //set password while signUp
 async function verifyOPT(req, res) {
   if (!req.body.opt){
     res.status(404).send(resFormat.rError({message:"opt required"}))
-  }else if(req.body.email =="" || req.body.email == undefined){
+  } else if(req.body.email =="" || req.body.email == undefined){
     res.status(404).send(resFormat.rError({message:"invalid request"}))
-  }else {
+  } else {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
       if(!user.emailVerified){
         if(req.body.opt == user.resetOtp){
           params = {
             emailVerified: true
-          }      
-          let upateUser = await User.updateOne({
-            _id: user._id
-          }, {
-            $set: {
-              emailVerified: true
-            }
+          }
+          let upateUser = await User.updateOne(
+            {
+              _id: user._id
+            }, {
+              $set: {
+                emailVerified: true
+              }
           })
           if (upateUser) {
             res.send(resFormat.rSuccess({message:'Email verify successfully.', data: user}))
@@ -478,15 +469,15 @@ async function verifyOPT(req, res) {
             res.status(404).send(resFormat.rError(err))
           }
         }else{
-            res.status(404).send(resFormat.rError({message:"please enter correct otp"}))  
+            res.status(404).send(resFormat.rError({message:"please enter correct otp"}))
         }
       }else{
-        res.status(404).send(resFormat.rError({message:"your email is already verified"}))  
+        res.status(404).send(resFormat.rError({message:"your email is already verified"}))
       }
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 //verify OPT while change email
@@ -513,20 +504,14 @@ async function changeEmailVerifyOPT(req, res) {
             res.status(404).send(resFormat.rError(err))
           }
         }else{
-            res.status(404).send(resFormat.rError({message:"please enter correct otp"}))  
+            res.status(404).send(resFormat.rError({message:"please enter correct otp"}))
         }
-      
+
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
-
-
-
-
-
-
 
 router.post("/signin", signin)
 router.delete("/signout", jwtHelper.verifyJwtToken, signout)

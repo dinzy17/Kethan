@@ -1,10 +1,7 @@
 var express = require('express')
 var router = express.Router()
-var passport = require('passport')
 var EmailTemplate = require('./../models/EmailTemplate.js')
 var constants = require('./../config/constants')
-var jwt = require('express-jwt')
-var Q = require('q')
 const resFormat = require('./../helpers/responseFormat')
 const { isEmpty } = require('lodash')
 
@@ -63,7 +60,7 @@ async function getEmailTemplateByCode (code) {
   if(template){
     return template
   }
-    
+
 }
 
 
