@@ -1,67 +1,73 @@
 var express = require('express')
-app = express()
-var fs = require('fs')
-var cons = require('consolidate')
 var path = require('path')
-var multer = require('multer');
-var bodyParser = require('body-parser');
-var s3 = require("./s3Upload")
-var watson = require("./watsonLibrary")
-const constants = require('./constants')
+var logger = require('morgan')
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
+var cors = require('cors')
+var routesApi = require('./routes')
 
-app.use(bodyParser.json())
-app.engine('html', cons.swig)
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'html')
-app.use(express.static(__dirname + '/assets')); 
+var passport = require('passport')
+var busboy = require('connect-busboy');
+var helmet = require('helmet')
 
-//multer options
-var Storage = multer.diskStorage({ destination: function(req, file, callback) {
-      callback(null, "./images")
-  }, filename: function(req, file, callback) {
-      callback(null, file.fieldname + "_" + file.originalname)
-  }
+const mongooseConnect = require('./helpers/database')
+require('./helpers/passport')
+
+mongooseConnect.dbConnect()
+
+var app = express()
+var compress = require('compression');
+
+app.use(compress());
+app.use(helmet())
+
+app.set('view engine', 'jade');
+app.use(logger('dev'))
+app.use(busboy({ immediate: true }));
+
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use(cookieParser())
+app.use(cors())
+
+app.use('/api', routesApi);
+
+ app.get('/*', (req, res) => {
+   res.send("Wel come111!");
+ })
+
+app.use(passport.initialize())
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found')
+    err.status = 404
+    next(err)
 })
-var upload = multer({ storage: Storage }).single("image")
 
-app.get('/', (req, res) => {
-  res.render('index', { objects: JSON.stringify([{ object: "init"}]) })
-})
-
-app.post('/', async (req,res) => {
-  try {
-    upload(req, res, async (err) => {
-      if (err) {
-        return res.end("Something went wrong!");
-      } else {
-        const newFilename = req.file.fieldname + '_' + req.file.originalname
-        const s3Response = await s3.uploadFile(newFilename, 'kethan-demo/')
-        const collectionID = constants.watson.collectionID
-        const collections = await watson.analyzeImage(collectionID, s3Response.Location)
-        const response = collections.data
-        let dimensions = { height: 0, width: 0 }
-        let objects = []
-        if(response.images && response.images.length > 0 && response.images[0].objects && 
-           response.images[0].objects.collections && response.images[0].objects.collections.length > 0) {
-          objects = response.images[0].objects.collections[0].objects
-          dimensions = response.images[0].dimensions
+// error handlers development error handler
+if (app.get('env') !== 'development') {
+    app.use(function(err, req, res, next) {
+        if (err.name === 'UnauthorizedError') {
+          res.status(401)
+          res.json({"message" : err.name + ": " + err.message})
+        } else {
+          res.status(err.status || 500)
+          res.render('error', {
+              message: err.message,
+              error: err
+          })
         }
-        return res.render('index', {objects: JSON.stringify(objects), imgUrl: s3Response.Location, dimensions: JSON.stringify(dimensions) })
-      }
-        
     })
-    
-  } catch (e) {
-    console.log(e)
-    res.send("Exception: ")
-    
-  }
-  
+}
 
+// production error handler - no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500)
+    res.render('error', {
+        message: err.message,
+        error: {}
+    })
 })
 
-var server = app.listen(8080, function () {
-  var host = server.address().address
-  var port = server.address().port
-  console.log("Server started listening at http://%s:%s", host, port)
-})
+module.exports = app
