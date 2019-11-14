@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 var routesApi = require('./routes')
-
 var passport = require('passport')
 var busboy = require('connect-busboy');
 var helmet = require('helmet')
@@ -31,11 +30,6 @@ app.use(cookieParser())
 app.use(cors())
 
 app.use('/api', routesApi);
-
- app.get('/*', (req, res) => {
-   res.send("Wel come111!");
- })
-
 app.use(passport.initialize())
 
 // catch 404 and forward to error handler

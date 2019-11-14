@@ -3,18 +3,17 @@ const CONFIG = require('../config/constants');
 const Message = require('../config/messages');
 const User = require('./../models/User')
 const resFormat = require('./../helpers/responseFormat')
-module.exports.verifyJwtToken = (req, res, next) => {
+module.exports = (req, res, next) => {
     var token;
    
     if ('authorization' in req.headers) {
         token = req.headers['authorization'].split(' ')[1];
-    }else{
+    } else {
         token = req.body.accessToken
     }
     if (!token) {
         return res.status(403).send(resFormat.rError({auth: false, message: Message.en.auth[16]}))
-    }
-    else {
+    } else {
         jwt.verify(token, CONFIG.jwtSecret, (err, decoded) => {
             if (err) {
                 return res.status(403).send(resFormat.rError({auth: false, message:Message.en.auth[17]}))

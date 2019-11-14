@@ -1,39 +1,33 @@
 var express = require('express')
 var router = express.Router()
-var passport = require('passport')
-var request = require('request')
-var jwt = require('express-jwt')
-const mongoose = require('mongoose')
-
 var async = require('async')
-var fs = require('fs')
 const { isEmpty } = require('lodash')
-const Busboy = require('busboy')
-
 const User = require('./../models/User')
 const EmailTemplate = require('./../models/EmailTemplate')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
-const s3FilesHelper = require('./../helpers/s3FileUpload')
-const jwtHelper = require('../helpers/jwtHelper');
-const AWS = require('aws-sdk')
-const multer = require('multer')
-const _ = require('lodash')
+const auth = require('./../helpers/authMiddleware');
 
 
 //function to update user details
-function profile(req, res) {
+function updateProfile(req, res) {
   let params = {
     fullName: req.body.name,
     contactNumber: req.body.contactNumber
   }
-  User.update({ _id: req.body._id },{ $set: params} , function(err, updatedUser) {
+  User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
       if (err) {
-        res.send(resFormat.rError(err))
+        res.status(403).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({message: 'User details have been updated', data:updatedUser}))
+        responceData = {
+          'name':req.body.name,
+          'contactNumber':req.body.contactNumber,
+          'email':req.body.email,
+          'userId':req.body.userId
+        }
+        res.send(resFormat.rSuccess(responceData))
       }
   })
 }
@@ -55,12 +49,35 @@ async function list (req, res) {
     totalUsers = userList.length
     res.send(resFormat.rSuccess({ userList, totalUsers}))
   }
-  else
+  else{
     res.status(401).send(resFormat.rError(err))
+  }
 }
 
-router.post("/profile", profile)
-router.post("/list", list)
+//function to get list of user as per given criteria
+async function profile (req, res) {
+  if (!req.body.userId || req.body.userId == "") {
+    res.status(400).send(resFormat.rError("Invalid request"))
+  } else {
+    User.findOne({_id:req.body.userId}, function(err, user) {
+        if (err) {
+          res.status(403).send(resFormat.rError(err))
+        } else {
+          responceData = {
+            "name":user.fullName,
+            "contactNumber":user.contactNumber,
+            "email":user.email,
+            "userId":user._id
+          }
+          res.send(resFormat.rSuccess(responceData))
+        }
+    })
+  }
+}
+
+router.post("/updateProfile", auth, updateProfile)
+router.post("/list", auth,list)
+router.post("/profile", auth, profile)
 
 
 module.exports = router
