@@ -1,7 +1,10 @@
 var express = require('express')
 var router = express.Router()
 var passport = require('passport')
+const mongoose = require('mongoose')
 var async = require('async')
+const { isEmpty } = require('lodash')
+
 const User = require('./../models/User')
 const EmailTemplate = require('./../models/EmailTemplate')
 var constants = require('./../config/constants')
@@ -79,11 +82,10 @@ async function signUp(req, res) {
   } 
 }
 
-
 //function to check and signin user details
 function signin(req, res) {
   if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
-    User.findOne({ $or: [ {socialMediaToken: req.body.socialMediaToken}, {username: req.body.username} ] }, async function(err,user){
+    User.findOne({ $or: [ { socialMediaToken: req.body.socialMediaToken }, { email: req.body.email } ] }, async function(err,user){
       if (err) {
         res.status(400).send(resFormat.rError(err))
       } else if (user) {
@@ -106,7 +108,7 @@ function signin(req, res) {
             accessToken: token,
             deviceTokens: deviceTokens
           }
-      
+
           let updatedUser = await User.updateOne({
             _id: user._id
           }, {
@@ -195,7 +197,6 @@ function signin(req, res) {
     })(req, res)
   }
 }
-
 
 //logout
 async function signout(req, res) {
@@ -344,7 +345,7 @@ async function changePassword(req, res) {
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 // function to change users Email Id
@@ -434,7 +435,7 @@ async function setPassword(req, res) {
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 //set password while signUp
@@ -450,13 +451,14 @@ async function verifyOPT(req, res) {
         if(req.body.opt == user.resetOtp){
           params = {
             emailVerified: true
-          }      
-          let upateUser = await User.updateOne({
-            _id: user._id
-          }, {
-            $set: {
-              emailVerified: true
-            }
+          }
+          let upateUser = await User.updateOne(
+            {
+              _id: user._id
+            }, {
+              $set: {
+                emailVerified: true
+              }
           })
           if (upateUser) {
             responceData = {
@@ -476,7 +478,7 @@ async function verifyOPT(req, res) {
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
 
 //verify OPT while change email
@@ -508,18 +510,12 @@ async function changeEmailVerifyOPT(req, res) {
         } else {
             res.status(406).send(resFormat.rError({message:"please enter correct otp"}))  
         }
-      
+
     } else {
       res.status(406).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
-  } 
+  }
 }
-
-
-
-
-
-
 
 router.post("/signin", signin)
 router.delete("/signout", auth, signout)

@@ -12,32 +12,19 @@ passport.use('webUser', new LocalStrategy({
       if (err) { return done(err) }
       // Return if user not found in database
       if (!user) {
-        return done(null, false, {
-          message: 'Invalid email'
-        })
+        return done(null, false, { message: 'Invalid email' })
+      } else if (!user.active) {
+        return done(null, false, { message: 'User is not Active' })
       }
-      /*if (!user.active) {
-        return done(null, false, {
-          message: 'User is not Active'
-        })
-      }*/
 
       const validator = user.validPassword(password, user)
-      // Return if password is wrong
-      if (validator == false) {
-        return done(null, false, {
-          message: 'Please enter correct password.'
-        })
-      }
-      if (validator == -1) {
-        return done(null, false, {
-          message: 'Please enter correct password.'
-        })
+
+      if (validator == false || validator == -1) {
+        return done(null, false, { message: 'Please enter correct password.' }) // Return if password is wrong
       }
 
-      // If credentials are correct, return the user object
-      return done(null, user)
-    })
+      return done(null, user) // If credentials are correct, return the user object
+    }) //end of user find
   }
 ))
 

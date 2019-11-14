@@ -21,7 +21,7 @@ app.use(compress());
 app.use(helmet())
 
 app.set('view engine', 'jade');
-app.use(logger('dev'))
+app.use(logger(app.get('env')))
 app.use(busboy({ immediate: true }));
 
 app.use(bodyParser.json({limit: "50mb"}));
@@ -30,6 +30,11 @@ app.use(cookieParser())
 app.use(cors())
 
 app.use('/api', routesApi);
+
+ app.get('/*', (req, res) => {
+   res.send("Landing page!");
+ })
+
 app.use(passport.initialize())
 
 // catch 404 and forward to error handler
