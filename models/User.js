@@ -23,7 +23,8 @@ var userSchema = new mongoose.Schema({
   createdAt: Date,
   updatedAt: Date,
   active: { type: Boolean, default: true },
-  emailVerified: { type: Boolean, default: true }
+  emailVerified: { type: Boolean, default: true },
+  userType:{ type: String, default: "appUser" }
 })
 
 

@@ -138,7 +138,7 @@ function signin(req, res) {
       }
     }) // end of user find
   } else {
-    passport.authenticate('webUser',async function (err, user, info) {
+    passport.authenticate('webUser', "appUser" ,async function (err, user, info) {
       if (err) {
         res.status(400).send(resFormat.rError(err))
       } else if (info) {
@@ -517,6 +517,101 @@ async function changeEmailVerifyOPT(req, res) {
   }
 }
 
+//function to check and signin user details
+function adminSigin(req, res) {
+  passport.authenticate('adminUser' ,async function (err, user, info) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else if (info) {
+        res.send(resFormat.rError(info))
+      } else if (user) {
+        var token = user.generateJwt();
+        var params = {
+          accessToken: token,
+        }
+        let updatedUser = await User.updateOne({
+          _id: user._id
+        }, {
+          $set: params
+        })
+
+        if (updatedUser) {
+          let userObj = {
+            token: token,
+            userId: user._id,
+            username:user.email, 
+            user: {
+              name: user.fullName,
+              email: user.email,
+            }
+          }
+          res.send(resFormat.rSuccess(userObj))
+        } else {
+          res.send(resFormat.rError({message:"Invalid email"}))
+        }
+      } else {
+        res.send(resFormat.rError({message:"Please enter correct password."}))
+      }
+    })(req, res)
+}
+
+//function to admin forgot password.
+
+//function to generate reset password link for admin
+function adminForgotPassword (req, res) {
+  //find user based on email id
+  User.findOne({"email": req.body.email, "userType":"adminUser" }, {}, function(err, user) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else if(!user){
+      console.log('sadadadas1111')
+      res.send(resFormat.rError("Incorrect email."))
+    } else{
+        let clientUrl = constants.clientUrl
+        var link =  clientUrl + '/#/reset/' + new Buffer(user._id.toString()).toString('base64');
+
+        //forgot password email template
+        emailTemplatesRoute.getEmailTemplateByCode("sendAdminResetPwd").then((template) => {
+          if(template) {
+            template = JSON.parse(JSON.stringify(template));
+            let body = template.mailBody.replace("{link}", link);
+            const mailOptions = {
+              to : "gaurav@arkenea.com", //req.body.email,
+              subject : template.mailSubject,
+              html: body
+            }
+            sendEmail.sendEmail(mailOptions)
+            res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
+          } else {
+            res.status(401).send(resFormat.rError('Some error Occured'))
+          }
+        }) // forgot password email template ends*/
+      }
+  }) // find user based on email id ends
+}
+
+//function to reset the password
+const adminResetPassword = function(req,res) {
+  User.findOne({_id: mongoose.Types.ObjectId(new Buffer(req.body.userId, 'base64').toString('ascii'))}, function(err, userDetails) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      const user = new User()
+      const { salt, hash } = user.setPassword(req.body.password)
+      User.update({ _id: userDetails._id},{ $set: { salt, hash}} ,(err, updatedUser)=>{
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          res.send(resFormat.rSuccess('Password has been updated'))
+        }
+      })
+    }
+  })
+}
+
+
+
+
 router.post("/signin", signin)
 router.delete("/signout", auth, signout)
 router.post("/forgotPassword", forgotPassword)
@@ -528,6 +623,8 @@ router.post("/signup", signUp)
 router.post("/setpassword", setPassword)
 router.post("/verifyOPT", verifyOPT)
 router.post("/changeEmailVerifyOPT", auth, changeEmailVerifyOPT)
-
+router.post("/adminSigin", adminSigin)
+router.post("/adminForgotPassword", adminForgotPassword)
+router.post('/adminResetPassword', adminResetPassword)
 
 module.exports = router
