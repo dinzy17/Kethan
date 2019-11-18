@@ -1,17 +1,10 @@
 var express = require('express')
 var router = express.Router()
-var request = require('request')
-const mongoose = require('mongoose')
-
 var async = require('async')
-var fs = require('fs')
 const { isEmpty } = require('lodash')
-
 const Faq = require('./../models/Faq')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
-const _ = require('lodash')
-
 
 //function to create or register new user
 async function create(req, res) { 

@@ -1,7 +1,7 @@
 {
-  "name": "kethan",
+  "name": "Kethan",
   "version": "1.0.0",
-  "description": "Kethan",
+  "description": "Surgical implants database",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
@@ -11,28 +11,25 @@
   "author": "Dinesh Patil",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "dateformat": "^3.0.3",
+    "crypto": "^1.0.1",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
-    "fcm-notification": "^2.0.0",
     "firebase-admin": "^8.6.0",
     "helmet": "^3.15.1",
     "http-proxy": "^1.17.0",
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.11",
-    "mongoose": "^5.7.7",
+    "mongoose": "^5.2.14",
+    "mongoose-timestamp": "^0.6.0",
     "mongoose-unique-validator": "^2.0.1",
     "morgan": "^1.9.1",
     "nodemailer": "^4.6.8",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7",
-    "q": "^1.5.1",
-    "request": "^2.88.0",
     "stripe": "^6.17.0"
   }
 }

@@ -1,29 +1,12 @@
 var app = require('./index')
 var debug = require('debug')('Blue-Shark:server')
-const fs = require('fs')
 const http = require('http')
 const https = require('https')
 var port = normalizePort(process.env.PORT || '3000')
-var cron = require('node-cron')
-const cronRoute = require("./routes/cronRoute")
-// const sslServer = https.createServer(httpsOptions, app).listen(443, () => {
-//   console.log('https server running at ' + 443)
-// })
+
  const server = http.createServer(app).listen(port, () => {
    console.log('http server running at ' + port)
  })
-
-//  const server = http.createServer(function (req, res) {
-//   res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-//   res.end();
-// }).listen(80);
-
-// server.listen(port)
-// server.listen(443)
-// server.on('error', onError)
-// server.on('listening', onListening)
-
-
 function normalizePort(val) {
   var port = parseInt(val, 10)
 
@@ -35,13 +18,6 @@ function normalizePort(val) {
   }
   return false
 }
-
-//cron job at every 30 mins daily
-cron.schedule('0 1 * * *', () => {
-  cronRoute.checkExitStatus()
-  cronRoute.checkExpectedStatus()
-  cronRoute.checkRecurringExpectedStatus()
-})
 
 function onError(error) {
   if (error.syscall !== 'listen') {

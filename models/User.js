@@ -8,7 +8,6 @@ var constants = require("./../config/constants")
 var userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true
   },
   fullName: String,
   contactNumber: String,
@@ -24,7 +23,8 @@ var userSchema = new mongoose.Schema({
   createdAt: Date,
   updatedAt: Date,
   active: { type: Boolean, default: true },
-  emailVerified: { type: Boolean, default: true }
+  emailVerified: { type: Boolean, default: true },
+  userType:{ type: String, default: "appUser" }
 })
 
 
