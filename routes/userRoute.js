@@ -77,32 +77,13 @@ async function profile (req, res) {
 
 //function to update user details
 async function adminProfileUpdate(req, res) {
-  console.log("body", req.body);
   let user = await User.findById(req.body.userId)
    var set  = {}
    var isUpdate = true
    var errorResponce = "";
     if (user) {
-      if (req.body.password && req.body.password !="") {
-        if (!req.body.oldPassword || req.body.oldPassword != ""){
-          if (!user.validPassword(req.body.oldPassword, user)) {
-            errorResponce = 'Invalid password current password';
-            isUpdate = false
-          } else {
-            const {
-              salt,
-              hash
-            } = user.setPassword(req.body.password)
-            set.salt = salt;
-            set.hash = hash;
-          }  
-        } else {
-          isUpdate = false
-          errorResponce ='Current password is required to change password';
-        }
-      }
       if (req.body.email && req.body.email !="") {
-        await User.find({email:req.body.email}, { _id: 1}, function(err, checkUsers){
+        await User.find({email:req.body.email, userType:"appUser"}, { _id: 1}, function(err, checkUsers){
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -111,28 +92,44 @@ async function adminProfileUpdate(req, res) {
                 isUpdate = false
               } else {
                 set.email = req.body.email;
+                  let upateUser = User.update({ _id: user._id }, { $set:set }, function (err, updateEmail){
+                    if(err) {
+                      res.status(403).send(resFormat.rError(err))
+                    } else {
+                      cbEmail = user.email;
+                      if (req.body.email) {
+                        cbEmail = user.email;
+                      }
+                      res.send(resFormat.rSuccess({email:cbEmail ,message:'Email has been changed successfully.'}))
+                    }
+                  })
               } // end of length > 0
             }
           }) 
-      }
+       } else if (req.body.password && req.body.password !="") {
+        if (!req.body.oldPassword || req.body.oldPassword != ""){
+          if (!user.validPassword(req.body.oldPassword, user)) {
+            res.send(resFormat.rError({message:"Invalid password current password"}))    
+          } else {
+            const {
+              salt,
+              hash
+            } = user.setPassword(req.body.password)
+            set.salt = salt;
+            set.hash = hash;
 
-      if (isUpdate) {
-        let upateUser = await User.update({
-          _id: user._id
-        }, {
-          $set:set
-        })
-        if (upateUser) {
-          cbEmail = user.email;
-          if (req.body.email && req.body.email !="") {
-            cbEmail = req.body.email;
-          }
-          res.send(resFormat.rSuccess({email:cbEmail ,message:'Profile has been changed successfully.'}))
+            User.update({ _id: user._id }, { $set:set }, function(err, updatepassword){
+              if(err){
+                res.status(403).send(resFormat.rError(err))
+              }else{
+                cbEmail = user.email;
+                res.send(resFormat.rSuccess({email:cbEmail ,message:'Email has been changed successfully.'}))
+              }
+            })
+          }  
         } else {
-          res.status(403).send(resFormat.rError(err))
+          res.send(resFormat.rError({message:"Current password is required to change password"}))    
         }
-      } else {
-        res.send(resFormat.rError(errorResponce))
       }
     } else {
       res.send(resFormat.rError({message:"Looks like your account does not exist"}))
