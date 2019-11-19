@@ -39,7 +39,7 @@ async function signUp(req, res) {
     })
   } else {
     if(req.body.email == '' || req.body.email == undefined ) {
-      res.status(400).send(resFormat.rError("Please fill all required details."))
+      res.status(400).send(resFormat.rError({ message: "Please fill all required details." }))
     } else {
       User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1}, function(err, result) {
         if (err) {
@@ -62,7 +62,6 @@ async function signUp(req, res) {
               if (template) {
                 template = JSON.parse(JSON.stringify(template));
                 let body = template.mailBody.replace("{otp}", otp);
-                //body = body.mailBody.replace("{username}", req.body.name);
                 const mailOptions = {
                   to: req.body.email,
                   subject: template.mailSubject,
@@ -78,9 +77,9 @@ async function signUp(req, res) {
             }
           })
         }else if (!result.emailVerified) {
-          res.status(407).send(resFormat.rError({"message":"please verify your email", "data": {"email": req.body.email}}))
+          res.status(407).send(resFormat.rError( { message:"please verify your email", data: {"email": req.body.email} } ))
         } else {
-          res.status(406).send(resFormat.rError(`You are already registered` ))
+          res.status(406).send(resFormat.rError({ message: "You are already registered" }))
         }
     })
     }  
@@ -140,7 +139,7 @@ function signin(req, res) {
         // }
        
       } else {
-        res.status(400).send(resFormat.rError("You do not have account connected with this email ID. Please signup instead."))
+        res.status(400).send(resFormat.rError({ message: "You do not have account connected with this email ID. Please signup instead." }))
       }
     }) // end of user find
   } else {
@@ -362,7 +361,7 @@ async function changeEmail(req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(401).send(resFormat.rError("Email ID has been already registered"))
+        res.status(401).send(resFormat.rError({ message: "Email ID has been already registered" }))
       } else {
         // send OPT for verify email.
         let otp = generateOTP()
@@ -400,7 +399,7 @@ async function checkEmail( req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(402).send(resFormat.rError("Email ID has been already registered"))
+        res.status(402).send(resFormat.rError({ message:"Email ID has been already registered" }))
       } else {
         res.send(resFormat.rSuccess())
       } // end of length > 0
@@ -416,7 +415,7 @@ async function checkSocialMediaToken( req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(402).send(resFormat.rError("User has been already registered"))
+        res.status(402).send(resFormat.rError({ message:"User has been already registered" }))
       } else {
         res.send(resFormat.rSuccess())
       } // end of length > 0
@@ -533,7 +532,6 @@ async function changeEmailVerifyOPT(req, res) {
         } else {
             res.status(406).send(resFormat.rError({message:"please enter correct otp"}))  
         }
-
     } else {
       res.status(406).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }

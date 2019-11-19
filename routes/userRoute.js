@@ -140,7 +140,7 @@ async function adminProfileUpdate(req, res) {
 
 router.post("/updateProfile", auth, updateProfile)
 router.post("/list", auth,list)
-router.post("/profile", auth, profile)
+router.post("/profile",  profile) //auth,
 router.post("/adminProfileUpdate", adminProfileUpdate) //auth,
 
 

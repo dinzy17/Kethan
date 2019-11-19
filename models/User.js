@@ -39,10 +39,8 @@ userSchema.methods.setPassword = (password) => {
 userSchema.methods.validPassword = (password, user) => {
   if(user.salt) {
     var hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, 'sha512').toString('hex')
-    console.log(hash)
     return user.hash === hash
   }
-  console.log(user.salt)
   return -1
 }
 
