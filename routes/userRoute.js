@@ -83,22 +83,21 @@ async function adminProfileUpdate(req, res) {
    var errorResponce = "";
     if (user) {
       if (req.body.email && req.body.email !="") {
-        await User.find({email:req.body.email, userType:"appUser"}, { _id: 1}, function(err, checkUsers){
+        await User.find({email:req.body.email, _id:{ $ne: user._id }}, { _id: 1}, function(err, checkUsers){
             if (err) {
               res.send(resFormat.rError(err))
             } else {
               if(checkUsers && checkUsers.length > 0){
-                errorResponce = "Email ID has been already registered " + errorResponce;
-                isUpdate = false
+                res.send(resFormat.rError({message: "Email has been already registered" }))
               } else {
                 set.email = req.body.email;
                   let upateUser = User.update({ _id: user._id }, { $set:set }, function (err, updateEmail){
                     if(err) {
-                      res.status(403).send(resFormat.rError(err))
+                      res.send(resFormat.rError(err))
                     } else {
                       cbEmail = user.email;
                       if (req.body.email) {
-                        cbEmail = user.email;
+                        cbEmail = req.body.email;
                       }
                       res.send(resFormat.rSuccess({email:cbEmail ,message:'Email has been changed successfully.'}))
                     }
@@ -120,10 +119,10 @@ async function adminProfileUpdate(req, res) {
 
             User.update({ _id: user._id }, { $set:set }, function(err, updatepassword){
               if(err){
-                res.status(403).send(resFormat.rError(err))
+                res.send(resFormat.rError(err))
               }else{
                 cbEmail = user.email;
-                res.send(resFormat.rSuccess({email:cbEmail ,message:'Email has been changed successfully.'}))
+                res.send(resFormat.rSuccess({email:cbEmail ,message:'Password has been changed successfully.'}))
               }
             })
           }  

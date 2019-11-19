@@ -564,7 +564,6 @@ function adminForgotPassword (req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if(!user){
-      console.log('sadadadas1111')
       res.send(resFormat.rError("Incorrect email."))
     } else{
         let clientUrl = constants.clientUrl
