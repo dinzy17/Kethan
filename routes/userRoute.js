@@ -14,7 +14,8 @@ const auth = require('./../helpers/authMiddleware');
 function updateProfile(req, res) {
   let params = {
     fullName: req.body.name,
-    contactNumber: req.body.contactNumber
+    contactNumber: req.body.contactNumber,
+    profession: req.body.profession
   }
   User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
       if (err) {
@@ -24,6 +25,7 @@ function updateProfile(req, res) {
           'name':req.body.name,
           'contactNumber':req.body.contactNumber,
           'email':req.body.email,
+          'profession': req.body.profession, 
           'userId':req.body.userId
         }
         res.send(resFormat.rSuccess(responceData))
@@ -66,6 +68,7 @@ async function profile (req, res) {
             "name":user.fullName,
             "contactNumber":user.contactNumber,
             "email":user.email,
+            'profession': user.profession,
             "userId":user._id
           }
           res.send(resFormat.rSuccess(responceData))

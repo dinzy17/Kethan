@@ -16,10 +16,13 @@ const auth = require('./../helpers/authMiddleware');
 //function to create or register new user
 async function signUp(req, res) {
   var user = new User()
-  var signupType = "withEmail";
   if (req.body.socialMediaToken && req.body.socialMediaToken != "") {
     user.socialMediaToken = req.body.socialMediaToken
     user.socialPlatform = req.body.socialPlatform
+    user.fullName = req.body.name;
+    user.email = req.body.email;
+    user.phoneNumber = req.body.phoneNumber;
+    user.profession = req.body.profession;
     user.emailVerified = true;
     user.active = false;
     user.createdOn = new Date();
@@ -28,7 +31,8 @@ async function signUp(req, res) {
         res.status(403).send(resFormat.rError(err))
       } else {
         responceData = {
-            userId: newUser._id
+          "userId": newUser._id,
+          "email":newUser.email
         }
         res.send(resFormat.rSuccess({message:"User refisterd successfully", data:responceData}))
       }
@@ -47,6 +51,7 @@ async function signUp(req, res) {
           user.fullName = req.body.name;
           user.email = req.body.email;
           user.phoneNumber = req.body.phoneNumber;
+          user.profession = req.body.profession;
           user.active = false;
           user.createdOn = new Date();
           user.save(async function(err, newUser) {
@@ -123,6 +128,7 @@ function signin(req, res) {
                 fullName: user.fullName,
                 phoneNumber: user.contactNumber ,
                 email: user.email,
+                profession: user.profession
               }
             }
             res.send(resFormat.rSuccess(userObj))
@@ -179,6 +185,7 @@ function signin(req, res) {
                     name: user.fullName,
                     contactNumber: user.contactNumber,
                     email: user.email,
+                    profession: user.profession
                   }
                 }
                 res.send(resFormat.rSuccess(userObj))
@@ -385,7 +392,7 @@ async function changeEmail(req, res) {
   }) //end of user find
 }
 
-// function to check user email already registerd or not.
+// function to check user email for already registerd or not.
 async function checkEmail( req, res) {
   let set = { email: req.body.email }
   User.find(set, { _id: 1}, function(err, checkUsers){
@@ -394,6 +401,22 @@ async function checkEmail( req, res) {
     } else {
       if(checkUsers && checkUsers.length > 0){
         res.status(402).send(resFormat.rError("Email ID has been already registered"))
+      } else {
+        res.send(resFormat.rSuccess())
+      } // end of length > 0
+    }
+  }) //end of user find
+}
+
+// function to check user email for already registerd or not.
+async function checkSocialMediaToken( req, res) {
+  let set = { socialMediaToken: req.body.socialMediaToken }
+  User.find(set, { _id: 1}, function(err, checkUsers){
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      if(checkUsers && checkUsers.length > 0){
+        res.status(402).send(resFormat.rError("User has been already registered"))
       } else {
         res.send(resFormat.rSuccess())
       } // end of length > 0
@@ -618,6 +641,7 @@ router.post("/resetPassword", resetPassword)
 router.post("/changePassword", auth, changePassword)
 router.post("/changeEmail", auth, changeEmail)
 router.post("/checkEmail", checkEmail)
+router.post("/checkSocialMediaToken", checkSocialMediaToken)
 router.post("/signup", signUp)
 router.post("/setpassword", setPassword)
 router.post("/verifyOPT", verifyOPT)
