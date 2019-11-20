@@ -25,6 +25,9 @@ var messages = {
       common: {
           1: 'User not found',
           2: 'Some error Occured',
+      },
+      watson: {
+          1: 'System cannot add image for training. Please check logs for more details. '
       }
   }
 
