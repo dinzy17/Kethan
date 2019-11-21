@@ -91,15 +91,14 @@ const deleteCollection = async (collectionId) => {
 const addImage = async (collectionId, objectName, location, imgPath) => {
   return new Promise((resolve, reject) => {
     try {
-  		const trainingData = {"objects":[{"object": objectName,"location":{"left":location.left,"top":location.top,"width":location.width,"height":location.height}}
+  		const trainingData = {"objects":[{"object": objectName,"location":{"left": location.left,"top":location.top,"width":location.width,"height":location.height}}
   										]}
   		const postData = { "image_url" : imgPath,
-  							"trainingData" : JSON.stringify(trainingData)
+  							"training_data" : JSON.stringify(trainingData)
   						  }
-
-  		let options = {
+      let options = {
   			method: 'POST',
-  			url: apiVersionUrl + '/collections/'+collectionId+'/images?version=2019-02-11',
+  			url: apiVersionUrl + 'collections/'+collectionId+'/images?version=2019-02-11',
   			headers: { 'content-type': 'application/json' },
   			formData: postData,
   			json: true,
@@ -109,6 +108,7 @@ const addImage = async (collectionId, objectName, location, imgPath) => {
   			if (error) {
   				reject({ status: "error", data: error })
   			} else {
+          // console.log("body", body)
           if(body.images && body.images[0].errors) {
             console.log("Image errors: ", body.images[0].errors)
           }
@@ -224,8 +224,9 @@ const analyzeImage = async (collectionId, imgUrl) => {
 				//	console.log(error)
 					reject({ status: "error", data: error })
 				} else {
-					// console.log(body) // console.log(body.images[0].objects.collections[0].objects)
-					//  console.log(body.images[0].errors)
+					console.log(body)
+          // console.log(body.images[0].objects.collections[0].objects)
+					 console.log(body.images[0].errors)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -237,14 +238,4 @@ const analyzeImage = async (collectionId, imgUrl) => {
 	})
 }
 
-// listCollection()
 module.exports = { createCollection, listCollection, deleteCollection, addImage, listImages, deleteImage, trainCollection, analyzeImage }
-// var collectionID = "85c5783a-c7fd-4f76-ad04-e0fde8b8b660"
-// createCollection()
-
-// deleteCollection(collectionID)
-// addImage(collectionID)
-// listImages(collectionID)
-// deleteImage(collectionID)
-// trainCollection(collectionID)
-// analyzeImage(collectionID)

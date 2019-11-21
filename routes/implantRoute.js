@@ -38,12 +38,13 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
     let implantImage = new ImpantImage()
     implantImage.objectName = requestParams.labelName
     implantImage.imgName = req.file.location
-    implantImage.location = {
-      top: requestParams.labelOffsetY,
-      left: requestParams.labelOffsetX,
-      width: requestParams.labelWidth,
-      height: requestParams.labelHeight
+    const objectLocation = {
+      top: parseInt(requestParams.labelOffsetY),
+      left: parseInt(requestParams.labelOffsetX),
+      width: parseInt(requestParams.labelWidth),
+      height: parseInt(requestParams.labelHeight)
     }
+    implantImage.location = objectLocation    
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){
@@ -85,6 +86,22 @@ router.post("/startCollectionTraining", async function (req, res) {
       let watsonRes = await watsonLibrary.trainCollection(constants.watson.collectionID)
       if(watsonRes.status == "success") {
         res.send(resFormat.rSuccess(watsonRes.data.training_status.objects))
+      } else {
+        res.send(resFormat.rError(messages.common['2']))
+      }//end of sending response
+
+  } catch(e) {
+    res.send(resFormat.rError(e))
+  }
+})
+
+router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
+  try {
+      const imgS3Path = req.file.location
+      console.log(imgS3Path)
+      let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
+      if(watsonRes.status == "success") {
+        res.send(resFormat.rSuccess(watsonRes.data))
       } else {
         res.send(resFormat.rError(messages.common['2']))
       }//end of sending response
