@@ -48,14 +48,16 @@ const listCollection = async () => {
 
 			request(options, function (error, response, body) {
 				if (error) {
+          console.log("request error:", error)
 					reject({ status: "error", data: error })
 				} else {
-					console.log(body.collections[0])
+					// console.log(body.collections[0])
 					resolve({ status: "success", data: body })
 				}
 			})
 
 		} catch(e) {
+      console.log("exception:", e)
 			reject({ status: "error", data: e })
 		}
 	})
@@ -134,10 +136,10 @@ const listImages = async (collectionId) => {
 
 			request(options, function (error, response, body) {
 				if (error) {
-					console.log(error)
+				//	console.log(error)
 					reject({ status: "error", data: error })
 				} else {
-					console.log(body)
+				//	console.log(body)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -161,10 +163,10 @@ const deleteImage = async (collectionId) => {
 
       request(options, function (error, response, body) {
 				if (error) {
-					console.log(error)
+				//	console.log(error)
 					reject({ status: "error", data: error })
 				} else {
-					console.log(body)
+				//	console.log(body)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -190,10 +192,10 @@ const trainCollection = async (collectionId) => {
 
       request(options, function (error, response, body) {
 				if (error) {
-					console.log(error)
+					// console.log(error)
 					reject({ status: "error", data: error })
 				} else {
-					console.log(body)
+				//	console.log(body)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -219,7 +221,7 @@ const analyzeImage = async (collectionId, imgUrl) => {
 
 			request(options, function (error, response, body) {
 				if (error) {
-					console.log(error)
+				//	console.log(error)
 					reject({ status: "error", data: error })
 				} else {
 					// console.log(body) // console.log(body.images[0].objects.collections[0].objects)

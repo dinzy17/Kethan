@@ -27,7 +27,7 @@ var messages = {
           2: 'Some error Occured',
       },
       watson: {
-          1: 'System cannot add image for training. Please check logs for more details. '
+          1: 'System cannot add image for training. Please check logs for more details.'
       }
   }
 

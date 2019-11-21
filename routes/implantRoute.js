@@ -21,6 +21,7 @@ const s3 = new AWS.S3({
 var multipartUpload = multer({storage: multerS3({
     s3: s3,
     bucket: constants.awsS3.bucket,
+    acl: 'public-read',
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname })
     },
@@ -31,12 +32,12 @@ var multipartUpload = multer({storage: multerS3({
 }).single('implantPicture')
 
 //function to test
-router.post("/test", multipartUpload, async function (req, res, next) {
+router.post("/addImageToCollection", multipartUpload, async function (req, res, next) {
   try {
     let requestParams = req.body
     let implantImage = new ImpantImage()
     implantImage.objectName = requestParams.labelName
-    implantImage.imgName = req.file.filename
+    implantImage.imgName = req.file.location
     implantImage.location = {
       top: requestParams.labelOffsetY,
       left: requestParams.labelOffsetX,
@@ -46,16 +47,13 @@ router.post("/test", multipartUpload, async function (req, res, next) {
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){
-      // let s3Details = await s3Upload.uploadFile(implantImage.imgName, 'tmp')
-      // console.log("s3Details", s3Details)
-      let imgS3Path = constants.awsS3.path + implantImage.imgName
+      let imgS3Path = implantImage.imgName
       let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.location, imgS3Path)
-      console.log(watsonRes)
+      // console.log("watsonRes", watsonRes)
       if(watsonRes.status == "success") {
+        // let watsonTrainingRes = await watsonLibrary.trainCollection(constants.watson.collectionID)
+        // console.log("watsonTrainingRes=>", watsonTrainingRes.data.training_status)
         res.send(resFormat.rSuccess(implantImage))
-        let watsonTrainingRes = await watsonLibrary.trainCollection(constants.watson.collectionID)
-        console.log(watsonTrainingRes)
-
       } else {
         res.send(resFormat.rError(messages.watson['1']))
       }//end of sending response
@@ -65,8 +63,35 @@ router.post("/test", multipartUpload, async function (req, res, next) {
   } catch(e) {
     res.send(resFormat.rError(e))
   }
+})
 
+router.post("/getCollectionStatus", async function (req, res) {
+  try {
+      let watsonRes = await watsonLibrary.listCollection()
+      console.log(watsonRes.data.collections)
+      if(watsonRes.status == "success") {
+        res.send(resFormat.rSuccess(watsonRes.data.collections[0].training_status.objects))
+      } else {
+        res.send(resFormat.rError(messages.common['2']))
+      }//end of sending response
 
+  } catch(e) {
+    res.send(resFormat.rError(e))
+  }
+})
+
+router.post("/startCollectionTraining", async function (req, res) {
+  try {
+      let watsonRes = await watsonLibrary.trainCollection(constants.watson.collectionID)
+      if(watsonRes.status == "success") {
+        res.send(resFormat.rSuccess(watsonRes.data.training_status.objects))
+      } else {
+        res.send(resFormat.rError(messages.common['2']))
+      }//end of sending response
+
+  } catch(e) {
+    res.send(resFormat.rError(e))
+  }
 })
 
 
