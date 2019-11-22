@@ -14,12 +14,16 @@ var userSchema = new mongoose.Schema({
   salt: String,
   hash: String,
   resetOtp: Number,
+  createdResetOtp: Date,
+  emailVerifiedOtp: Number,
+  createdEmailVerifiedOtp: Date,
   profession: String,
   accessToken: String,
   deviceTokens: Array,
   subscriptions: Array,
   socialMediaToken: String,
   socialPlatform: String,
+  referralCode: String,
   createdAt: Date,
   updatedAt: Date,
   active: { type: Boolean, default: true },
@@ -39,10 +43,8 @@ userSchema.methods.setPassword = (password) => {
 userSchema.methods.validPassword = (password, user) => {
   if(user.salt) {
     var hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, 'sha512').toString('hex')
-    console.log(hash)
     return user.hash === hash
   }
-  console.log(user.salt)
   return -1
 }
 

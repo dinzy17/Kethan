@@ -16,37 +16,39 @@ const auth = require('./../helpers/authMiddleware');
 //function to create or register new user
 async function signUp(req, res) {
   var user = new User()
-  var signupType = "withEmail";
-  if (req.body.socialMediaToken && req.body.socialMediaToken != "") {
-    user.socialMediaToken = req.body.socialMediaToken
-    user.socialPlatform = req.body.socialPlatform
-    user.emailVerified = true;
-    user.active = false;
-    user.createdOn = new Date();
-    user.save(async function(err, newUser) {
+  if(req.body.email == '' || req.body.email == undefined ) {
+    res.status(400).send(resFormat.rError({ message: "Please fill all required details." }))
+  } else {
+    User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1}, async function(err, result) {
       if (err) {
         res.status(403).send(resFormat.rError(err))
-      } else {
-        responceData = {
-            userId: newUser._id
+      } else if (result && result.length == 0) {
+        if (req.body.socialMediaToken && req.body.socialMediaToken != "") {
+          let userDetail = await User.find({
+            "socialMediaToken": req.body.socialMediaToken
+          })
+          if(userDetail && userDetail.length == 0) {
+            user.socialMediaToken = req.body.socialMediaToken
+            user.socialPlatform = req.body.socialPlatform
+            saveUser();  
+          } else {
+            res.status(406).send(resFormat.rError({ message:"User already exists." }))
+          }
+        } else {
+          saveUser();
         }
-        res.send(resFormat.rSuccess({message:"User refisterd successfully", data:responceData}))
-      }
-    })
-  } else {
-    if(req.body.email == '' || req.body.email == undefined ) {
-      res.status(400).send(resFormat.rError("Please fill all required details."))
-    } else {
-      User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1}, function(err, result) {
-        if (err) {
-          res.status(403).send(resFormat.rError(err))
-        } else if (result && result.length == 0) {
+        function saveUser() {
           let otp = generateOTP()
-          user.resetOtp = otp;
+          let referralCode = req.body.name.substring(0, 3)+'-'+ otp;
+          user.emailVerifiedOtp = otp;
           user.emailVerified = false;
+          user.createdEmailVerifiedOtp = new Date();
           user.fullName = req.body.name;
           user.email = req.body.email;
           user.phoneNumber = req.body.phoneNumber;
+          user.profession = req.body.profession;
+          user.referralCode = referralCode;
+          user.userType = "appUser";
           user.active = false;
           user.createdOn = new Date();
           user.save(async function(err, newUser) {
@@ -54,17 +56,16 @@ async function signUp(req, res) {
               res.status(403).send(resFormat.rError(err))
             } else {
               let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
-              if (template) {
-                template = JSON.parse(JSON.stringify(template));
-                let body = template.mailBody.replace("{otp}", otp);
-                //body = body.mailBody.replace("{username}", req.body.name);
-                const mailOptions = {
-                  to: req.body.email,
-                  subject: template.mailSubject,
-                  html: body
+                if (template) {
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{otp}", otp);
+                  const mailOptions = {
+                    to: req.body.email,
+                    subject: template.mailSubject,
+                    html: body
+                  }
+                  sendEmail.sendEmail(mailOptions)
                 }
-                sendEmail.sendEmail(mailOptions)
-              }
               responceData = {
                 "userId": newUser._id,
                 "email":newUser.email
@@ -72,14 +73,39 @@ async function signUp(req, res) {
               res.send(resFormat.rSuccess(responceData))
             }
           })
-        }else if (!result.emailVerified) {
-          res.status(407).send(resFormat.rError({"message":"please verify your email", "data": {"email": req.body.email}}))
-        } else {
-          res.status(406).send(resFormat.rError(`You are already registered` ))
         }
+      } else if (!result[0].emailVerified) {
+        let otp = generateOTP()
+        var params = {
+          emailVerifiedOtp: otp,
+          createdEmailVerifiedOtp: new Date()
+        }
+        let updatedUser = await User.updateOne({
+          _id: result[0]._id
+        }, {
+          $set: params
+        })
+        if (updatedUser) {
+          let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
+              if (template) {
+                template = JSON.parse(JSON.stringify(template));
+                let body = template.mailBody.replace("{otp}", otp);
+                const mailOptions = {
+                  to: result[0].email,
+                  subject: template.mailSubject,
+                  html: body
+                }
+                sendEmail.sendEmail(mailOptions)
+            }
+          res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: {"email": req.body.email}}))
+        } else {
+          res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+        }
+      } else {
+        res.status(406).send(resFormat.rError({ message: "This email is already registered. use different email for signup." }))
+      }
     })
-    }  
-  } 
+  }  
 }
 
 //function to check and signin user details
@@ -123,6 +149,7 @@ function signin(req, res) {
                 fullName: user.fullName,
                 phoneNumber: user.contactNumber ,
                 email: user.email,
+                profession: user.profession
               }
             }
             res.send(resFormat.rSuccess(userObj))
@@ -134,7 +161,7 @@ function signin(req, res) {
         // }
        
       } else {
-        res.status(400).send(resFormat.rError("You do not have account connected with this email ID. Please signup instead."))
+        res.status(400).send(resFormat.rError({ message: "You do not have account connected with this email ID. Please signup instead." }))
       }
     }) // end of user find
   } else {
@@ -179,6 +206,7 @@ function signin(req, res) {
                     name: user.fullName,
                     contactNumber: user.contactNumber,
                     email: user.email,
+                    profession: user.profession
                   }
                 }
                 res.send(resFormat.rSuccess(userObj))
@@ -189,7 +217,32 @@ function signin(req, res) {
             //   res.send(resFormat.rError({message:"your subscription is expired"}))
             // }
           } else {
-            res.status(406).send(resFormat.rError({message:"Your email is not verify."}))    
+            let otp = generateOTP()
+            var params = {
+              emailVerifiedOtp: otp,
+              createdEmailVerifiedOtp: new Date()
+            }
+            let updatedUser = await User.updateOne({
+              _id: user._id
+            }, {
+              $set: params
+            })
+            if (updatedUser) {
+              let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
+                  if (template) {
+                    template = JSON.parse(JSON.stringify(template));
+                    let body = template.mailBody.replace("{otp}", otp);
+                    const mailOptions = {
+                      to: user.email,
+                      subject: template.mailSubject,
+                      html: body
+                    }
+                    sendEmail.sendEmail(mailOptions)
+                }
+              res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+            } else{
+              res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+            }
           }
       } else {
         res.status(400).send(resFormat.rError({message:"Please enter correct password."}))
@@ -237,30 +290,64 @@ function generateOTP() {
   return OPT
 }
 
+
 //send otp in email to reset password
 async function forgotPassword(req, res) {
   if (!req.body.email) {
-    res.status(400).send(resFormat.rError({message:"Email required"}))
+    res.status(400).send(resFormat.rError({message:"Email is required for forgot passwprd."}))
   } else {
     let user = await User.findOne({
       "email": req.body.email
     })
     if (user) {
-      let otp = generateOTP()
-      await User.updateOne({ _id: user._id }, {$set: { resetOtp: otp, accessToken: null } })
-      let template = await emailTemplatesRoute.getEmailTemplateByCode("sendResetPwd")
-      if (template) {
-        template = JSON.parse(JSON.stringify(template));
-        let body = template.mailBody.replace("{otp}", otp);
-        const mailOptions = {
-          to: req.body.email,
-          subject: template.mailSubject,
-          html: body
-        }
-        sendEmail.sendEmail(mailOptions)
-        res.send(resFormat.rSuccess({message:'We have sent you reset instructions. Please check your email.', email:req.body.email, otp:otp}))
+      if(user.emailVerified){
+        let clientUrl = constants.clientUrl
+        var link =  clientUrl + '/#/reset/' + new Buffer(user._id.toString()).toString('base64');
+        await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date()}})
+        //forgot password email template
+        emailTemplatesRoute.getEmailTemplateByCode("sendAdminResetPwd").then((template) => {
+          if(template) {
+            template = JSON.parse(JSON.stringify(template));
+            let body = template.mailBody.replace("{link}", link);
+            const mailOptions = {
+              to : "gaurav@arkenea.com", //req.body.email,
+              subject : template.mailSubject,
+              html: body
+            }
+            sendEmail.sendEmail(mailOptions)
+            res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
+          } else {
+            res.status(401).send(resFormat.rError('Some error Occured'))
+          }
+        }) // forgot password email template ends*/
       } else {
-        res.status(403).send(resFormat.rError({message:'Some error Occured'}))
+        // send OTP for verify email
+        let otp = generateOTP()
+        var params = {
+          emailVerifiedOtp: otp,
+          createdEmailVerifiedOtp: new Date()
+        }
+        let updatedUser = await User.updateOne({
+          _id: user._id
+        }, {
+          $set: params
+        })
+        if (updatedUser) {
+          let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
+              if (template) {
+                template = JSON.parse(JSON.stringify(template));
+                let body = template.mailBody.replace("{otp}", otp);
+                const mailOptions = {
+                  to: user.email,
+                  subject: template.mailSubject,
+                  html: body
+                }
+                sendEmail.sendEmail(mailOptions)
+            }
+          res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+        }else{
+          res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+        }
       }
 
     } else {
@@ -272,11 +359,11 @@ async function forgotPassword(req, res) {
 //reset password using otp
 async function resetPassword(req, res) {
   if (!req.body.email)
-    res.status(400).send(resFormat.rError({message:"Email required"}))
+    res.status(400).send(resFormat.rError({message:"Email is required"}))
   else if (!req.body.password)
-    res.status(400).send(resFormat.rError({message:"Password required"}))
+    res.status(400).send(resFormat.rError({message:"Password is required"}))
   else if (!req.body.resetOtp)
-    res.status(400).send(resFormat.rError({message:"Otp required"}))
+    res.status(400).send(resFormat.rError({message:"Otp is required"}))
   else {
     let user = await User.findOne({
       "email": req.body.email
@@ -314,14 +401,14 @@ async function resetPassword(req, res) {
 //change password
 async function changePassword(req, res) {
   if (!req.body.password)
-    res.status(400).send(resFormat.rError({message:"New password required"}))
+    res.status(400).send(resFormat.rError({message:"New password is required"}))
   else if (!req.body.oldPassword)
-    res.status(400).send(resFormat.rError({message:"Current Password required"}))
+    res.status(400).send(resFormat.rError({message:"Current Password is required"}))
   else {
     let user = await User.findById(req.body.userId)
     if (user) {
       if (!user.validPassword(req.body.oldPassword, user)) {
-        res.status(406).send(resFormat.rError({message:'Invalid password'}))
+        res.status(406).send(resFormat.rError({message:'Invalid is password'}))
       } else {
         const {
           salt,
@@ -355,7 +442,7 @@ async function changeEmail(req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(401).send(resFormat.rError("Email ID has been already registered"))
+        res.status(401).send(resFormat.rError({ message: "Email ID has been already registered" }))
       } else {
         // send OPT for verify email.
         let otp = generateOTP()
@@ -385,7 +472,7 @@ async function changeEmail(req, res) {
   }) //end of user find
 }
 
-// function to check user email already registerd or not.
+// function to check user email for already registerd or not.
 async function checkEmail( req, res) {
   let set = { email: req.body.email }
   User.find(set, { _id: 1}, function(err, checkUsers){
@@ -393,7 +480,23 @@ async function checkEmail( req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(402).send(resFormat.rError("Email ID has been already registered"))
+        res.status(402).send(resFormat.rError({ message:"Email ID has been already registered" }))
+      } else {
+        res.send(resFormat.rSuccess())
+      } // end of length > 0
+    }
+  }) //end of user find
+}
+
+// function to check user email for already registerd or not.
+async function checkSocialMediaToken( req, res) {
+  let set = { socialMediaToken: req.body.socialMediaToken }
+  User.find(set, { _id: 1}, function(err, checkUsers){
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      if(checkUsers && checkUsers.length > 0){
+        res.status(402).send(resFormat.rError({ message:"User has been already registered" }))
       } else {
         res.send(resFormat.rSuccess())
       } // end of length > 0
@@ -404,10 +507,10 @@ async function checkEmail( req, res) {
 //set password while signUp
 async function setPassword(req, res) {
   if (!req.body.password){
-    res.status(400).send(resFormat.rError({message:"password required"}))
-  }else if(req.body.email == "" || req.body.email == undefined){
-    res.status(400).send(resFormat.rError({message:"invalid rquest"}))
-  }else {
+    res.status(400).send(resFormat.rError({message:"Password is required"}))
+  } else if (req.body.email == "" || req.body.email == undefined) {
+    res.status(400).send(resFormat.rError({ message:"Invalid request. Email is requierd" }))
+  } else {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
         const {
@@ -441,38 +544,47 @@ async function setPassword(req, res) {
 //set password while signUp
 async function verifyOPT(req, res) {
   if (!req.body.opt){
-    res.status(400).send(resFormat.rError({message:"opt required"}))
+    res.status(400).send(resFormat.rError({message:"OPT is required for verify email."}))
   }else if(req.body.email =="" || req.body.email == undefined){
-    res.status(400).send(resFormat.rError({message:"invalid request"}))
+    res.status(400).send(resFormat.rError({message:"Invalid request. Email is required"}))
   }else {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
       if(!user.emailVerified){
-        if(req.body.opt == user.resetOtp){
-          params = {
-            emailVerified: true
-          }
-          let upateUser = await User.updateOne(
-            {
-              _id: user._id
-            }, {
-              $set: {
-                emailVerified: true
-              }
-          })
-          if (upateUser) {
-            responceData = {
-              "userId": user._id,
-              "email":user.email
+        if(req.body.opt == user.emailVerifiedOtp){
+            // check expiry date.
+          var expiryTime = new Date(user.createdEmailVerifiedOtp);
+          expiryTime.setMinutes(expiryTime.getMinutes() + 15);
+          expiryTime = new Date(expiryTime);
+          if(new Date() < new Date( expiryTime )){
+            params = {
+              emailVerified: true
             }
-            res.send(resFormat.rSuccess({ message:'Email verify successfully.', data: responceData }))
+            let upateUser = await User.updateOne(
+              {
+                _id: user._id
+              }, {
+                $set: {
+                  emailVerified: true
+                }
+            })
+            if (upateUser) {
+              responceData = {
+                "userId": user._id,
+                "email":user.email
+              }
+              res.send(resFormat.rSuccess({ message:'Email verify successfully.', data: responceData }))
+            } else {
+              res.status(403).send(resFormat.rError(err))
+            }
           } else {
-            res.status(403).send(resFormat.rError(err))
+            res.status(406).send(resFormat.rError({message:"Your OPT is expire. please resend opt and verify email."}))  
           }
-        }else{
-            res.status(406).send(resFormat.rError({message:"please enter correct otp"}))  
+          
+        } else {
+            res.status(406).send(resFormat.rError({message:"OPT not match. Enter correct OPT"}))  
         }
-      }else{
+      } else {
         res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
       }
     } else {
@@ -484,9 +596,9 @@ async function verifyOPT(req, res) {
 //verify OPT while change email
 async function changeEmailVerifyOPT(req, res) {
   if (!req.body.opt){
-    res.status(400).send(resFormat.rError({message:"opt required"}))
+    res.status(400).send(resFormat.rError({message:"Opt is required"}))
   }else if (req.body.userId =="" || req.body.userId == undefined) {
-    res.status(400).send(resFormat.rError({message:"invalid request"}))
+    res.status(400).send(resFormat.rError({message:"Invalid is request"}))
   } else {
     let user = await User.findOne({"_id": req.body.userId});
     if (user) {
@@ -503,16 +615,62 @@ async function changeEmailVerifyOPT(req, res) {
             responceData = {
               "userId":user._id
             }
-            res.send(resFormat.rSuccess({message:'Email verify successfully.', data: responceData}))
+            res.send(resFormat.rSuccess({message:'Email is verify successfully.', data: responceData}))
           } else {
             res.status(403).send(resFormat.rError(err))
           }
         } else {
             res.status(406).send(resFormat.rError({message:"please enter correct otp"}))  
         }
-
     } else {
       res.status(406).send(resFormat.rError({message:"Looks like your account does not exist"}))
+    }
+  }
+}
+
+async function resendOTP(req, res){
+  if (!req.body.email){
+    res.status(400).send(resFormat.rError({message:"email is required for resend email."}))
+  } else {
+    let user = await User.findOne({"email": req.body.email});
+    if (user) {
+      if(!user.emailVerified){
+        let otp = generateOTP()
+        let upateUser = await User.updateOne(
+          {
+            _id: user._id
+          }, {
+            $set: {
+              emailVerifiedOtp: otp,
+              createdEmailVerifiedOtp: new Date()
+            }
+        })
+
+        if (upateUser) {
+          let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
+              if (template) {
+                template = JSON.parse(JSON.stringify(template));
+                let body = template.mailBody.replace("{otp}", otp);
+                const mailOptions = {
+                  to: user.email,
+                  subject: template.mailSubject,
+                  html: body
+                }
+                sendEmail.sendEmail(mailOptions)
+            }
+          responceData = {
+            "userId": user._id,
+            "email":user.email
+          }
+          res.status(406).send(resFormat.rError({message:"OPT sent in your email successfully."}))
+        } else {
+          res.status(403).send(resFormat.rError(err))
+        }
+      } else {
+        res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
+      }
+    } else {
+      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
   }
 }
@@ -558,18 +716,17 @@ function adminSigin(req, res) {
 //function to admin forgot password.
 
 //function to generate reset password link for admin
-function adminForgotPassword (req, res) {
+async function adminForgotPassword (req, res) {
   //find user based on email id
-  User.findOne({"email": req.body.email, "userType":"adminUser" }, {}, function(err, user) {
+  User.findOne({"email": req.body.email, "userType":"adminUser" }, {}, async function(err, user) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if(!user){
-      console.log('sadadadas1111')
       res.send(resFormat.rError("Incorrect email."))
     } else{
         let clientUrl = constants.clientUrl
         var link =  clientUrl + '/#/reset/' + new Buffer(user._id.toString()).toString('base64');
-
+        await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date()}})
         //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("sendAdminResetPwd").then((template) => {
           if(template) {
@@ -596,15 +753,33 @@ const adminResetPassword = function(req,res) {
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      const user = new User()
-      const { salt, hash } = user.setPassword(req.body.password)
-      User.update({ _id: userDetails._id},{ $set: { salt, hash}} ,(err, updatedUser)=>{
-        if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          res.send(resFormat.rSuccess('Password has been updated'))
-        }
-      })
+      var expiryTime = new Date(userDetails.createdResetOtp);
+      expiryTime.setMinutes(expiryTime.getMinutes() + 15);
+      expiryTime = new Date(expiryTime);
+      if(new Date() < new Date( expiryTime )){
+        const user = new User()
+        const { salt, hash } = user.setPassword(req.body.password)
+        User.update({ _id: userDetails._id},{ $set: { salt, hash}} ,(err, updatedUser)=>{
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            res.send(resFormat.rSuccess({userType:userDetails.userType, message:'Password has been updated'}))
+          }
+        })
+      }else{
+        res.send(resFormat.rError({message:"Your link is expire. Please try again."}))   
+      }
+    }
+  })
+}
+
+// function to reset the password
+async function getUserEmail (req,res) {
+  User.findOne({_id: mongoose.Types.ObjectId(new Buffer(req.body.userId, 'base64').toString('ascii'))},{ email:1 }, function(err, userDetails) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess({ email:userDetails.email }))
     }
   })
 }
@@ -619,12 +794,15 @@ router.post("/resetPassword", resetPassword)
 router.post("/changePassword", auth, changePassword)
 router.post("/changeEmail", auth, changeEmail)
 router.post("/checkEmail", checkEmail)
+router.post("/checkSocialMediaToken", checkSocialMediaToken)
 router.post("/signup", signUp)
 router.post("/setpassword", setPassword)
 router.post("/verifyOPT", verifyOPT)
+router.post("/resendOTP", resendOTP)
 router.post("/changeEmailVerifyOPT", auth, changeEmailVerifyOPT)
 router.post("/adminSigin", adminSigin)
 router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
+router.post('/getUserEmail', getUserEmail)
 
 module.exports = router
