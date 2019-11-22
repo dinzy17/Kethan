@@ -29,8 +29,11 @@ app.use(cors())
 
 app.use('/api', routesApi);
 
+app.use(express.static(path.join(__dirname, 'dist')))
+app.use('/', express.static(path.join(__dirname, 'dist')))
+
  app.get('/*', (req, res) => {
-   res.send("Landing page!");
+   res.sendFile(__dirname + '/dist/index.html');
  })
 
 app.use(passport.initialize())
