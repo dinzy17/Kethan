@@ -1,26 +1,29 @@
 const fs = require('fs')
 const AWS = require('aws-sdk')
-const constants =  require('./constants')
+const constants =  require('./../config/constants')
+const path = require("path")
 
 const s3 = new AWS.S3({
     accessKeyId: constants.awsS3.accessKey,
     secretAccessKey: constants.awsS3.secretAccessKey
 });
 
-const uploadFile = (filename, path) => {
-  console.log(filename)
+const uploadFile = (filename, filePath) => {
+  console.log("filename => ", filename)
+  let imgFullPath = path.join(__dirname, '../', filePath, filename)
+  console.log("imgFullPath => ",imgFullPath)
   return new Promise(function(resolve, reject) {
-    console.log(__dirname + '/images/'+filename)
-    if (fs.existsSync(__dirname + '/images/'+filename)) {
+
+    if (fs.existsSync(imgFullPath)) {
       console.log("File exists")
-     fs.readFile(__dirname + '/images/' + filename, (err, data) => {
+     fs.readFile(imgFullPath, (err, data) => {
        if (err){
          console.log(err)
          reject(err)
        }
        const params = {
           Bucket: constants.awsS3.bucket,
-          Key: path + filename,
+          Key: filename,
           Body: data
        }
        console.log("Reading file")
@@ -30,7 +33,7 @@ const uploadFile = (filename, path) => {
            return s3Err
          } else {
            console.log(`File uploaded successfully at ${data.Location}`)
-           fs.unlink(__dirname + '/images/' + filename, (err) => {
+           fs.unlink(imgFullPath, (err) => {
              if (err){
                reject(err)
              }
@@ -43,6 +46,7 @@ const uploadFile = (filename, path) => {
        })
      })
     } else {
+      console.log("file not found")
       reject("Some error occured.")
     }
   })

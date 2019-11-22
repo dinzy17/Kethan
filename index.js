@@ -6,7 +6,6 @@ var bodyParser = require('body-parser')
 var cors = require('cors')
 var routesApi = require('./routes')
 var passport = require('passport')
-var busboy = require('connect-busboy');
 var helmet = require('helmet')
 
 const mongooseConnect = require('./helpers/database')
@@ -22,9 +21,8 @@ app.use(helmet())
 
 app.set('view engine', 'jade');
 app.use(logger(app.get('env')))
-app.use(busboy({ immediate: true }));
 
-app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.json({limit: "50mb"}))
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser())
 app.use(cors())
