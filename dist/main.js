@@ -905,7 +905,7 @@ if (window.location.hostname.indexOf("localhost") > -1) {
 }
 else { //dev server
     if (window.location.hostname.indexOf("sid") > -1) {
-        serverUrlEnv = ""; //"https://sidapp.com"
+        serverUrlEnv = "http://3.135.146.133:3000"; //"https://sidapp.com"
     }
 }
 var serverUrl = serverUrlEnv;
