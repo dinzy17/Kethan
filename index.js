@@ -20,6 +20,7 @@ app.use(compress());
 app.use(helmet())
 
 app.set('view engine', 'jade');
+// app.use(logger(app.get('env')))
 
 app.use(bodyParser.json({limit: "50mb"}))
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
@@ -45,20 +46,20 @@ app.use(function(req, res, next) {
 })
 
 // error handlers development error handler
-// if (app.get('env') !== 'development') {
-//     app.use(function(err, req, res, next) {
-//         if (err.name === 'UnauthorizedError') {
-//           res.status(401)
-//           res.json({"message" : err.name + ": " + err.message})
-//         } else {
-//           res.status(err.status || 500)
-//           res.render('error', {
-//               message: err.message,
-//               error: err
-//           })
-//         }
-//     })
-// }
+if (app.get('env') !== 'development') {
+    app.use(function(err, req, res, next) {
+        if (err.name === 'UnauthorizedError') {
+          res.status(401)
+          res.json({"message" : err.name + ": " + err.message})
+        } else {
+          res.status(err.status || 500)
+          res.render('error', {
+              message: err.message,
+              error: err
+          })
+        }
+    })
+}
 
 // production error handler - no stacktraces leaked to user
 app.use(function(err, req, res, next) {
