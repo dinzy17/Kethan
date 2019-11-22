@@ -69,6 +69,7 @@ async function profile (req, res) {
             "contactNumber":user.contactNumber,
             "email":user.email,
             'profession': user.profession,
+            'referralCode':user.referralCode,
             "userId":user._id
           }
           res.send(resFormat.rSuccess(responceData))
@@ -140,7 +141,7 @@ async function adminProfileUpdate(req, res) {
 
 router.post("/updateProfile", auth, updateProfile)
 router.post("/list", auth,list)
-router.post("/profile",  profile) //auth,
+router.post("/profile", auth, profile) 
 router.post("/adminProfileUpdate", adminProfileUpdate) //auth,
 
 
