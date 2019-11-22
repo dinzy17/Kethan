@@ -29,7 +29,7 @@ module.exports = "<div class=\"main-content\">\r\n  <div class=\"container-fluid
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\r\n  <div class=\"container-fluid\">\r\n      <form class=\"example-form\" [formGroup]=\"resetform\" (ngSubmit)=\"reset(resetform.value)\" >\r\n    <mat-card class=\"example-card\">\r\n     <mat-card-header>\r\n       <mat-card-title>Reset Password</mat-card-title>\r\n     </mat-card-header>\r\n     <mat-card-content>\r\n         <div class=\"form-group\">\r\n           <mat-form-field class=\"example-full-width\">\r\n             <input matInput placeholder=\"New Password\" formControlName=\"password\" type=\"password\" name=\"password\">\r\n             <mat-error class=\"error--handing\"\r\n             *ngIf=\"resetform.controls['password'].hasError('required') && (resetform.controls['password'].dirty || resetform.controls['password'].touched)\">\r\n             {{ \"Password Id is required.\" }}\r\n           </mat-error>\r\n           <mat-error class=\"required\" *ngIf=\"resetform.controls['password'].hasError('pattern') && (resetform.controls['password'].dirty || resetform.controls['password'].touched )\">\r\n            {{ \"New Password must be minimum 6 charecter long.\" }}\r\n            </mat-error>\r\n           </mat-form-field>\r\n         </div>\r\n         <div class=\"form-group\">\r\n           <mat-form-field class=\"example-full-width\">\r\n             <input matInput placeholder=\"Confirm Password\" formControlName=\"confirmPassword\" type=\"password\" name=\"cofirmpassword\" >\r\n             <mat-error class=\"error--handing\"\r\n             *ngIf=\"resetform.controls['confirmPassword'].hasError('required') && (resetform.controls['confirmPassword'].dirty || resetform.controls['confirmPassword'].touched)\">\r\n             {{ \"Password Id is required.\" }}\r\n           </mat-error>\r\n           <mat-error class=\"error--handing\" *ngIf=\"resetform.controls['confirmPassword'].hasError('passwordCompare') && resetform.controls['confirmPassword'].touched\">\r\n              {{ \"Password does not match.\" }}\r\n            </mat-error>\r\n           </mat-form-field>\r\n         </div>\r\n       <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\r\n     </mat-card-content>\r\n     <mat-card-actions>\r\n       <button mat-raised-button [disabled]=\"!resetform.valid\" color=\"primary\">Reset Password</button>\r\n     </mat-card-actions>\r\n     <a class=\"auth-navigate\" [routerLink]=\"['/', 'login']\">Back to login</a>\r\n   </mat-card>\r\n  </form>\r\n</div>\r\n"
+module.exports = "<div class=\"main-content\">\r\n  <div class=\"container-fluid\">\r\n      <form class=\"example-form\" [formGroup]=\"resetform\" (ngSubmit)=\"reset(resetform.value)\" >\r\n    <mat-card class=\"example-card\">\r\n     <mat-card-header>\r\n       <mat-card-title>Reset Password</mat-card-title>\r\n     </mat-card-header>\r\n     <mat-card-content>\r\n\r\n        <div class=\"form-group\">\r\n            <mat-form-field class=\"example-full-width\">\r\n              <input matInput placeholder=\"Email\" readonly disabled formControlName=\"email\" type=\"text\" value=\"{{ emailId }}\">\r\n            </mat-form-field>\r\n          </div>\r\n\r\n         <div class=\"form-group\">\r\n           <mat-form-field class=\"example-full-width\">\r\n             <input matInput placeholder=\"New Password\" formControlName=\"password\" type=\"password\" name=\"password\">\r\n             <mat-error class=\"error--handing\"\r\n             *ngIf=\"resetform.controls['password'].hasError('required') && (resetform.controls['password'].dirty || resetform.controls['password'].touched)\">\r\n             {{ \"Password Id is required.\" }}\r\n           </mat-error>\r\n           <mat-error class=\"required\" *ngIf=\"resetform.controls['password'].hasError('pattern') && (resetform.controls['password'].dirty || resetform.controls['password'].touched )\">\r\n            {{ \"New Password must be minimum 6 charecter long.\" }}\r\n            </mat-error>\r\n           </mat-form-field>\r\n         </div>\r\n         <div class=\"form-group\">\r\n           <mat-form-field class=\"example-full-width\">\r\n             <input matInput placeholder=\"Confirm Password\" formControlName=\"confirmPassword\" type=\"password\" name=\"cofirmpassword\" >\r\n             <mat-error class=\"error--handing\"\r\n             *ngIf=\"resetform.controls['confirmPassword'].hasError('required') && (resetform.controls['confirmPassword'].dirty || resetform.controls['confirmPassword'].touched)\">\r\n             {{ \"Password Id is required.\" }}\r\n           </mat-error>\r\n           <mat-error class=\"error--handing\" *ngIf=\"resetform.controls['confirmPassword'].hasError('passwordCompare') && resetform.controls['confirmPassword'].touched\">\r\n              {{ \"Password does not match.\" }}\r\n            </mat-error>\r\n           </mat-form-field>\r\n         </div>\r\n       <mat-spinner [style.display]=\"showSpinner ? 'block' : 'none'\"></mat-spinner>\r\n     </mat-card-content>\r\n     <mat-card-actions>\r\n       <button mat-raised-button [disabled]=\"!resetform.valid\" color=\"primary\">Reset Password</button>\r\n     </mat-card-actions>\r\n     <a class=\"auth-navigate\" [routerLink]=\"['/', 'login']\">Back to login</a>\r\n   </mat-card>\r\n  </form>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -256,6 +256,7 @@ var ResetComponent = /** @class */ (function () {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.userId = "";
+        this.emailId = "";
         this.passwordRegex = /^.{6,}$/;
     }
     ResetComponent.prototype.ngOnInit = function () {
@@ -264,6 +265,7 @@ var ResetComponent = /** @class */ (function () {
             this.router.navigate(['/', 'admin', 'dashboard']);
         }
         this.resetform = this.fb.group({
+            email: [''],
             password: [null, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].pattern(this.passwordRegex)])],
             confirmPassword: [null, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required])],
         }, {
@@ -271,8 +273,8 @@ var ResetComponent = /** @class */ (function () {
         });
         this.activatedRoute.params.subscribe(function (params) {
             _this.userId = params.id;
-            console.log(_this.userId);
         });
+        this.getEmail();
     };
     // compare password validate
     ResetComponent.prototype.comparePassword = function (control) {
@@ -285,13 +287,28 @@ var ResetComponent = /** @class */ (function () {
             return null;
         }
     };
+    ResetComponent.prototype.getEmail = function () {
+        var _this = this;
+        this.api.apiRequest('post', 'auth/getUserEmail', { userId: this.userId }).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.emailId = result.data.email;
+            }
+            else {
+                //this.snack.open(result.data.message, 'OK', { duration: 5000 });
+            }
+        }, function (err) {
+            console.error(err);
+        });
+    };
     ResetComponent.prototype.reset = function (userData) {
         var _this = this;
         userData.userId = this.userId;
         this.api.apiRequest('post', 'auth/adminResetPassword', userData).subscribe(function (result) {
             if (result.status == "success") {
                 _this.snack.open("Your password sucessfully reste. Now login with this password!", 'OK', { duration: 5000 });
-                _this.router.navigate(['', 'login']);
+                if (result.data.userType == "adminUser") {
+                    _this.router.navigate(['', 'login']);
+                }
             }
             else {
                 _this.snack.open(result.data.message, 'OK', { duration: 5000 });
