@@ -44,16 +44,13 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
       width: parseInt(requestParams.labelWidth),
       height: parseInt(requestParams.labelHeight)
     }
-    implantImage.location = objectLocation    
+    implantImage.location = objectLocation
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){
       let imgS3Path = implantImage.imgName
       let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.location, imgS3Path)
-      // console.log("watsonRes", watsonRes)
       if(watsonRes.status == "success") {
-        // let watsonTrainingRes = await watsonLibrary.trainCollection(constants.watson.collectionID)
-        // console.log("watsonTrainingRes=>", watsonTrainingRes.data.training_status)
         res.send(resFormat.rSuccess(implantImage))
       } else {
         res.send(resFormat.rError(messages.watson['1']))
@@ -69,7 +66,6 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
 router.post("/getCollectionStatus", async function (req, res) {
   try {
       let watsonRes = await watsonLibrary.listCollection()
-      console.log(watsonRes.data.collections)
       if(watsonRes.status == "success") {
         res.send(resFormat.rSuccess(watsonRes.data.collections[0].training_status.objects))
       } else {
@@ -98,7 +94,6 @@ router.post("/startCollectionTraining", async function (req, res) {
 router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
   try {
       const imgS3Path = req.file.location
-      console.log(imgS3Path)
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
       if(watsonRes.status == "success") {
         res.send(resFormat.rSuccess(watsonRes.data))
