@@ -112,7 +112,7 @@ async function adminProfileUpdate(req, res) {
        } else if (req.body.password && req.body.password !="") {
         if (!req.body.oldPassword || req.body.oldPassword != ""){
           if (!user.validPassword(req.body.oldPassword, user)) {
-            res.send(resFormat.rError({message:"Invalid password current password"}))    
+            res.send(resFormat.rError({ message:"Invalid current password" }))    
           } else {
             const {
               salt,
