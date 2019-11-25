@@ -724,7 +724,7 @@ async function adminForgotPassword (req, res) {
     } else if(!user){
       res.send(resFormat.rError("Incorrect email."))
     } else{
-        let clientUrl = constants.clientUrl
+        let clientUrl = "http://3.135.146.133:3000";  //constants.clientUrl
         var link =  clientUrl + '/#/reset/' + new Buffer(user._id.toString()).toString('base64');
         await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date()}})
         //forgot password email template
