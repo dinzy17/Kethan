@@ -33,18 +33,35 @@ function updateProfile(req, res) {
   })
 }
 
+//function to update user status
+function updateUserStatus(req, res) {
+  let params = {
+    active: req.body.active
+  }
+  User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
+      if (err) {
+        res.status(403).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess())
+      }
+  })
+}
+
 //function to get list of user as per given criteria
 async function list (req, res) {
   let { fields, offset, query, order, limit, search } = req.body
   let totalUsers = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function(key, index) {
-      if(key !== "status") {
+      if(key !== "status" && key !== "SearchQuery") {
         query[key] = new RegExp(query[key], 'i')
+      } else if (key === "SearchQuery") {
+        query['$or'] = [{'fullName': new RegExp(query[key], 'i')},{'email': new RegExp(query[key], 'i')}, {'contactNumber': new RegExp(query[key], 'i')}, {'profession': new RegExp(query[key], 'i')}]
+        delete query.SearchQuery;
       }
     })
   }
-
+  
   let userList = await User.find(query, fields);
   if(userList){
     totalUsers = userList.length
@@ -140,9 +157,9 @@ async function adminProfileUpdate(req, res) {
 }
 
 router.post("/updateProfile", auth, updateProfile)
-router.post("/list", auth,list)
+router.post("/list",list) //, auth
 router.post("/profile", auth, profile) 
-router.post("/adminProfileUpdate", adminProfileUpdate) //auth,
-
+router.post("/adminProfileUpdate", adminProfileUpdate) //auth,updateUserStatus
+router.post("/updateUserStatus", updateUserStatus)
 
 module.exports = router

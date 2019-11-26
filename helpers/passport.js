@@ -75,7 +75,6 @@ function(username, password, done) {
      } // else if (!user.active) {
     //   return done(null, false, { message: 'User is not Active' })
     // }
-
     const validator = user.validPassword(password, user)
 
     if (validator == false || validator == -1) {
