@@ -286,7 +286,7 @@ async function signout(req, res) {
 
 // genrate OPT
 function generateOTP() {
-  var OPT = Math.floor(1000 + Math.random() * 9000);
+  var OPT = Math.floor(100000 + Math.random() * 900000);
   return OPT
 }
 
