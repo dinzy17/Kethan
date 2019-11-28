@@ -34,7 +34,9 @@ var multipartUpload = multer({storage: multerS3({
 //function to test
 router.post("/addImageToCollection", multipartUpload, async function (req, res, next) {
   try {
-    let requestParams = req.body
+    let requestParams = req.body 
+    //console.log('zx', requestParams)
+    
     let implantImage = new ImpantImage()
     implantImage.objectName = requestParams.labelName
     implantImage.imgName = req.file.location
@@ -44,6 +46,10 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
       width: parseInt(requestParams.labelWidth),
       height: parseInt(requestParams.labelHeight)
     }
+    implantImage.implantManufacture = requestParams.implantManufacture
+    implantImage.surgeryDate = requestParams.surgeryDate
+    implantImage.surgeryLocation = requestParams.surgeryLocation
+    implantImage.removalProcess = requestParams.removalProcess
     implantImage.location = objectLocation    
     implantImage.createdOn = new Date()
 
@@ -60,7 +66,7 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
       }//end of sending response
     } else {
       res.send(resFormat.rError(messages.common['2']))
-    } //end of implant save
+    } //end of implant save 
   } catch(e) {
     res.send(resFormat.rError(e))
   }
@@ -111,6 +117,60 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
   }
 })
 
+//function to get list of user as per given criteria
+async function getManufacture (req, res) {
+  let query = {
+    $group: {
+        _id: '$implantManufacture',  //$region is the column name in collection
+        count: {$sum: 1}
+    }
+};
+  //query['$or'] = [{'implantManufacture': new RegExp(req.body.manufactureName, 'i')}]
+  
+  let implantList = await ImpantImage.aggregate([ { "$group" : { _id:"$implantManufacture", "implantManufacture": { "$first": "$implantManufacture" } } } ]);
+  if(implantList){
+    res.send(resFormat.rSuccess({ implantList }))
+  }
+  else{
+    res.status(401).send(resFormat.rError(err))
+  }
+}
 
+//function to get list of user as per given criteria
+async function getImplantName (req, res) {
+  let implantList = await ImpantImage.aggregate([{ "$match": { "implantManufacture": req.body.implantManufacture }},{ "$group" : { _id:"$objectName", 'imgName': { "$first": "$imgName" } ,'objectName': { "$first": "$objectName" } } } ]);
+  if(implantList){
+    res.send(resFormat.rSuccess({ implantList }))
+  }
+  else{
+    res.status(401).send(resFormat.rError(err))
+  }
+}
+
+async function getImplantDetail (req, res){
+  if(req.body.implantManufacture && req.body.objectName ){
+    ImpantImage.findOne({objectName:req.body.objectName, implantManufacture:req.body.implantManufacture }, function(err, implant) {
+      if (err) {
+        res.status(403).send(resFormat.rError(err))
+      } else {
+        responceData = {
+          "objectName":implant.objectName,
+          "implantManufacture":implant.implantManufacture,
+          "surgeryDate":implant.surgeryDate,
+          'surgeryLocation': implant.surgeryLocation,
+          'removalProcess':implant.removalProcess,
+          "imgName":implant.imgName,
+          "implantId":implant._id
+        }
+        res.send(resFormat.rSuccess(responceData))
+      }
+    })
+  }
+}
+
+
+router.post("/getManufacture", getManufacture);
+router.post("/getImplantName", getImplantName);
+router.post("/getImplantDetail", getImplantDetail);
 
 module.exports = router
