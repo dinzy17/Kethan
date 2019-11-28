@@ -722,10 +722,10 @@ async function adminForgotPassword (req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if(!user){
-      res.send(resFormat.rError("Incorrect email."))
+      res.send(resFormat.rError("This email is not registered. Use registered email for forgot password."))
     } else{
         let clientUrl = "http://3.135.146.133:3000";  //constants.clientUrl
-        var link =  clientUrl + '/#/reset/' + new Buffer(user._id.toString()).toString('base64');
+        var link =  clientUrl + '/reset/' + new Buffer(user._id.toString()).toString('base64');
         await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date()}})
         //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("sendAdminResetPwd").then((template) => {
@@ -733,7 +733,7 @@ async function adminForgotPassword (req, res) {
             template = JSON.parse(JSON.stringify(template));
             let body = template.mailBody.replace("{link}", link);
             const mailOptions = {
-              to : "gaurav@arkenea.com", //req.body.email,
+              to : req.body.email, //gaurav@arkenea.com
               subject : template.mailSubject,
               html: body
             }

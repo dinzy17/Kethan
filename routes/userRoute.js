@@ -104,7 +104,7 @@ async function adminProfileUpdate(req, res) {
    var errorResponce = "";
     if (user) {
       if (req.body.email && req.body.email !="") {
-        await User.find({email:req.body.email, _id:{ $ne: user._id }}, { _id: 1}, function(err, checkUsers){
+        await User.find({email:req.body.email, userType:"adminUser", _id:{ $ne: user._id }}, { _id: 1}, function(err, checkUsers){
             if (err) {
               res.send(resFormat.rError(err))
             } else {
