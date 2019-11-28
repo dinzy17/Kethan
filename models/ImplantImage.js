@@ -4,6 +4,10 @@ var constants = require("./../config/constants")
 var ImpantImageSchema = new mongoose.Schema({
   objectName: String,
   objCategory: String,
+  implantManufacture: String,
+  surgeryDate: String,
+  surgeryLocation: String,
+  removalProcess: String,
   imgName: String,
   objectLocation: {
     left: Number,

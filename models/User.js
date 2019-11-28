@@ -61,5 +61,6 @@ userSchema.methods.generateJwt = () => {
   }, constants.jwtSecret)
 }
 
+
 module.exports = mongoose.model('User', userSchema)
 userSchema.plugin(uniqueValidator)
