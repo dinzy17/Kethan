@@ -311,7 +311,7 @@ var ResetComponent = /** @class */ (function () {
         userData.userId = this.userId;
         this.api.apiRequest('post', 'auth/adminResetPassword', userData).subscribe(function (result) {
             if (result.status == "success") {
-                _this.snack.open("Your password sucessfully reste. Now login with this password!", 'OK', { duration: 5000 });
+                _this.snack.open("Your password sucessfully reset. Now login with this password!", 'OK', { duration: 5000 });
                 if (result.data.userType == "adminUser") {
                     _this.router.navigate(['', 'login']);
                 }
