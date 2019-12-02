@@ -35,8 +35,6 @@ var multipartUpload = multer({storage: multerS3({
 router.post("/addImageToCollection", multipartUpload, async function (req, res, next) {
   try {
     let requestParams = req.body 
-    //console.log('zx', requestParams)
-    
     let implantImage = new ImpantImage()
     implantImage.objectName = requestParams.labelName
     implantImage.imgName = req.file.location
@@ -48,9 +46,7 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
     }
 
     implantImage.implantManufacture = requestParams.implantManufacture
-    implantImage.surgeryDate = requestParams.surgeryDate
-    implantImage.surgeryLocation = requestParams.surgeryLocation
-    implantImage.removalProcess = requestParams.removalProcess
+    implantImage.removImplant = JSON.parse(requestParams.removeImplant);
     implantImage.location = objectLocation    
     implantImage.createdOn = new Date()
 

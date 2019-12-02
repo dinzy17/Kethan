@@ -8,6 +8,7 @@ var ImpantImageSchema = new mongoose.Schema({
   surgeryDate: String,
   surgeryLocation: String,
   removalProcess: String,
+  removImplant: Object,
   imgName: String,
   objectLocation: {
     left: Number,

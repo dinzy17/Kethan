@@ -3,7 +3,7 @@ var constants = require("./../config/constants")
 
 var SupportSchema = new mongoose.Schema({
   query: String,
-  answer: String,
+  replay: String,
   senderEmail: String,
   createdOn: Date,
   modifiedOn: Date
