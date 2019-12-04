@@ -27777,7 +27777,7 @@ module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width\">\n                                                    <input matInput placeholder=\"Implant manufacture\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"Implant Manufacture is required.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\" >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width\">\n                                                    <input matInput placeholder=\"Implant name/brand\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"Implant name/brand is required.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                    <textarea matInput placeholder=\"Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\"  rows=\"5\" ></textarea>\n                                                                    <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                        <input matInput placeholder=\"Surgery Location\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                            </div>\n                            <div class=\"col-md-6\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\">\n                                          Upload Implant image\n                                        </label>\n                                         <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      </div>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageError\" >\n                                          {{ \"Image is required.\" }}\n                                      </mat-error>\n                                      <div class=\"crop--preview\">\n                                        <label *ngIf=\"croppedImage\">Preview:</label>\n                                        <img class=\"\" [src]=\"croppedImage\" />\n                                      </div>\n                                    </div>\n                                    <div class=\"offset-lg-1 col-md-12\">\n                                      <div class=\"image--cropper\">\n                                        <image-cropper\n                                            [imageChangedEvent]=\"imageChangedEvent\"\n                                            [maintainAspectRatio]=\"false\"\n                                            [aspectRatio]=\"1 / 1\"\n                                            format=\"jpg\"\n                                            (imageCropped)=\"imageCropped($event)\"\n                                        ></image-cropper>\n                                      </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                          <div class=\"row col-md-12 form--bottom\">\n                            <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                          </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width\">\n                                                    <input matInput placeholder=\"Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"Implant Manufacture is required.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\"  #MatAutocompleteTrigger >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width\">\n                                                    <input matInput placeholder=\"Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"Implant name/brand is required.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                    <textarea matInput placeholder=\"Removal Process\" class=\"capitalize\" formControlName=\"removalProcess\" name=\"removalProcess\"  rows=\"5\" ></textarea>\n                                                                    <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width\">\n                                                                        <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                                </div>\n                            </div>\n                            <div class=\"col-md-6\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\">\n                                          Upload Implant image\n                                        </label>\n                                         <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      </div>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageError\" >\n                                          {{ \"Image is required.\" }}\n                                      </mat-error>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageValidError\" >\n                                        {{ \"Only png and jpg file allowed.\" }}\n                                    </mat-error>\n                                      <div class=\"crop--preview\">\n                                        <label *ngIf=\"croppedImage\">Preview:</label>\n                                        <img class=\"\" [src]=\"croppedImage\" />\n                                      </div>\n                                    </div>\n                                    <div class=\"offset-lg-1 col-md-12\">\n                                      <div class=\"image--cropper\">\n                                        <image-cropper\n                                            [imageChangedEvent]=\"imageChangedEvent\"\n                                            [maintainAspectRatio]=\"false\"\n                                            [aspectRatio]=\"1 / 1\"\n                                            format=\"jpg\"\n                                            (imageCropped)=\"imageCropped($event)\"\n                                        ></image-cropper>\n                                      </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -27803,6 +27803,17 @@ module.exports = "<div class=\"loader--wrapper\">\n    <mat-spinner></mat-spinne
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/index.js!./src/app/supports/support-edit/support-edit.component.html":
+/*!*********************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/supports/support-edit/support-edit.component.html ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"card\">\n                <div class=\"card-header card-header-danger\">\n                    <h4 class=\"card-title\">Replay to support</h4>\n                </div>\n                <div class=\"card-body\">\n                    <form [formGroup]=\"form\" (ngSubmit)=\"send(form.value)\" #emialForm=\"ngForm\">\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Sender Email: </label> <span>{{ data.senderEmail }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Query: </label> <span>{{ data.query }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                              <div class=\"col-md-12\">\n                                  <mat-form-field class=\"example-full-width\">\n                                      <textarea matInput placeholder=\"Message\" formControlName=\"replay\" name=\"replay\"  rows=\"5\" ></textarea>\n                                      <mat-error class=\"error--handing\"\n                                          *ngIf=\"form.controls['replay'].hasError('required') && (form.controls['replay'].dirty || form.controls['replay'].touched)\">\n                                          {{ \"Message is required.\" }}\n                                      </mat-error>\n                                  </mat-form-field>\n                              </div>\n                          </div>\n                        <button mat-raised-button type=\"submit\" [disabled]=\"!form.valid\" class=\"btn btn-theme\">Send Replay</button>\n                        <div class=\"clearfix\"></div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n</div>\n          "
+
+/***/ }),
+
 /***/ "./node_modules/raw-loader/index.js!./src/app/supports/supports.component.html":
 /*!****************************************************************************!*\
   !*** ./node_modules/raw-loader!./src/app/supports/supports.component.html ***!
@@ -27810,7 +27821,7 @@ module.exports = "<div class=\"loader--wrapper\">\n    <mat-spinner></mat-spinne
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n     <h1>Hello Support</h1>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"col-md-12\">\n          <div class=\"card\">\n              <div class=\"card-header card-header-danger\">\n                  <h4 class=\"card-title\">Support List</h4>\n              </div>\n              <div class=\"card-body\">\n                  <div class=\"row\" >\n                      <form class=\"full-width\">\n                        <mat-form-field class=\"full--width\">\n                          <input matInput placeholder=\"Search by Sender Email, Quary and replay ans\" name=\"searchByString\" [(ngModel)]=\"searchByString\" (keyup)=\"searchBy()\">\n                        </mat-form-field>\n                      </form>\n                    </div>\n                <div class=\"row\" >\n                  <table *ngIf=\"recordsExists\" mat-table [dataSource]=\"supportList\" matSort class=\"mat-elevation-z8 full-width\">\n                    <ng-container matColumnDef=\"senderEmail\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Email</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.senderEmail}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"query\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Query</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.query}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"sendReplay\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> sendReplay</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.sendReplay }} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"createdOn\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> createdOn</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.createdOn | date: 'MM/dd/yyyy' }}</td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"_id\">\n                      <th mat-header-cell *matHeaderCellDef> Action </th>\n                      <td mat-cell *matCellDef=\"let element\">\n                        <a class=\"cursor-pointer btn btn-theme white-color\" (click)=\"view(element)\">Replay</a>\n                      </td>\n                    </ng-container>\n              \n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n                  </table>\n                  <mat-paginator class=\"full-width\" *ngIf=\"recordsExists\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n                </div>\n                <div class=\"row\" *ngIf=\"recordsExists < 1\">\n                    No record found!\n                </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -28310,7 +28321,7 @@ var DashboardComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\n.implant--container .implant--image--container {\n  height: 125px;\n  margin-bottom: 10px;\n  position: relative;\n}\n.implant--container .implant--image--container .implant--image--lable {\n  display: -webkit-box;\n  display: flex;\n  margin: 10px;\n  color: #545454;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  border: 1px dashed #CCC;\n  text-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  cursor: pointer;\n  color: #176aba;\n  font-size: 16px;\n}\n.implant--container .crop--preview label {\n  display: block;\n  margin-top: 20px;\n  color: #545454;\n}\n.implant--container .crop--preview img {\n  max-width: 200px;\n}\n.implant--container .cropper {\n  width: 300px;\n  height: 300px;\n  top: 50px;\n  left: 50px;\n}\n.autocomplete--option {\n  height: 70px;\n  border-bottom: 1px solid #CCC;\n}\n.example-option-img {\n  height: 50px;\n  vertical-align: middle;\n  margin-right: 8px;\n}\n.cursor--pointer {\n  cursor: pointer;\n}\n.removal--process {\n  border: 1px solid #CCC;\n  margin-bottom: 10px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUU7RUFDRSxnQkFBQTtBQ0RKO0FER0U7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtBQ0RKO0FER0k7RUFDRSxvQkFBQTtFQUFBLGFBQUE7RUFDRSxZQUFBO0VBQ0EsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsTUFBQTtFQUNBLFFBQUE7RUFDQSxTQUFBO0VBQ0EsT0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0EsU0FBQTtFQUNBLHVCQUFBO0VBQ0Esa0JBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLGVBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtBQ0RSO0FETUk7RUFDRSxjQUFBO0VBQ0EsZ0JBQUE7RUFDQSxjQUFBO0FDSk47QURNSTtFQUNFLGdCQUFBO0FDSk47QURRRTtFQUNFLFlBQUE7RUFDQSxhQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7QUNOSjtBRFNBO0VBQ0UsWUFBQTtFQUNBLDZCQUFBO0FDTkY7QURRQTtFQUNFLFlBQUE7RUFDQSxzQkFBQTtFQUNBLGlCQUFBO0FDTEY7QURPQTtFQUNFLGVBQUE7QUNKRjtBRE1BO0VBQ0Usc0JBQUE7RUFDQSxtQkFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW1wbGFudC0tY29udGFpbmVye1xuXG4gIC5pbWFnZS0tY3JvcHBlcntcbiAgICBtYXgtd2lkdGg6IDUwMHB4O1xuICB9XG4gIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIHtcbiAgICBoZWlnaHQ6IDEyNXB4O1xuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuXG4gICAgLmltcGxhbnQtLWltYWdlLS1sYWJsZSB7XG4gICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBtYXJnaW46IDEwcHg7XG4gICAgICAgIGNvbG9yOiAjNTQ1NDU0O1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogMDtcbiAgICAgICAgcmlnaHQ6IDA7XG4gICAgICAgIGJvdHRvbTogMDtcbiAgICAgICAgbGVmdDogMDtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIGhlaWdodDogMTAwJTtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBkYXNoZWQgI0NDQztcbiAgICAgICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBjb2xvcjogIzE3NmFiYTtcbiAgICAgICAgZm9udC1zaXplOiAxNnB4O1xuICAgIH1cbiAgfVxuICAuY3JvcC0tcHJldmlldyB7XG4gICAgLy8gZGlzcGxheTogZmxleDtcbiAgICBsYWJlbCB7XG4gICAgICBkaXNwbGF5OiBibG9jaztcbiAgICAgIG1hcmdpbi10b3A6IDIwcHg7XG4gICAgICBjb2xvcjogIzU0NTQ1NDtcbiAgICB9XG4gICAgaW1nIHtcbiAgICAgIG1heC13aWR0aDogMjAwcHg7XG4gICAgfVxuICB9XG5cbiAgLmNyb3BwZXIge1xuICAgIHdpZHRoOiAzMDBweDtcbiAgICBoZWlnaHQ6IDMwMHB4O1xuICAgIHRvcDogNTBweDtcbiAgICBsZWZ0OiA1MHB4O1xuICB9XG59XG4uYXV0b2NvbXBsZXRlLS1vcHRpb24ge1xuICBoZWlnaHQ6IDcwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjQ0NDO1xufVxuLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbiAgbWFyZ2luLXJpZ2h0OiA4cHg7XG59XG4uY3Vyc29yLS1wb2ludGVye1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG4ucmVtb3ZhbC0tcHJvY2Vzc3tcbiAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbn0iLCIuaW1wbGFudC0tY29udGFpbmVyIC5pbWFnZS0tY3JvcHBlciB7XG4gIG1heC13aWR0aDogNTAwcHg7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIHtcbiAgaGVpZ2h0OiAxMjVweDtcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWxhYmxlIHtcbiAgZGlzcGxheTogZmxleDtcbiAgbWFyZ2luOiAxMHB4O1xuICBjb2xvcjogIzU0NTQ1NDtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IDA7XG4gIHJpZ2h0OiAwO1xuICBib3R0b206IDA7XG4gIGxlZnQ6IDA7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDEwMCU7XG4gIG1hcmdpbjogMDtcbiAgYm9yZGVyOiAxcHggZGFzaGVkICNDQ0M7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgY29sb3I6ICMxNzZhYmE7XG4gIGZvbnQtc2l6ZTogMTZweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3AtLXByZXZpZXcgbGFiZWwge1xuICBkaXNwbGF5OiBibG9jaztcbiAgbWFyZ2luLXRvcDogMjBweDtcbiAgY29sb3I6ICM1NDU0NTQ7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5jcm9wLS1wcmV2aWV3IGltZyB7XG4gIG1heC13aWR0aDogMjAwcHg7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5jcm9wcGVyIHtcbiAgd2lkdGg6IDMwMHB4O1xuICBoZWlnaHQ6IDMwMHB4O1xuICB0b3A6IDUwcHg7XG4gIGxlZnQ6IDUwcHg7XG59XG5cbi5hdXRvY29tcGxldGUtLW9wdGlvbiB7XG4gIGhlaWdodDogNzBweDtcbiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNDQ0M7XG59XG5cbi5leGFtcGxlLW9wdGlvbi1pbWcge1xuICBoZWlnaHQ6IDUwcHg7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG4gIG1hcmdpbi1yaWdodDogOHB4O1xufVxuXG4uY3Vyc29yLS1wb2ludGVyIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4ucmVtb3ZhbC0tcHJvY2VzcyB7XG4gIGJvcmRlcjogMXB4IHNvbGlkICNDQ0M7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG59Il19 */"
+module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\n.implant--container .implant--image--container {\n  height: 125px;\n  margin-bottom: 10px;\n  position: relative;\n}\n.implant--container .implant--image--container .implant--image--lable {\n  display: -webkit-box;\n  display: flex;\n  margin: 10px;\n  color: #545454;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  border: 1px dashed #CCC;\n  text-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  cursor: pointer;\n  color: #176aba;\n  font-size: 16px;\n}\n.implant--container .crop--preview label {\n  display: block;\n  margin-top: 20px;\n  color: #545454;\n}\n.implant--container .crop--preview img {\n  max-width: 200px;\n}\n.implant--container .cropper {\n  width: 300px;\n  height: 300px;\n  top: 50px;\n  left: 50px;\n}\n.autocomplete--option {\n  height: 70px;\n  border-bottom: 1px solid #CCC;\n}\n.example-option-img {\n  height: 50px;\n  vertical-align: middle;\n  margin-right: 8px;\n}\n.cursor--pointer {\n  cursor: pointer;\n}\n.removal--process {\n  border: 1px solid #CCC;\n  margin-bottom: 10px;\n}\n.capitalize {\n  text-transform: capitalize;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUU7RUFDRSxnQkFBQTtBQ0RKO0FER0U7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtBQ0RKO0FER0k7RUFDRSxvQkFBQTtFQUFBLGFBQUE7RUFDRSxZQUFBO0VBQ0EsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsTUFBQTtFQUNBLFFBQUE7RUFDQSxTQUFBO0VBQ0EsT0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0EsU0FBQTtFQUNBLHVCQUFBO0VBQ0Esa0JBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLGVBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtBQ0RSO0FETUk7RUFDRSxjQUFBO0VBQ0EsZ0JBQUE7RUFDQSxjQUFBO0FDSk47QURNSTtFQUNFLGdCQUFBO0FDSk47QURRRTtFQUNFLFlBQUE7RUFDQSxhQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7QUNOSjtBRFNBO0VBQ0UsWUFBQTtFQUNBLDZCQUFBO0FDTkY7QURRQTtFQUNFLFlBQUE7RUFDQSxzQkFBQTtFQUNBLGlCQUFBO0FDTEY7QURPQTtFQUNFLGVBQUE7QUNKRjtBRE1BO0VBQ0Usc0JBQUE7RUFDQSxtQkFBQTtBQ0hGO0FES0E7RUFDRSwwQkFBQTtBQ0ZGIiwiZmlsZSI6InNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW1wbGFudC0tY29udGFpbmVye1xuXG4gIC5pbWFnZS0tY3JvcHBlcntcbiAgICBtYXgtd2lkdGg6IDUwMHB4O1xuICB9XG4gIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIHtcbiAgICBoZWlnaHQ6IDEyNXB4O1xuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuXG4gICAgLmltcGxhbnQtLWltYWdlLS1sYWJsZSB7XG4gICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBtYXJnaW46IDEwcHg7XG4gICAgICAgIGNvbG9yOiAjNTQ1NDU0O1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogMDtcbiAgICAgICAgcmlnaHQ6IDA7XG4gICAgICAgIGJvdHRvbTogMDtcbiAgICAgICAgbGVmdDogMDtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIGhlaWdodDogMTAwJTtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBkYXNoZWQgI0NDQztcbiAgICAgICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBjb2xvcjogIzE3NmFiYTtcbiAgICAgICAgZm9udC1zaXplOiAxNnB4O1xuICAgIH1cbiAgfVxuICAuY3JvcC0tcHJldmlldyB7XG4gICAgLy8gZGlzcGxheTogZmxleDtcbiAgICBsYWJlbCB7XG4gICAgICBkaXNwbGF5OiBibG9jaztcbiAgICAgIG1hcmdpbi10b3A6IDIwcHg7XG4gICAgICBjb2xvcjogIzU0NTQ1NDtcbiAgICB9XG4gICAgaW1nIHtcbiAgICAgIG1heC13aWR0aDogMjAwcHg7XG4gICAgfVxuICB9XG5cbiAgLmNyb3BwZXIge1xuICAgIHdpZHRoOiAzMDBweDtcbiAgICBoZWlnaHQ6IDMwMHB4O1xuICAgIHRvcDogNTBweDtcbiAgICBsZWZ0OiA1MHB4O1xuICB9XG59XG4uYXV0b2NvbXBsZXRlLS1vcHRpb24ge1xuICBoZWlnaHQ6IDcwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjQ0NDO1xufVxuLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbiAgbWFyZ2luLXJpZ2h0OiA4cHg7XG59XG4uY3Vyc29yLS1wb2ludGVye1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG4ucmVtb3ZhbC0tcHJvY2Vzc3tcbiAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbn1cbi5jYXBpdGFsaXple1xuICB0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbn1cbiIsIi5pbXBsYW50LS1jb250YWluZXIgLmltYWdlLS1jcm9wcGVyIHtcbiAgbWF4LXdpZHRoOiA1MDBweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIge1xuICBoZWlnaHQ6IDEyNXB4O1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tbGFibGUge1xuICBkaXNwbGF5OiBmbGV4O1xuICBtYXJnaW46IDEwcHg7XG4gIGNvbG9yOiAjNTQ1NDU0O1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHRvcDogMDtcbiAgcmlnaHQ6IDA7XG4gIGJvdHRvbTogMDtcbiAgbGVmdDogMDtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbiAgbWFyZ2luOiAwO1xuICBib3JkZXI6IDFweCBkYXNoZWQgI0NDQztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICBjb2xvcjogIzE3NmFiYTtcbiAgZm9udC1zaXplOiAxNnB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcC0tcHJldmlldyBsYWJlbCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBtYXJnaW4tdG9wOiAyMHB4O1xuICBjb2xvcjogIzU0NTQ1NDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3AtLXByZXZpZXcgaW1nIHtcbiAgbWF4LXdpZHRoOiAyMDBweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3BwZXIge1xuICB3aWR0aDogMzAwcHg7XG4gIGhlaWdodDogMzAwcHg7XG4gIHRvcDogNTBweDtcbiAgbGVmdDogNTBweDtcbn1cblxuLmF1dG9jb21wbGV0ZS0tb3B0aW9uIHtcbiAgaGVpZ2h0OiA3MHB4O1xuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgI0NDQztcbn1cblxuLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbiAgbWFyZ2luLXJpZ2h0OiA4cHg7XG59XG5cbi5jdXJzb3ItLXBvaW50ZXIge1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5yZW1vdmFsLS1wcm9jZXNzIHtcbiAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbn1cblxuLmNhcGl0YWxpemUge1xuICB0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbn0iXX0= */"
 
 /***/ }),
 
@@ -28367,9 +28378,12 @@ var ImplantsComponent = /** @class */ (function () {
         this.labelOffsetX = 0;
         this.labelOffsetY = 0;
         this.disabledSave = false;
+        this.imageValidExtensions = ['jpg', 'png', 'jpeg'];
+        this.optionsAllData = [];
         this.options = [];
         this.names = [];
         this.imageError = false;
+        this.imageValidError = false;
         this.dialogRef = "";
         //function to filter manufacturer
         this.filterManufacture = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["debounce"])(function () {
@@ -28379,6 +28393,9 @@ var ImplantsComponent = /** @class */ (function () {
                 _this.filteredOptions = allOptions.filter(function (o) {
                     return o.implantManufacture.toLowerCase().indexOf(manufactureSearch) > -1;
                 });
+            }
+            else {
+                _this.filteredOptions = [];
             }
         }, 500);
         this.filterName = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["debounce"])(function () {
@@ -28439,10 +28456,19 @@ var ImplantsComponent = /** @class */ (function () {
     //function to get file
     ImplantsComponent.prototype.fileChangeEvent = function (event) {
         this.imageChangedEvent = event;
+        this.imageValidError = false;
         var img = document.getElementById('implantImage');
-        this.uploadedFile = img.files[0];
-        this.disabledSave = false;
-        this.imageError = false;
+        var filename = img.files[0].name;
+        var fileExt = filename.split(".").splice(-1)[0].toLowerCase();
+        if (this.imageValidExtensions.indexOf(fileExt) == -1) {
+            this.resetValues();
+            this.imageValidError = true;
+        }
+        else {
+            this.uploadedFile = img.files[0];
+            this.disabledSave = false;
+            this.imageError = false;
+        }
     };
     //function to assign cropper
     ImplantsComponent.prototype.imageCropped = function (event) {
@@ -28511,13 +28537,14 @@ var ImplantsComponent = /** @class */ (function () {
         this.labelOffsetY = 0;
         var img = document.getElementById('implantImage');
         img.value = "";
-        // this.croppedImage = null
+        this.croppedImage = "";
     };
     ImplantsComponent.prototype.getManufacture = function () {
         var _this = this;
         this.api.apiRequest('post', 'implant/getManufacture', {}).subscribe(function (result) {
             if (result.status == "success") {
                 _this.options = result.data.implantList;
+                _this.optionsAllData = result.data.implantList;
             }
         });
     };
@@ -28575,13 +28602,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_cms_cms_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! app/cms/cms.component */ "./src/app/cms/cms.component.ts");
 /* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
 /* harmony import */ var app_supports_supports_component__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! app/supports/supports.component */ "./src/app/supports/supports.component.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! app/supports/support-edit/support-edit.component */ "./src/app/supports/support-edit/support-edit.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -28611,26 +28640,26 @@ var AdminLayoutModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(_admin_layout_routing__WEBPACK_IMPORTED_MODULE_4__["AdminLayoutRoutes"]),
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatRippleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatTooltipModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatTableModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatPaginatorModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatSortModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatSlideToggleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatDatepickerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatNativeDateModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatAutocompleteModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatRippleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatTooltipModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatPaginatorModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatSortModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatSlideToggleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatDatepickerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatNativeDateModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatAutocompleteModule"],
                 ngx_image_cropper__WEBPACK_IMPORTED_MODULE_12__["ImageCropperModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatTabsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_18__["MatProgressSpinnerModule"]
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatTabsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_19__["MatProgressSpinnerModule"]
             ],
-            entryComponents: [app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_13__["ConfirmModelComponent"], app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_14__["UserDetailComponent"], app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_16__["SidLoderComponentComponent"]],
+            entryComponents: [app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_13__["ConfirmModelComponent"], app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_14__["UserDetailComponent"], app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_16__["SidLoderComponentComponent"], app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_18__["SupportEditComponent"]],
             declarations: [
                 _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_5__["DashboardComponent"],
                 _user_profile_user_profile_component__WEBPACK_IMPORTED_MODULE_6__["UserProfileComponent"],
@@ -28643,6 +28672,7 @@ var AdminLayoutModule = /** @class */ (function () {
                 app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_16__["SidLoderComponentComponent"],
                 app_supports_supports_component__WEBPACK_IMPORTED_MODULE_17__["SupportsComponent"],
                 app_cms_cms_component__WEBPACK_IMPORTED_MODULE_15__["CMSComponent"],
+                app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_18__["SupportEditComponent"]
             ],
             providers: [app_admin_guard__WEBPACK_IMPORTED_MODULE_11__["AdminGuard"]],
         })
@@ -28869,6 +28899,103 @@ var SidLoderComponentComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/supports/support-edit/support-edit.component.scss":
+/*!*******************************************************************!*\
+  !*** ./src/app/supports/support-edit/support-edit.component.scss ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3N1cHBvcnRzL3N1cHBvcnQtZWRpdC9zdXBwb3J0LWVkaXQuY29tcG9uZW50LnNjc3MifQ== */"
+
+/***/ }),
+
+/***/ "./src/app/supports/support-edit/support-edit.component.ts":
+/*!*****************************************************************!*\
+  !*** ./src/app/supports/support-edit/support-edit.component.ts ***!
+  \*****************************************************************/
+/*! exports provided: SupportEditComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SupportEditComponent", function() { return SupportEditComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var SupportEditComponent = /** @class */ (function () {
+    function SupportEditComponent(data, dialog, fb, api, snack) {
+        this.data = data;
+        this.dialog = dialog;
+        this.fb = fb;
+        this.api = api;
+        this.snack = snack;
+        if (data) {
+        }
+    }
+    SupportEditComponent.prototype.ngOnInit = function () {
+        this.form = this.fb.group({
+            replay: [this.data.replay, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required])],
+        });
+        this.data.replay.replace(/<br ?\/?>/g, "\n");
+        this.form.get('replay').setValue(this.data.replay);
+    };
+    SupportEditComponent.prototype.closeModal = function () {
+        this.dialog.closeAll();
+    };
+    SupportEditComponent.prototype.send = function (supportData) {
+        var _this = this;
+        supportData.id = this.data._id;
+        supportData.email = this.data.senderEmail;
+        this.api.apiRequest('post', 'support/sendReplay', supportData).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.snack.open(result.data.message, 'OK', { duration: 5000 });
+                _this.dialog.closeAll();
+            }
+            else {
+                _this.snack.open(result.data.message, 'OK', { duration: 5000 });
+            }
+        }, function (err) {
+            console.error(err);
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('emialForm', { static: false }),
+        __metadata("design:type", Object)
+    ], SupportEditComponent.prototype, "emialForm", void 0);
+    SupportEditComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-support-edit',
+            template: __webpack_require__(/*! raw-loader!./support-edit.component.html */ "./node_modules/raw-loader/index.js!./src/app/supports/support-edit/support-edit.component.html"),
+            styles: [__webpack_require__(/*! ./support-edit.component.scss */ "./src/app/supports/support-edit/support-edit.component.scss")]
+        }),
+        __param(0, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [Object, _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialog"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_3__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatSnackBar"]])
+    ], SupportEditComponent);
+    return SupportEditComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/supports/supports.component.scss":
 /*!**************************************************!*\
   !*** ./src/app/supports/supports.component.scss ***!
@@ -28876,7 +29003,7 @@ var SidLoderComponentComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3N1cHBvcnRzL3N1cHBvcnRzLmNvbXBvbmVudC5zY3NzIn0= */"
+module.exports = ".full-width {\n  width: 100%;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.white-color {\n  color: #fff !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9zdXBwb3J0cy9zdXBwb3J0cy5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvc3VwcG9ydHMvc3VwcG9ydHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxXQUFBO0FDQ0o7O0FEQ0E7RUFDSSxlQUFBO0FDRUo7O0FEQUE7RUFDSSxzQkFBQTtBQ0dKIiwiZmlsZSI6InNyYy9hcHAvc3VwcG9ydHMvc3VwcG9ydHMuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZnVsbC13aWR0aHtcbiAgICB3aWR0aDogMTAwJTtcbn1cbi5jdXJzb3ItcG9pbnRlcntcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG59XG4ud2hpdGUtY29sb3J7XG4gICAgY29sb3I6ICNmZmYgIWltcG9ydGFudDtcbn0iLCIuZnVsbC13aWR0aCB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uY3Vyc29yLXBvaW50ZXIge1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi53aGl0ZS1jb2xvciB7XG4gIGNvbG9yOiAjZmZmICFpbXBvcnRhbnQ7XG59Il19 */"
 
 /***/ }),
 
@@ -28891,6 +29018,11 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SupportsComponent", function() { return SupportsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/sort */ "./node_modules/@angular/material/esm5/sort.es5.js");
+/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/supports/support-edit/support-edit.component */ "./src/app/supports/support-edit/support-edit.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28901,18 +29033,95 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
+
 var SupportsComponent = /** @class */ (function () {
-    function SupportsComponent() {
+    function SupportsComponent(api, dialog, snackBar) {
+        this.api = api;
+        this.dialog = dialog;
+        this.snackBar = snackBar;
+        this.supportList = [];
+        this.dbSupportList = [];
+        this.displayedColumns = ['senderEmail', 'query', 'sendReplay', 'createdOn', '_id'];
+        this.noRecords = false;
+        this.showErrorDetails = false;
+        this.recordsExists = true;
+        this.showLoader = false;
     }
     SupportsComponent.prototype.ngOnInit = function () {
+        this.list();
     };
+    SupportsComponent.prototype.list = function (searchString) {
+        var _this = this;
+        if (searchString === void 0) { searchString = null; }
+        var req_vars = {
+            query: Object.assign({}),
+            fields: { senderEmail: 1, query: 1, replay: 1, sendReplay: 1, _id: 1, createdOn: 1 },
+            offset: '',
+            limit: '',
+            order: { "createdOn": 1 },
+        };
+        if (searchString) {
+            var searchTrim = this.searchByString.trim();
+            req_vars.query['SearchQuery'] = searchTrim;
+            req_vars['search'] = true;
+        }
+        this.api.apiRequest("post", "support/list", req_vars).subscribe(function (result) {
+            if (result.data.supportList.length == 0) {
+                _this.noRecords = true;
+            }
+            else {
+                _this.noRecords = false;
+            }
+            var listRes = result.data.supportList;
+            listRes.map(function (o) {
+                o.sendReplay = o.sendReplay ? "Yes" : "No";
+            });
+            _this.dbSupportList = listRes;
+            _this.supportList = new _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatTableDataSource"](listRes);
+            _this.supportList.paginator = _this.paginator;
+            _this.supportList.sort = _this.sort;
+            _this.recordsExists = (result.data.supportList.length < 1 ? false : true);
+        }, function (err) {
+            console.error(err);
+        });
+    };
+    SupportsComponent.prototype.searchBy = function () {
+        var searchTrim = this.searchByString.trim();
+        this.list(searchTrim);
+    };
+    SupportsComponent.prototype.view = function (userData) {
+        var _this = this;
+        var viwDialogRef = this.dialog.open(app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_5__["SupportEditComponent"], {
+            width: '920px',
+            disableClose: false,
+            data: userData
+        });
+        viwDialogRef.afterClosed().subscribe(function (result) {
+            _this.list();
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatPaginator"], { static: false }),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatPaginator"])
+    ], SupportsComponent.prototype, "paginator", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_angular_material_sort__WEBPACK_IMPORTED_MODULE_2__["MatSort"], { static: false }),
+        __metadata("design:type", _angular_material_sort__WEBPACK_IMPORTED_MODULE_2__["MatSort"])
+    ], SupportsComponent.prototype, "sort", void 0);
     SupportsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-supports',
             template: __webpack_require__(/*! raw-loader!./supports.component.html */ "./node_modules/raw-loader/index.js!./src/app/supports/supports.component.html"),
             styles: [__webpack_require__(/*! ./supports.component.scss */ "./src/app/supports/supports.component.scss")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [app_api_service__WEBPACK_IMPORTED_MODULE_4__["APIService"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialog"],
+            _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
     ], SupportsComponent);
     return SupportsComponent;
 }());
@@ -29175,10 +29384,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/sort */ "./node_modules/@angular/material/esm5/sort.es5.js");
-/* harmony import */ var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/snack-bar */ "./node_modules/@angular/material/esm5/snack-bar.es5.js");
-/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
-/* harmony import */ var app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/confirm-model/confirm-model.component */ "./src/app/confirm-model/confirm-model.component.ts");
-/* harmony import */ var app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! app/users/user-detail/user-detail.component */ "./src/app/users/user-detail/user-detail.component.ts");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/confirm-model/confirm-model.component */ "./src/app/confirm-model/confirm-model.component.ts");
+/* harmony import */ var app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/users/user-detail/user-detail.component */ "./src/app/users/user-detail/user-detail.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29195,13 +29403,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var UsersComponent = /** @class */ (function () {
-    function UsersComponent(api, _snackBar, dialog) {
+    function UsersComponent(api, dialog) {
         this.api = api;
-        this._snackBar = _snackBar;
         this.dialog = dialog;
-        this.panelOpenState = false;
         this.usersList = [];
         this.dbUsersList = [];
         this.displayedColumns = ['fullName', 'email', 'contactNumber', 'profession', 'status', 'emailVerified', '_id'];
@@ -29264,7 +29469,7 @@ var UsersComponent = /** @class */ (function () {
         var _this = this;
         //this.data.header = "profileImage";
         userData.message = "Are you sure you want to change status?";
-        var dialogRef = this.dialog.open(app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_5__["ConfirmModelComponent"], {
+        var dialogRef = this.dialog.open(app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_4__["ConfirmModelComponent"], {
             disableClose: false,
             data: userData
         });
@@ -29278,7 +29483,7 @@ var UsersComponent = /** @class */ (function () {
         });
     };
     UsersComponent.prototype.view = function (userData) {
-        var viwDialogRef = this.dialog.open(app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_6__["UserDetailComponent"], {
+        var viwDialogRef = this.dialog.open(app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_5__["UserDetailComponent"], {
             width: '920px',
             disableClose: false,
             data: userData
@@ -29298,8 +29503,7 @@ var UsersComponent = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./users.component.html */ "./node_modules/raw-loader/index.js!./src/app/users/users.component.html"),
             styles: [__webpack_require__(/*! ./users.component.scss */ "./src/app/users/users.component.scss")]
         }),
-        __metadata("design:paramtypes", [app_api_service__WEBPACK_IMPORTED_MODULE_4__["APIService"],
-            _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"],
+        __metadata("design:paramtypes", [app_api_service__WEBPACK_IMPORTED_MODULE_3__["APIService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_1__["MatDialog"]])
     ], UsersComponent);
     return UsersComponent;
