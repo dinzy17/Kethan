@@ -6,6 +6,7 @@ const Support = require('./../models/Support')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const auth = require('./../helpers/authMiddleware');
+const { isEmpty } = require('lodash')
 
 
 
@@ -76,17 +77,49 @@ async function addAns(req, res) {
     } 
 }
 
+  //function to create or register new user
+  async function sendReplay(req, res) {
+    if ((req.body.replay &&  req.body.replay == "") || (req.body.id &&  req.body.id == "")) {
+        res.send(resFormat.rError("All field required"));
+    } else {
+        req.body.replay = req.body.replay.replace(/\n/g,"<br>")
+        let params = {
+            replay: req.body.replay,
+            sendReplay: true,
+            modifiedOn: new Date()
+        }
+
+        Support.update({ _id: req.body.id },{ $set: params} , function(err, updatedSupport) {
+            if (err) {
+                res.send(resFormat.rError(err))
+            } else {
+                let body = req.body.replay;
+                const mailOptionsAdmin = {
+                to: req.body.email,
+                subject: "Support Replay",
+                html: body
+                }
+                sendEmail.sendEmail(mailOptionsAdmin)
+                res.send(resFormat.rSuccess({message: 'Replay send successfully.', data:updatedSupport}))
+            }
+        })
+    } 
+}
+
 //function to get list of user as per given criteria
 async function list (req, res) {
     let { fields, offset, query, order, limit, search } = req.body
     let totalUsers = 0
     if (search && !isEmpty(query)) {
-      Object.keys(query).map(function(key, index) {
-        if(key !== "status") {
-          query[key] = new RegExp(query[key], 'i')
-        }
-      })
-    }
+        Object.keys(query).map(function(key, index) {
+          if(key !== "status" && key !== "SearchQuery") {
+            query[key] = new RegExp(query[key], 'i')
+          } else if (key === "SearchQuery") {
+            query['$or'] = [{'query': new RegExp(query[key], 'i')},{'senderEmail': new RegExp(query[key], 'i')}, {'replay': new RegExp(query[key], 'i')}]
+            delete query.SearchQuery;
+          }
+        })
+      }
   
     let supportList = await Support.find(query, fields);
     if(supportList){
@@ -114,8 +147,8 @@ async function deleteSupport (req, res) {
 
 router.post("/create", auth, create)
 router.post("/addAns", auth, addAns)
-router.post("/list", auth, list)
+router.post("/list", list) //auth,
 router.post("/delete", auth, deleteSupport)
-
+router.post("/sendReplay", sendReplay)
 
 module.exports = router

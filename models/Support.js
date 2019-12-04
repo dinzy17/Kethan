@@ -5,6 +5,7 @@ var SupportSchema = new mongoose.Schema({
   query: String,
   replay: String,
   senderEmail: String,
+  sendReplay: Boolean,
   createdOn: Date,
   modifiedOn: Date
 })
