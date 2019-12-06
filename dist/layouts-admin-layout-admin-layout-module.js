@@ -27766,7 +27766,7 @@ module.exports = "<div class=\"confirm--header\">\n  <mat-icon (click)=\"closeMo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n              <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n          </div>\n        </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n              <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n          </div>\n        </div>\n        <!-- start blocks-->\n        <div class=\"row\">\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-4\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        3 New Verification Request\n                    </div>\n                </div>\n            </div>\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-4\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        5 New Support messages Received\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-4\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalUser }} Total Users  \n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-4 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalImplant }} Total Implant\n                        </div>\n                    </div>\n                </div>       \n        </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -28251,7 +28251,7 @@ var ConfirmModelComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".learning--status i {\n    float: right;\n    cursor: pointer;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtJQUNaLGVBQWU7QUFDbkIiLCJmaWxlIjoic3JjL2FwcC9kYXNoYm9hcmQvZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGVhcm5pbmctLXN0YXR1cyBpIHtcbiAgICBmbG9hdDogcmlnaHQ7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuIl19 */"
+module.exports = ".learning--status i {\n    float: right;\n    cursor: pointer;\n}\n.card-body-custome {\n    margin: 90px;\n    text-align: center;\n}\n.cursor-pointer {\n cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtJQUNaLGVBQWU7QUFDbkI7QUFDQTtJQUNJLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7QUFDQTtDQUNDLGVBQWU7QUFDaEIiLCJmaWxlIjoic3JjL2FwcC9kYXNoYm9hcmQvZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGVhcm5pbmctLXN0YXR1cyBpIHtcbiAgICBmbG9hdDogcmlnaHQ7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuLmNhcmQtYm9keS1jdXN0b21lIHtcbiAgICBtYXJnaW46IDkwcHg7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuLmN1cnNvci1wb2ludGVyIHtcbiBjdXJzb3I6IHBvaW50ZXI7XG59Il19 */"
 
 /***/ }),
 
@@ -28292,6 +28292,8 @@ var DashboardComponent = /** @class */ (function () {
         this.api = api;
         this.snack = snack;
         this.collectionStatus = "Waiting....";
+        this.totalUser = "0";
+        this.totalImplant = "0";
         this.getCollectionStatus = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
             _this.api.apiRequest('post', 'implant/getCollectionStatus', {}).subscribe(function (result) {
                 if (result.status == "success") {
@@ -28319,7 +28321,41 @@ var DashboardComponent = /** @class */ (function () {
         }, 2000);
     }
     DashboardComponent.prototype.ngOnInit = function () {
+        this.getTotalUser();
+        this.getTotalImplant();
         this.getCollectionStatus();
+    };
+    DashboardComponent.prototype.getTotalUser = function () {
+        var _this = this;
+        var req_vars = {
+            query: Object.assign({ userType: "appUser" }),
+            fields: { _id: 1 },
+            offset: '',
+            limit: '',
+            order: { "createdOn": -1 },
+        };
+        this.api.apiRequest("post", "user/list", req_vars).subscribe(function (result) {
+            _this.totalUser = result.data.totalUsers;
+        }, function (err) {
+            console.error(err);
+        });
+    };
+    DashboardComponent.prototype.getTotalImplant = function () {
+        var _this = this;
+        var req_vars = {
+            query: Object.assign({}),
+            fields: { _id: 1 },
+            offset: '',
+            limit: '',
+            order: { "createdOn": -1 },
+        };
+        this.api.apiRequest("post", "implant/list", req_vars).subscribe(function (result) {
+            _this.totalImplant = result.data.totalImplant;
+        }, function (err) {
+        });
+    };
+    DashboardComponent.prototype.implant = function () {
+        this.router.navigate(['/', 'admin', 'implant-list']);
     };
     DashboardComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -28688,6 +28724,7 @@ var ImplantsComponent = /** @class */ (function () {
     };
     //function to get file
     ImplantsComponent.prototype.fileChangeEvent = function (event) {
+        console.log('event test', event);
         this.imageChangedEvent = event;
         this.imageValidError = false;
         var img = document.getElementById('implantImage');
