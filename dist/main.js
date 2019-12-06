@@ -294,7 +294,7 @@ var APIService = /** @class */ (function () {
         this.removeKeyFromStorage('userHeaderDetails');
         window.localStorage.clear();
         window.sessionStorage.clear();
-        this.router.navigate(["/", "login"]);
+        this.router.navigate(["login"]);
     };
     //function to make request to server
     APIService.prototype.apiRequest = function (method, apiUrl, req_vars) {
