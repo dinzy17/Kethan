@@ -726,7 +726,7 @@ async function adminForgotPassword (req, res) {
     } else{
         let clientUrl = "http://3.135.146.133:3000";  //constants.clientUrl
         var link =  clientUrl + '/reset/' + new Buffer(user._id.toString()).toString('base64');
-        await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date()}})
+        await User.updateOne({ _id: user._id }, {$set: { accessToken: null,createdResetOtp: new Date(), isForgotPassword: true }})
         //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("sendAdminResetPwd").then((template) => {
           if(template) {
@@ -756,17 +756,21 @@ const adminResetPassword = function(req,res) {
       var expiryTime = new Date(userDetails.createdResetOtp);
       expiryTime.setMinutes(expiryTime.getMinutes() + 15);
       expiryTime = new Date(expiryTime);
-      if(new Date() < new Date( expiryTime )){
-        const user = new User()
-        const { salt, hash } = user.setPassword(req.body.password)
-        User.update({ _id: userDetails._id},{ $set: { salt, hash}} ,(err, updatedUser)=>{
-          if (err) {
-            res.send(resFormat.rError(err))
-          } else {
-            res.send(resFormat.rSuccess({userType:userDetails.userType, message:'Password has been updated'}))
-          }
-        })
-      }else{
+      if(userDetails.isForgotPassword){
+        if(new Date() < new Date( expiryTime )){
+          const user = new User()
+          const { salt, hash } = user.setPassword(req.body.password)
+          User.update({ _id: userDetails._id},{ $set: { salt, hash, isForgotPassword: false }} ,(err, updatedUser)=>{
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              res.send(resFormat.rSuccess({userType:userDetails.userType, message:'Password has been updated'}))
+            }
+          })
+        } else {
+          res.send(resFormat.rError({message:"Your link is expire. Please try again."}))   
+        }
+      } else {
         res.send(resFormat.rError({message:"Your link is expire. Please try again."}))   
       }
     }

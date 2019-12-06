@@ -10,7 +10,7 @@ const s3Upload = require('./../helpers/s3Upload')
 const watsonLibrary = require('./../helpers/watsonLibrary')
 const User = require('./../models/User')
 const ImpantImage = require('./../models/ImplantImage')
-
+const { isEmpty } = require('lodash')
 const multerS3 = require('multer-s3')
 const AWS = require('aws-sdk')
 const s3 = new AWS.S3({
@@ -160,9 +160,45 @@ async function getImplantDetail (req, res){
   }
 }
 
+async function list (req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalUsers = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function(key, index) {
+      if(key !== "status" && key !== "SearchQuery") {
+        query[key] = new RegExp(query[key], 'i')
+      } else if (key === "SearchQuery") {
+        query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
+        delete query.SearchQuery;
+      }
+    })
+  }
+  
+  let implantList = await ImpantImage.find(query, fields, { sort: order });
+  if(implantList){
+    totalImplant = implantList.length
+    res.send(resFormat.rSuccess({ implantList, totalImplant}))
+  }
+  else{
+    res.status(401).send(resFormat.rError(err))
+  }
+}
+
+// function to reset the password
+async function implantView (req,res) {
+  ImpantImage.findOne({_id: req.body.id}, function(err, details) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess({ details }))
+    }
+  })
+}
+
 
 router.post("/getManufacture", getManufacture);
 router.post("/getImplantName", getImplantName);
 router.post("/getImplantDetail", getImplantDetail);
-
+router.post("/list",list) //, auth
+router.post("/implantView",implantView)
 module.exports = router
