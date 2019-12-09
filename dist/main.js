@@ -77,6 +77,17 @@ module.exports = "<app-auth-header></app-auth-header>\n<div class=\"auth-wrapper
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/index.js!./src/app/sid-loder-component/sid-loder-component.component.html":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/sid-loder-component/sid-loder-component.component.html ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"loader--wrapper\">\n    <mat-spinner></mat-spinner>\n</div>\n"
+
+/***/ }),
+
 /***/ "./src/$$_lazy_route_resource lazy recursive":
 /*!**********************************************************!*\
   !*** ./src/$$_lazy_route_resource lazy namespace object ***!
@@ -434,12 +445,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layouts_auth_layout_auth_layout_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./layouts/auth-layout/auth-layout.component */ "./src/app/layouts/auth-layout/auth-layout.component.ts");
 /* harmony import */ var _api_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./api.service */ "./src/app/api.service.ts");
 /* harmony import */ var ngx_image_cropper__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ngx-image-cropper */ "./node_modules/ngx-image-cropper/fesm5/ngx-image-cropper.js");
+/* harmony import */ var _ckeditor_ckeditor5_angular__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @ckeditor/ckeditor5-angular */ "./node_modules/@ckeditor/ckeditor5-angular/fesm5/ckeditor-ckeditor5-angular.js");
+/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
+/* harmony import */ var _angular_material_progress_spinner__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/material/progress-spinner */ "./node_modules/@angular/material/esm5/progress-spinner.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -469,13 +486,17 @@ var AppModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_5__["RouterModule"],
                 _app_routing__WEBPACK_IMPORTED_MODULE_6__["AppRoutingModule"],
                 _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_8__["MatSnackBarModule"],
-                ngx_image_cropper__WEBPACK_IMPORTED_MODULE_13__["ImageCropperModule"]
+                ngx_image_cropper__WEBPACK_IMPORTED_MODULE_13__["ImageCropperModule"],
+                _ckeditor_ckeditor5_angular__WEBPACK_IMPORTED_MODULE_14__["CKEditorModule"],
+                _angular_material_progress_spinner__WEBPACK_IMPORTED_MODULE_16__["MatProgressSpinnerModule"]
             ],
             declarations: [
                 _app_component__WEBPACK_IMPORTED_MODULE_9__["AppComponent"],
                 _layouts_admin_layout_admin_layout_component__WEBPACK_IMPORTED_MODULE_10__["AdminLayoutComponent"],
-                _layouts_auth_layout_auth_layout_component__WEBPACK_IMPORTED_MODULE_11__["AuthLayoutComponent"]
+                _layouts_auth_layout_auth_layout_component__WEBPACK_IMPORTED_MODULE_11__["AuthLayoutComponent"],
+                app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_15__["SidLoderComponentComponent"]
             ],
+            entryComponents: [app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_15__["SidLoderComponentComponent"]],
             providers: [
                 _api_service__WEBPACK_IMPORTED_MODULE_12__["APIService"]
             ],
@@ -1017,6 +1038,58 @@ var AuthLayoutComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], AuthLayoutComponent);
     return AuthLayoutComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/sid-loder-component/sid-loder-component.component.scss":
+/*!************************************************************************!*\
+  !*** ./src/app/sid-loder-component/sid-loder-component.component.scss ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3NpZC1sb2Rlci1jb21wb25lbnQvc2lkLWxvZGVyLWNvbXBvbmVudC5jb21wb25lbnQuc2NzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/sid-loder-component/sid-loder-component.component.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/sid-loder-component/sid-loder-component.component.ts ***!
+  \**********************************************************************/
+/*! exports provided: SidLoderComponentComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SidLoderComponentComponent", function() { return SidLoderComponentComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SidLoderComponentComponent = /** @class */ (function () {
+    function SidLoderComponentComponent() {
+    }
+    SidLoderComponentComponent.prototype.ngOnInit = function () {
+    };
+    SidLoderComponentComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-sid-loder-component',
+            template: __webpack_require__(/*! raw-loader!./sid-loder-component.component.html */ "./node_modules/raw-loader/index.js!./src/app/sid-loder-component/sid-loder-component.component.html"),
+            styles: [__webpack_require__(/*! ./sid-loder-component.component.scss */ "./src/app/sid-loder-component/sid-loder-component.component.scss")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], SidLoderComponentComponent);
+    return SidLoderComponentComponent;
 }());
 
 

@@ -145,6 +145,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -159,13 +160,16 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(router, fb, api, snack) {
+    function LoginComponent(router, fb, api, snack, dialog) {
         this.router = router;
         this.fb = fb;
         this.api = api;
         this.snack = snack;
+        this.dialog = dialog;
         this.showSpinner = false;
+        this.dialogRef = "";
     }
     LoginComponent.prototype.ngOnInit = function () {
         if (this.api.isLoggedIn()) {
@@ -179,21 +183,33 @@ var LoginComponent = /** @class */ (function () {
         sessionStorage.clear();
     };
     LoginComponent.prototype.login = function (userData) {
-        // this.showSpinner = true;
-        // api request for login.
         var _this = this;
+        this.loader();
         this.api.login(userData).subscribe(function (result) {
             if (result.status == "success") {
+                _this.loaderHide();
                 _this.router.navigate(['/', 'admin', 'dashboard']);
             }
             else {
+                _this.loaderHide();
                 _this.loginform.resetForm();
                 _this.snack.open("Please check your login credentials and try again. ", 'OK', { duration: 5000 });
             }
         }, function (err) {
+            _this.loaderHide();
             _this.loginform.resetForm();
             console.error(err);
         });
+    };
+    LoginComponent.prototype.loader = function () {
+        this.dialogRef = this.dialog.open(app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_5__["SidLoderComponentComponent"], {
+            panelClass: 'lock--panel',
+            backdropClass: 'lock--backdrop',
+            disableClose: true
+        });
+    };
+    LoginComponent.prototype.loaderHide = function () {
+        this.dialogRef.close();
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('loginform', { static: false }),
@@ -205,7 +221,7 @@ var LoginComponent = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./login.component.html */ "./node_modules/raw-loader/index.js!./src/app/auth/login/login.component.html"),
             styles: [__webpack_require__(/*! ./login.component.css */ "./src/app/auth/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_3__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_3__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]])
     ], LoginComponent);
     return LoginComponent;
 }());
@@ -389,13 +405,14 @@ var AuthLayoutModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatSelectModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatTooltipModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatCardModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatDialogModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatProgressSpinnerModule"]
             ],
             declarations: [
                 _auth_login_login_component__WEBPACK_IMPORTED_MODULE_5__["LoginComponent"],
                 _auth_forgot_forgot_component__WEBPACK_IMPORTED_MODULE_6__["ForgotComponent"],
-                _auth_reset_reset_component__WEBPACK_IMPORTED_MODULE_7__["ResetComponent"],
-            ]
+                _auth_reset_reset_component__WEBPACK_IMPORTED_MODULE_7__["ResetComponent"]
+            ],
         })
     ], AuthLayoutModule);
     return AuthLayoutModule;
