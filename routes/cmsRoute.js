@@ -8,7 +8,6 @@ const resFormat = require('./../helpers/responseFormat')
 
 //function to create or register new user
 async function modify(req, res) {
-    console.log('data',req.body) 
         for (var i=0; i<req.body.length; i++) {
             let cmsPages = await Cms.findOne({
                 "id": req.body[i].id
@@ -23,7 +22,6 @@ async function modify(req, res) {
                 saveData(i);    
             }
         }
-
         function saveData(i){
             var cms = new Cms();
             cms.id = req.body[i].id
@@ -40,7 +38,7 @@ async function modify(req, res) {
 async function getPages (req, res) {
     let cmsList = await Cms.find();
     if(cmsList){
-      res.send(resFormat.rSuccess({ cmsList}))
+        res.send(resFormat.rSuccess({ cmsList}))
     } else {
         res.status(401).send(resFormat.rError(err))
     }

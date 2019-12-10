@@ -27760,7 +27760,7 @@ module.exports = "<div class=\"main-content implant--container\">\n  <div class=
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <!-- <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"card\">\n          <div class=\"card-body\">\n            <mat-tab-group>\n              <mat-tab *ngFor=\"let page of pages\">\n                <ng-template mat-tab-label>\n                  {{page.pageName}}\n                </ng-template>\n                {{page.content}}\n              </mat-tab>\n            </mat-tab-group>\n          </div>\n        </div>\n        <ckeditor [editor]=\"Editor\" data=\"<p>Hello, csharp corner!</p><br/><br/> <b>This is demo for ckeditor 5 with angular 8</br>\"></ckeditor>   \n\n\n      </div>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"card\">\n          <div class=\"card-body\">\n            <mat-tab-group>\n              <mat-tab *ngFor=\"let page of pages; let i=index\">\n                <ng-template mat-tab-label>\n                  {{page.pageName}}\n                </ng-template>\n                <ckeditor [(ngModel)]=\"pages[i].content\"  [editor]=\"Editor\" ></ckeditor>\n                </mat-tab>\n            </mat-tab-group>\n            <button type=\"button\" class=\"btn btn-theme\" (click)=\"save()\">Save</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -27782,7 +27782,7 @@ module.exports = "<div class=\"confirm--header\">\n  <mat-icon (click)=\"closeMo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n              <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n          </div>\n        </div>\n        <!-- start blocks-->\n        <div class=\"row\">\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-4\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        3 New Verification Request\n                    </div>\n                </div>\n            </div>\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-4\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        5 New Support messages Received\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-4\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalUser }}\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-4 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalImplant }}\n                        </div>\n                    </div>\n                </div>       \n        </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n              <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n          </div>\n        </div>\n        <!-- start blocks-->\n        <div class=\"row\">\n            <div class=\"offset-md-3\"></div>\n            <div class=\"col-md-2\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        3 New Verification Request\n                    </div>\n                </div>\n            </div>\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-2\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        5 New Support messages Received\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n                <div class=\"offset-md-3\"></div>\n                <div class=\"col-md-2\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalUser }}\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-2 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalImplant }}\n                        </div>\n                    </div>\n                </div>       \n        </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -28108,9 +28108,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ckeditor/ckeditor5-build-classic */ "./node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js");
-/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ckeditor/ckeditor5-build-classic */ "./node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js");
+/* harmony import */ var _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_5__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28125,33 +28126,49 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var CMSComponent = /** @class */ (function () {
-    function CMSComponent(router, api, snack) {
+    function CMSComponent(router, fb, api, snack) {
         this.router = router;
+        this.fb = fb;
         this.api = api;
         this.snack = snack;
-        this.Editor = _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_4__;
+        this.Editor = _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_5__;
         this.pages = [];
+        this.editorData = [];
+        this.model = {
+            editorData: '<p>Hello, world!</p>'
+        };
     }
     CMSComponent.prototype.ngOnInit = function () {
-        this.pages = [{
-                id: "1",
-                pageName: "Terms of Service",
-                content: "Lorem ipsum dolor sit amet, sapien etiam, nunc amet dolor ac odio mauris justo. Luctus arcu, urna praesent at id quisque ac. Arcu es massa vestibulum malesuada, integer vivamus elit eu mauris eus, cum eros quis aliquam wisi. Nulla wisi laoreet suspendisse integer vivamus elit eu mauris hendrerit facilisi, mi mattis pariatur aliquam pharetra eget."
-            }, {
-                id: "2",
-                pageName: "About Us",
-                content: "Lorem ipsum dolor sit amet, sapien etiam, nunc amet dolor ac odio mauris justo. Luctus arcu, urna praesent at id quisque ac. Arcu es massa vestibulum malesuada, integer vivamus elit eu mauris eus, cum eros quis aliquam wisi. Nulla wisi laoreet suspendisse integer vivamus elit eu mauris hendrerit facilisi, mi mattis pariatur aliquam pharetra eget."
-            }, {
-                id: "1",
-                pageName: "Privacy Policy",
-                content: "Lorem ipsum dolor sit amet, sapien etiam, nunc amet dolor ac odio mauris justo. Luctus arcu, urna praesent at id quisque ac. Arcu es massa vestibulum malesuada, integer vivamus elit eu mauris eus, cum eros quis aliquam wisi. Nulla wisi laoreet suspendisse integer vivamus elit eu mauris hendrerit facilisi, mi mattis pariatur aliquam pharetra eget."
-            }, {
-                id: "1",
-                pageName: "Privacy Policy",
-                content: "Lorem ipsum dolor sit amet, sapien etiam, nunc amet dolor ac odio mauris justo. Luctus arcu, urna praesent at id quisque ac. Arcu es massa vestibulum malesuada, integer vivamus elit eu mauris eus, cum eros quis aliquam wisi. Nulla wisi laoreet suspendisse integer vivamus elit eu mauris hendrerit facilisi, mi mattis pariatur aliquam pharetra eget."
+        this.getCmsPages();
+    };
+    CMSComponent.prototype.save = function () {
+        var _this = this;
+        this.api.apiRequest('post', 'cms/modify', this.pages).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.snack.open("content successfully modifyed!", 'OK', { duration: 3000 });
             }
-        ];
+            else {
+                _this.snack.open(result.data, 'OK', { duration: 3000 });
+            }
+        }, function (err) {
+            console.error(err);
+        });
+    };
+    CMSComponent.prototype.getCmsPages = function () {
+        var _this = this;
+        this.api.apiRequest('post', 'cms/getPages', this.pages).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.pages = result.data.cmsList;
+                console.log(_this.pages);
+            }
+            else {
+                _this.snack.open(result.data, 'OK', { duration: 3000 });
+            }
+        }, function (err) {
+            console.error(err);
+        });
     };
     CMSComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -28159,7 +28176,7 @@ var CMSComponent = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./cms.component.html */ "./node_modules/raw-loader/index.js!./src/app/cms/cms.component.html"),
             styles: [__webpack_require__(/*! ./cms.component.css */ "./src/app/cms/cms.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], app_api_service__WEBPACK_IMPORTED_MODULE_1__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_1__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatSnackBar"]])
     ], CMSComponent);
     return CMSComponent;
 }());
@@ -28260,7 +28277,7 @@ var ConfirmModelComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".learning--status i {\n    float: right;\n    cursor: pointer;\n}\n.card-body-custome {\n    margin: 90px;\n    text-align: center;\n}\n.cursor-pointer {\n cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtJQUNaLGVBQWU7QUFDbkI7QUFDQTtJQUNJLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7QUFDQTtDQUNDLGVBQWU7QUFDaEIiLCJmaWxlIjoic3JjL2FwcC9kYXNoYm9hcmQvZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGVhcm5pbmctLXN0YXR1cyBpIHtcbiAgICBmbG9hdDogcmlnaHQ7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuLmNhcmQtYm9keS1jdXN0b21lIHtcbiAgICBtYXJnaW46IDkwcHg7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuLmN1cnNvci1wb2ludGVyIHtcbiBjdXJzb3I6IHBvaW50ZXI7XG59Il19 */"
+module.exports = ".learning--status i {\n    float: right;\n    cursor: pointer;\n}\n.card-body-custome {\n    margin: 20px;\n    text-align: center;\n}\n.cursor-pointer {\n cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZGFzaGJvYXJkL2Rhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksWUFBWTtJQUNaLGVBQWU7QUFDbkI7QUFDQTtJQUNJLFlBQVk7SUFDWixrQkFBa0I7QUFDdEI7QUFDQTtDQUNDLGVBQWU7QUFDaEIiLCJmaWxlIjoic3JjL2FwcC9kYXNoYm9hcmQvZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGVhcm5pbmctLXN0YXR1cyBpIHtcbiAgICBmbG9hdDogcmlnaHQ7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuLmNhcmQtYm9keS1jdXN0b21lIHtcbiAgICBtYXJnaW46IDIwcHg7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuLmN1cnNvci1wb2ludGVyIHtcbiBjdXJzb3I6IHBvaW50ZXI7XG59Il19 */"
 
 /***/ }),
 

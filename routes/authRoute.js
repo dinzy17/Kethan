@@ -17,27 +17,13 @@ const auth = require('./../helpers/authMiddleware');
 async function signUp(req, res) {
   var user = new User()
   if(req.body.email == '' || req.body.email == undefined ) {
-    res.status(400).send(resFormat.rError({ message: "Please fill all required details." }))
+    res.send(resFormat.rError({ message: "Please fill all required details." }))
   } else {
-    User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1}, async function(err, result) {
+    // check email and this is an verify email.
+    User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1 }, async function(err, result) {
       if (err) {
         res.status(403).send(resFormat.rError(err))
-      } else if (result && result.length == 0) {
-        if (req.body.socialMediaToken && req.body.socialMediaToken != "") {
-          let userDetail = await User.find({
-            "socialMediaToken": req.body.socialMediaToken
-          })
-          if(userDetail && userDetail.length == 0) {
-            user.socialMediaToken = req.body.socialMediaToken
-            user.socialPlatform = req.body.socialPlatform
-            saveUser();  
-          } else {
-            res.status(406).send(resFormat.rError({ message:"User already exists." }))
-          }
-        } else {
-          saveUser();
-        }
-        function saveUser() {
+      } else if ( result && result.length == 0 ) {
           let otp = generateOTP()
           let referralCode = req.body.name.substring(0, 3)+'-'+ otp;
           user.emailVerifiedOtp = otp;
@@ -48,12 +34,13 @@ async function signUp(req, res) {
           user.phoneNumber = req.body.phoneNumber;
           user.profession = req.body.profession;
           user.referralCode = referralCode;
+          user.useReferralCode = req.body.referralCode;
           user.userType = "appUser";
           user.active = false;
           user.createdOn = new Date();
           user.save(async function(err, newUser) {
             if (err) {
-              res.status(403).send(resFormat.rError(err))
+              res.send(resFormat.rError(err))
             } else {
               let template = await emailTemplatesRoute.getEmailTemplateByCode("resendVerifySignup")
                 if (template) {
@@ -67,13 +54,11 @@ async function signUp(req, res) {
                   sendEmail.sendEmail(mailOptions)
                 }
               responceData = {
-                "userId": newUser._id,
                 "email":newUser.email
               }
               res.send(resFormat.rSuccess(responceData))
             }
           })
-        }
       } else if (!result[0].emailVerified) {
         let otp = generateOTP()
         var params = {
@@ -97,7 +82,7 @@ async function signUp(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-          res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: {"email": req.body.email}}))
+          res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
         } else {
           res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
         }
