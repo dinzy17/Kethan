@@ -27782,7 +27782,7 @@ module.exports = "<div class=\"confirm--header\">\n  <mat-icon (click)=\"closeMo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title learning--status\">\n                        Machine Learning Status\n                        <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n                      </h4>\n                  </div>\n                  <div class=\"card-body\">\n                      {{collectionStatus}}\n                  </div>\n              </div>\n          </div>\n      </div> <!-- End of Machine Learning Status -->\n\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n              <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n          </div>\n        </div>\n        <!-- start blocks-->\n        <div class=\"row\">\n            <div class=\"offset-md-2\"></div>\n            <div class=\"col-md-3\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        3 New Verification Request\n                    </div>\n                </div>\n            </div>\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-3\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        5 New Support messages Received\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n                <div class=\"offset-md-2\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalUser }}\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-3 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalImplant }}\n                        </div>\n                    </div>\n                </div>       \n        </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <!-- start blocks-->\n        <div class=\"row\">\n            <div class=\"offset-md-2\"></div>\n            <div class=\"col-md-3\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        3 New Verification Request\n                    </div>\n                </div>\n            </div>\n            <div class=\"offset-md-1\"></div>\n            <div class=\"col-md-3\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        5 New Support messages Received\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\">\n                <div class=\"offset-md-2\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalUser }}\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-3 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            {{ totalImplant }}\n                        </div>\n                    </div>\n                </div>       \n        </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -27804,7 +27804,7 @@ module.exports = "<div class=\"main-content implant--container\">\n    <div clas
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"col-md-12\">\n          <div class=\"card\">\n              <div class=\"card-header card-header-danger\">\n                  <h4 class=\"card-title\">Implants</h4>\n              </div>\n              <div class=\"card-body\">\n                  <div class=\"row\" >\n                      <form class=\"full-width\">\n                        <mat-form-field class=\"full--width\">\n                          <input matInput placeholder=\"Search by manufacturer and name\" name=\"searchByString\" [(ngModel)]=\"searchByString\" (keyup)=\"searchBy()\">\n                        </mat-form-field>\n                      </form>\n                    </div>\n                <div class=\"row\" >\n                  <table *ngIf=\"recordsExists\" mat-table [dataSource]=\"implantList\" matSort class=\"mat-elevation-z8 full-width\">\n                    <ng-container matColumnDef=\"manufacturer\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacturer </th>\n                      <td mat-cell *matCellDef=\"let element\" class=\"capitalize\"> {{element.implantManufacture}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"createdOn\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Created Date</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.createdOn | date: 'MM/dd/yyyy'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"name\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>\n                        <td mat-cell *matCellDef=\"let element\"> {{element.objectName}} </td>\n                      </ng-container>\n\n                    <ng-container matColumnDef=\"_id\">\n                      <th mat-header-cell *matHeaderCellDef> Action </th>\n                      <td mat-cell *matCellDef=\"let element\">\n                        <a class=\"cursor-pointer btn implantView\" (click)=\"view(element)\">View</a>\n                      </td>\n                    </ng-container>\n              \n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n                  </table>\n                  <mat-paginator class=\"full-width\" *ngIf=\"recordsExists\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n                </div>\n                <div class=\"row\" *ngIf=\"recordsExists < 1\">\n                    No record found!\n                </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"col-md-12\">\n          <div class=\"card\">\n              <div class=\"card-header card-header-danger\">\n                  <h4 class=\"card-title\">Implants</h4>\n              </div>\n              <div class=\"card-body\">\n                  <div class=\"row\" >\n                      <form class=\"full-width\">\n                        <mat-form-field class=\"full--width mat-headline\">\n                          <input matInput class=\"mat-headline-color\" placeholder=\"Search by manufacturer and name\" name=\"searchByString\" [(ngModel)]=\"searchByString\" (keyup)=\"searchBy()\">\n                        </mat-form-field>\n                      </form>\n                    </div>\n                <div class=\"row\" >\n                  <table *ngIf=\"recordsExists\" mat-table [dataSource]=\"implantList\" matSort class=\"full-width\">\n                    <ng-container matColumnDef=\"manufacturer\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> <strong>Manufacturer</strong> </th>\n                      <td mat-cell *matCellDef=\"let element\" class=\"capitalize\"> {{element.implantManufacture}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"name\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Brand Name</strong></th>\n                        <td mat-cell *matCellDef=\"let element\"> {{element.objectName}} </td>\n                      </ng-container>\n              \n                    <ng-container matColumnDef=\"createdOn\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Created Date</strong></th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.createdOn | date: 'MM/dd/yyyy'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"_id\">\n                      <th mat-header-cell *matHeaderCellDef><strong>Action</strong></th>\n                      <td mat-cell *matCellDef=\"let element\">\n                        <a class=\"cursor-pointer btn implantView\" (click)=\"view(element)\">View</a>\n                      </td>\n                    </ng-container>\n              \n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n                  </table>\n                  <mat-paginator class=\"full-width\" *ngIf=\"recordsExists\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n                </div>\n                <div class=\"row\" *ngIf=\"recordsExists < 1\">\n                    No record found!\n                </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -27815,7 +27815,18 @@ module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\"  #MatAutocompleteTrigger >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    \n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\"Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\"  rows=\"5\" ></textarea>\n                                                                    <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                                </div>\n                            </div>\n                            <div class=\"col-md-6\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\" (focus)=\"test()\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\">\n                                          Upload Implant image\n                                        </label>\n                                         <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      </div>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageError\" >\n                                          {{ \"Select at least one image to uplaod.\" }}\n                                      </mat-error>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageValidError\" >\n                                        {{ \"Only png and jpg file allowed.\" }}\n                                    </mat-error>\n                                      <div class=\"crop--preview\">\n                                        <label *ngIf=\"croppedImage\">Preview:</label>\n                                        <img class=\"\" [src]=\"croppedImage\" />\n                                      </div>\n                                    </div>\n                                    <div class=\"offset-lg-1 col-md-12\">\n                                      <div class=\"image--cropper\">\n                                        <image-cropper\n                                            [imageChangedEvent]=\"imageChangedEvent\"\n                                            [maintainAspectRatio]=\"false\"\n                                            [aspectRatio]=\"1 / 1\"\n                                            format=\"jpg\"\n                                            (imageCropped)=\"imageCropped($event)\"\n                                        ></image-cropper>\n                                      </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <span>Fields marked with the asterisk (*) are mandatory</span>\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\"  #MatAutocompleteTrigger >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    \n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\"* Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\" ></textarea>\n                                                                    <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\">\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                                </div>\n                            </div>\n                            <div class=\"col-md-6\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\" (focus)=\"test()\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\">\n                                            Drop image or click to upload\n                                        </label>\n                                         <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      </div>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageError\" >\n                                          {{ \"Select at least one image to uplaod.\" }}\n                                      </mat-error>\n                                      <mat-error class=\"error--handing\" *ngIf= \"imageValidError\" >\n                                        {{ \"Only png and jpg file allowed.\" }}\n                                    </mat-error>\n                                      <div class=\"crop--preview\">\n                                        <label *ngIf=\"croppedImage\">Outline the implant to highlight it on the image below:</label>\n                                        <img class=\"\" [src]=\"croppedImage\" />\n                                      </div>\n                                    </div>\n                                    <div class=\"offset-lg-1 col-md-12\">\n                                      <div class=\"image--cropper\">\n                                        <image-cropper\n                                            [imageChangedEvent]=\"imageChangedEvent\"\n                                            [maintainAspectRatio]=\"false\"\n                                            [aspectRatio]=\"1 / 1\"\n                                            format=\"jpg\"\n                                            (imageCropped)=\"imageCropped($event)\"\n                                        ></image-cropper>\n                                      </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/index.js!./src/app/implants/machine-learning/machine-learning.component.html":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/implants/machine-learning/machine-learning.component.html ***!
+  \*****************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"card\">\n          <div class=\"card-header card-header-danger\">\n              <h4 class=\"card-title learning--status\">\n                Machine Learning Status\n                <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n              </h4>\n          </div>\n          <div class=\"card-body\">\n              {{collectionStatus}}\n          </div>\n        </div>\n      </div>\n    </div> <!-- End of Machine Learning Status -->\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n          <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n      </div>\n    </div>\n  </div>\n</div>"
 
 /***/ }),
 
@@ -28295,8 +28306,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28310,46 +28319,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var DashboardComponent = /** @class */ (function () {
     function DashboardComponent(router, api, snack) {
-        var _this = this;
         this.router = router;
         this.api = api;
         this.snack = snack;
-        this.collectionStatus = "Waiting....";
         this.totalUser = "No registerd users";
         this.totalImplant = "No implant added";
-        this.getCollectionStatus = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
-            _this.api.apiRequest('post', 'implant/getCollectionStatus', {}).subscribe(function (result) {
-                if (result.status == "success") {
-                    _this.collectionStatus = result.data.description;
-                }
-                else {
-                    _this.snack.open("Something went wrong while fetching machine learning status!", 'OK', { duration: 3000 });
-                }
-            }, function (err) {
-                console.error(err);
-            });
-        }, 2000);
-        this.startCollectionTraining = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
-            _this.api.apiRequest('post', 'implant/startCollectionTraining', {}).subscribe(function (result) {
-                if (result.status == "success") {
-                    _this.collectionStatus = result.data.description;
-                }
-                else {
-                    _this.snack.open("Something went wrong while startimg machine learning!", 'OK', { duration: 3000 });
-                }
-                // this.getCollectionStatus()
-            }, function (err) {
-                console.error(err);
-            });
-        }, 2000);
     }
     DashboardComponent.prototype.ngOnInit = function () {
         this.getTotalUser();
         this.getTotalImplant();
-        this.getCollectionStatus();
     };
     DashboardComponent.prototype.getTotalUser = function () {
         var _this = this;
@@ -28425,7 +28405,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImplantsDetailsComponent", function() { return ImplantsDetailsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28438,16 +28420,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var ImplantsDetailsComponent = /** @class */ (function () {
-    function ImplantsDetailsComponent(router, activatedRoute, api) {
+    function ImplantsDetailsComponent(router, activatedRoute, api, dialog) {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.api = api;
+        this.dialog = dialog;
         this.id = "";
         this.implantData = {};
+        this.dialogRef = "";
     }
     ImplantsDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.loader();
         this.activatedRoute.params.subscribe(function (params) {
             _this.id = params.id;
             _this.getDetail();
@@ -28462,12 +28449,25 @@ var ImplantsDetailsComponent = /** @class */ (function () {
             else {
                 //this.snack.open(result.data.message, 'OK', { duration: 5000 });
             }
+            _this.loaderHide();
         }, function (err) {
+            _this.loaderHide();
             console.error(err);
         });
     };
     ImplantsDetailsComponent.prototype.cancel = function () {
         this.router.navigate(['/', 'admin', 'implant-list']);
+    };
+    // for loder
+    ImplantsDetailsComponent.prototype.loader = function () {
+        this.dialogRef = this.dialog.open(app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_4__["SidLoderComponentComponent"], {
+            panelClass: 'lock--panel',
+            backdropClass: 'lock--backdrop',
+            disableClose: true
+        });
+    };
+    ImplantsDetailsComponent.prototype.loaderHide = function () {
+        this.dialogRef.close();
     };
     ImplantsDetailsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -28475,7 +28475,7 @@ var ImplantsDetailsComponent = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./implants-details.component.html */ "./node_modules/raw-loader/index.js!./src/app/implants/implants-details/implants-details.component.html"),
             styles: [__webpack_require__(/*! ./implants-details.component.scss */ "./src/app/implants/implants-details/implants-details.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], app_api_service__WEBPACK_IMPORTED_MODULE_2__["APIService"]])
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"], _angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"], app_api_service__WEBPACK_IMPORTED_MODULE_3__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
     ], ImplantsDetailsComponent);
     return ImplantsDetailsComponent;
 }());
@@ -28491,7 +28491,7 @@ var ImplantsDetailsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".full-width {\n  width: 100%;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.implantView {\n  border: 1px solid #235da8;\n  color: #235da8 !important;\n  background-color: #ffff;\n  padding: 9px 7px 7px 7px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy1saXN0L2ltcGxhbnRzLWxpc3QuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2ltcGxhbnRzL2ltcGxhbnRzLWxpc3QvaW1wbGFudHMtbGlzdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSjs7QURDQTtFQUNJLGVBQUE7QUNFSjs7QURBQTtFQUNJLHlCQUFBO0VBQ0EseUJBQUE7RUFDQSx1QkFBQTtFQUNBLHdCQUFBO0FDR0oiLCJmaWxlIjoic3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy1saXN0L2ltcGxhbnRzLWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZnVsbC13aWR0aHtcbiAgICB3aWR0aDogMTAwJTtcbn1cbi5jdXJzb3ItcG9pbnRlcntcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG59XG4uaW1wbGFudFZpZXcge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkICMyMzVkYTg7XG4gICAgY29sb3I6ICMyMzVkYTggIWltcG9ydGFudDtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZjtcbiAgICBwYWRkaW5nOiA5cHggN3B4IDdweCA3cHg7XG59IiwiLmZ1bGwtd2lkdGgge1xuICB3aWR0aDogMTAwJTtcbn1cblxuLmN1cnNvci1wb2ludGVyIHtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uaW1wbGFudFZpZXcge1xuICBib3JkZXI6IDFweCBzb2xpZCAjMjM1ZGE4O1xuICBjb2xvcjogIzIzNWRhOCAhaW1wb3J0YW50O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZjtcbiAgcGFkZGluZzogOXB4IDdweCA3cHggN3B4O1xufSJdfQ== */"
+module.exports = ".full-width {\n  width: 100%;\n}\n\n.cursor-pointer {\n  cursor: pointer;\n}\n\n.implantView {\n  border: 1px solid #235da8;\n  color: #235da8 !important;\n  background-color: #ffff;\n  padding: 9px 7px 7px 7px;\n}\n\n.mat-header-cell {\n  font-size: 20px !important;\n  color: rgba(0, 0, 0, 0.7);\n}\n\n.mat-headline {\n  font-size: 20px !important;\n}\n\n.mat-headline-color {\n  color: rgba(0, 0, 0, 0.7) !important;\n}\n\ntable {\n  table-layout: fixed;\n}\n\nth, td {\n  overflow: hidden;\n  width: 200px;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy1saXN0L2ltcGxhbnRzLWxpc3QuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2ltcGxhbnRzL2ltcGxhbnRzLWxpc3QvaW1wbGFudHMtbGlzdC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFdBQUE7QUNDSjs7QURDQTtFQUNJLGVBQUE7QUNFSjs7QURBQTtFQUNJLHlCQUFBO0VBQ0EseUJBQUE7RUFDQSx1QkFBQTtFQUNBLHdCQUFBO0FDR0o7O0FEREE7RUFDSSwwQkFBQTtFQUNBLHlCQUFBO0FDSUo7O0FERkE7RUFDSSwwQkFBQTtBQ0tKOztBREhFO0VBQ0Usb0NBQUE7QUNNSjs7QURIRTtFQUNFLG1CQUFBO0FDTUo7O0FESEU7RUFDRSxnQkFBQTtFQUNBLFlBQUE7RUFDQSx1QkFBQTtFQUNBLG1CQUFBO0FDTUoiLCJmaWxlIjoic3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy1saXN0L2ltcGxhbnRzLWxpc3QuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuZnVsbC13aWR0aHtcbiAgICB3aWR0aDogMTAwJTtcbn1cbi5jdXJzb3ItcG9pbnRlcntcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG59XG4uaW1wbGFudFZpZXcge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkICMyMzVkYTg7XG4gICAgY29sb3I6ICMyMzVkYTggIWltcG9ydGFudDtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZjtcbiAgICBwYWRkaW5nOiA5cHggN3B4IDdweCA3cHg7XG59XG4ubWF0LWhlYWRlci1jZWxse1xuICAgIGZvbnQtc2l6ZTogMjBweCAhaW1wb3J0YW50O1xuICAgIGNvbG9yOiByZ2JhKDAsIDAsIDAsIDAuNzApO1xufVxuLm1hdC1oZWFkbGluZSB7XG4gICAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG4gIH1cbiAgLm1hdC1oZWFkbGluZS1jb2xvcntcbiAgICBjb2xvcjogcmdiYSgwLCAwLCAwLCAwLjcwKSAhaW1wb3J0YW50O1xuICB9XG5cbiAgdGFibGUge1xuICAgIHRhYmxlLWxheW91dDogZml4ZWQ7XG4gIH1cbiAgXG4gIHRoLCB0ZCB7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgICB3aWR0aDogMjAwcHg7XG4gICAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7XG4gICAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbiAgfSIsIi5mdWxsLXdpZHRoIHtcbiAgd2lkdGg6IDEwMCU7XG59XG5cbi5jdXJzb3ItcG9pbnRlciB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLmltcGxhbnRWaWV3IHtcbiAgYm9yZGVyOiAxcHggc29saWQgIzIzNWRhODtcbiAgY29sb3I6ICMyMzVkYTggIWltcG9ydGFudDtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmY7XG4gIHBhZGRpbmc6IDlweCA3cHggN3B4IDdweDtcbn1cblxuLm1hdC1oZWFkZXItY2VsbCB7XG4gIGZvbnQtc2l6ZTogMjBweCAhaW1wb3J0YW50O1xuICBjb2xvcjogcmdiYSgwLCAwLCAwLCAwLjcpO1xufVxuXG4ubWF0LWhlYWRsaW5lIHtcbiAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG59XG5cbi5tYXQtaGVhZGxpbmUtY29sb3Ige1xuICBjb2xvcjogcmdiYSgwLCAwLCAwLCAwLjcpICFpbXBvcnRhbnQ7XG59XG5cbnRhYmxlIHtcbiAgdGFibGUtbGF5b3V0OiBmaXhlZDtcbn1cblxudGgsIHRkIHtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgd2lkdGg6IDIwMHB4O1xuICB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpcztcbiAgd2hpdGUtc3BhY2U6IG5vd3JhcDtcbn0iXX0= */"
 
 /***/ }),
 
@@ -28620,7 +28620,7 @@ var ImplantsListComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\n.implant--container .implant--image--container {\n  height: 125px;\n  margin-bottom: 10px;\n  position: relative;\n}\n.implant--container .implant--image--container .implant--image--lable {\n  display: -webkit-box;\n  display: flex;\n  margin: 10px;\n  color: #545454;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  border: 1px dashed #CCC;\n  text-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  cursor: pointer;\n  color: #176aba;\n  font-size: 20px;\n}\n.implant--container .crop--preview label {\n  display: block;\n  margin-top: 20px;\n  color: #545454;\n}\n.implant--container .crop--preview img {\n  max-width: 200px;\n}\n.implant--container .cropper {\n  width: 300px;\n  height: 300px;\n  top: 50px;\n  left: 50px;\n}\n.autocomplete--option {\n  height: 70px;\n  border-bottom: 1px solid #CCC;\n}\n.example-option-img {\n  height: 50px;\n  vertical-align: middle;\n  margin-right: 8px;\n}\n.cursor--pointer {\n  cursor: pointer;\n}\n.removal--process {\n  border: 1px solid #CCC;\n  margin-bottom: 10px;\n}\n.capitalize {\n  text-transform: capitalize;\n}\n.mat-headline {\n  font-size: 20px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUU7RUFDRSxnQkFBQTtBQ0RKO0FER0U7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtBQ0RKO0FER0k7RUFDRSxvQkFBQTtFQUFBLGFBQUE7RUFDRSxZQUFBO0VBQ0EsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsTUFBQTtFQUNBLFFBQUE7RUFDQSxTQUFBO0VBQ0EsT0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0EsU0FBQTtFQUNBLHVCQUFBO0VBQ0Esa0JBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLGVBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtBQ0RSO0FETUk7RUFDRSxjQUFBO0VBQ0EsZ0JBQUE7RUFDQSxjQUFBO0FDSk47QURNSTtFQUNFLGdCQUFBO0FDSk47QURRRTtFQUNFLFlBQUE7RUFDQSxhQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7QUNOSjtBRFNBO0VBQ0UsWUFBQTtFQUNBLDZCQUFBO0FDTkY7QURRQTtFQUNFLFlBQUE7RUFDQSxzQkFBQTtFQUNBLGlCQUFBO0FDTEY7QURPQTtFQUNFLGVBQUE7QUNKRjtBRE1BO0VBQ0Usc0JBQUE7RUFDQSxtQkFBQTtBQ0hGO0FES0E7RUFDRSwwQkFBQTtBQ0ZGO0FES0E7RUFDRSwwQkFBQTtBQ0ZGIiwiZmlsZSI6InNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW1wbGFudC0tY29udGFpbmVye1xuXG4gIC5pbWFnZS0tY3JvcHBlcntcbiAgICBtYXgtd2lkdGg6IDUwMHB4O1xuICB9XG4gIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIHtcbiAgICBoZWlnaHQ6IDEyNXB4O1xuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuXG4gICAgLmltcGxhbnQtLWltYWdlLS1sYWJsZSB7XG4gICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBtYXJnaW46IDEwcHg7XG4gICAgICAgIGNvbG9yOiAjNTQ1NDU0O1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogMDtcbiAgICAgICAgcmlnaHQ6IDA7XG4gICAgICAgIGJvdHRvbTogMDtcbiAgICAgICAgbGVmdDogMDtcbiAgICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICAgIGhlaWdodDogMTAwJTtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBkYXNoZWQgI0NDQztcbiAgICAgICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBjb2xvcjogIzE3NmFiYTtcbiAgICAgICAgZm9udC1zaXplOiAyMHB4O1xuICAgIH1cbiAgfVxuICAuY3JvcC0tcHJldmlldyB7XG4gICAgLy8gZGlzcGxheTogZmxleDtcbiAgICBsYWJlbCB7XG4gICAgICBkaXNwbGF5OiBibG9jaztcbiAgICAgIG1hcmdpbi10b3A6IDIwcHg7XG4gICAgICBjb2xvcjogIzU0NTQ1NDtcbiAgICB9XG4gICAgaW1nIHtcbiAgICAgIG1heC13aWR0aDogMjAwcHg7XG4gICAgfVxuICB9XG5cbiAgLmNyb3BwZXIge1xuICAgIHdpZHRoOiAzMDBweDtcbiAgICBoZWlnaHQ6IDMwMHB4O1xuICAgIHRvcDogNTBweDtcbiAgICBsZWZ0OiA1MHB4O1xuICB9XG59XG4uYXV0b2NvbXBsZXRlLS1vcHRpb24ge1xuICBoZWlnaHQ6IDcwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjQ0NDO1xufVxuLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbiAgbWFyZ2luLXJpZ2h0OiA4cHg7XG59XG4uY3Vyc29yLS1wb2ludGVye1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG4ucmVtb3ZhbC0tcHJvY2Vzc3tcbiAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbn1cbi5jYXBpdGFsaXple1xuICB0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbn1cblxuLm1hdC1oZWFkbGluZSB7XG4gIGZvbnQtc2l6ZTogMjBweCAhaW1wb3J0YW50O1xufVxuIiwiLmltcGxhbnQtLWNvbnRhaW5lciAuaW1hZ2UtLWNyb3BwZXIge1xuICBtYXgtd2lkdGg6IDUwMHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lciB7XG4gIGhlaWdodDogMTI1cHg7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1sYWJsZSB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIG1hcmdpbjogMTBweDtcbiAgY29sb3I6ICM1NDU0NTQ7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAwO1xuICByaWdodDogMDtcbiAgYm90dG9tOiAwO1xuICBsZWZ0OiAwO1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xuICBtYXJnaW46IDA7XG4gIGJvcmRlcjogMXB4IGRhc2hlZCAjQ0NDO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGNvbG9yOiAjMTc2YWJhO1xuICBmb250LXNpemU6IDIwcHg7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5jcm9wLS1wcmV2aWV3IGxhYmVsIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIG1hcmdpbi10b3A6IDIwcHg7XG4gIGNvbG9yOiAjNTQ1NDU0O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcC0tcHJldmlldyBpbWcge1xuICBtYXgtd2lkdGg6IDIwMHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcHBlciB7XG4gIHdpZHRoOiAzMDBweDtcbiAgaGVpZ2h0OiAzMDBweDtcbiAgdG9wOiA1MHB4O1xuICBsZWZ0OiA1MHB4O1xufVxuXG4uYXV0b2NvbXBsZXRlLS1vcHRpb24ge1xuICBoZWlnaHQ6IDcwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjQ0NDO1xufVxuXG4uZXhhbXBsZS1vcHRpb24taW1nIHtcbiAgaGVpZ2h0OiA1MHB4O1xuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICBtYXJnaW4tcmlnaHQ6IDhweDtcbn1cblxuLmN1cnNvci0tcG9pbnRlciB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLnJlbW92YWwtLXByb2Nlc3Mge1xuICBib3JkZXI6IDFweCBzb2xpZCAjQ0NDO1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xufVxuXG4uY2FwaXRhbGl6ZSB7XG4gIHRleHQtdHJhbnNmb3JtOiBjYXBpdGFsaXplO1xufVxuXG4ubWF0LWhlYWRsaW5lIHtcbiAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG59Il19 */"
+module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\n.implant--container .implant--image--container {\n  height: 125px;\n  margin-bottom: 10px;\n  position: relative;\n}\n.implant--container .implant--image--container .implant--image--lable {\n  display: -webkit-box;\n  display: flex;\n  margin: 10px;\n  color: #545454;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  border: 1px dashed #CCC;\n  text-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  cursor: pointer;\n  color: #176aba;\n  font-size: 20px;\n}\n.implant--container .crop--preview label {\n  display: block;\n  margin-top: 20px;\n  color: #545454;\n}\n.implant--container .crop--preview img {\n  max-width: 200px;\n}\n.implant--container .cropper {\n  width: 300px;\n  height: 300px;\n  top: 50px;\n  left: 50px;\n}\n.implant--container .cropper .move {\n  width: 100%;\n  cursor: move;\n  border: 2px solid red !important;\n}\n.autocomplete--option {\n  height: 70px;\n  border-bottom: 1px solid #CCC;\n}\n.example-option-img {\n  height: 50px;\n  vertical-align: middle;\n  margin-right: 8px;\n}\n.cursor--pointer {\n  cursor: pointer;\n}\n.removal--process {\n  border: 1px solid #CCC;\n  margin-bottom: 10px;\n}\n.capitalize {\n  text-transform: capitalize;\n}\n.mat-headline {\n  font-size: 20px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvaW1wbGFudHMvaW1wbGFudHMuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRUU7RUFDRSxnQkFBQTtBQ0RKO0FER0U7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxrQkFBQTtBQ0RKO0FER0k7RUFDRSxvQkFBQTtFQUFBLGFBQUE7RUFDRSxZQUFBO0VBQ0EsY0FBQTtFQUNBLGtCQUFBO0VBQ0EsTUFBQTtFQUNBLFFBQUE7RUFDQSxTQUFBO0VBQ0EsT0FBQTtFQUNBLFdBQUE7RUFDQSxZQUFBO0VBQ0EsU0FBQTtFQUNBLHVCQUFBO0VBQ0Esa0JBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtFQUNBLGVBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtBQ0RSO0FETUk7RUFDRSxjQUFBO0VBQ0EsZ0JBQUE7RUFDQSxjQUFBO0FDSk47QURNSTtFQUNFLGdCQUFBO0FDSk47QURRRTtFQUNFLFlBQUE7RUFDQSxhQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7QUNOSjtBRFFFO0VBQ0UsV0FBQTtFQUNBLFlBQUE7RUFDQSxnQ0FBQTtBQ05KO0FEU0E7RUFDRSxZQUFBO0VBQ0EsNkJBQUE7QUNORjtBRFFBO0VBQ0UsWUFBQTtFQUNBLHNCQUFBO0VBQ0EsaUJBQUE7QUNMRjtBRE9BO0VBQ0UsZUFBQTtBQ0pGO0FETUE7RUFDRSxzQkFBQTtFQUNBLG1CQUFBO0FDSEY7QURLQTtFQUNFLDBCQUFBO0FDRkY7QURLQTtFQUNFLDBCQUFBO0FDRkYiLCJmaWxlIjoic3JjL2FwcC9pbXBsYW50cy9pbXBsYW50cy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5pbXBsYW50LS1jb250YWluZXJ7XG5cbiAgLmltYWdlLS1jcm9wcGVye1xuICAgIG1heC13aWR0aDogNTAwcHg7XG4gIH1cbiAgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIge1xuICAgIGhlaWdodDogMTI1cHg7XG4gICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG5cbiAgICAuaW1wbGFudC0taW1hZ2UtLWxhYmxlIHtcbiAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIG1hcmdpbjogMTBweDtcbiAgICAgICAgY29sb3I6ICM1NDU0NTQ7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgdG9wOiAwO1xuICAgICAgICByaWdodDogMDtcbiAgICAgICAgYm90dG9tOiAwO1xuICAgICAgICBsZWZ0OiAwO1xuICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgaGVpZ2h0OiAxMDAlO1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogMXB4IGRhc2hlZCAjQ0NDO1xuICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGNvbG9yOiAjMTc2YWJhO1xuICAgICAgICBmb250LXNpemU6IDIwcHg7XG4gICAgfVxuICB9XG4gIC5jcm9wLS1wcmV2aWV3IHtcbiAgICAvLyBkaXNwbGF5OiBmbGV4O1xuICAgIGxhYmVsIHtcbiAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgbWFyZ2luLXRvcDogMjBweDtcbiAgICAgIGNvbG9yOiAjNTQ1NDU0O1xuICAgIH1cbiAgICBpbWcge1xuICAgICAgbWF4LXdpZHRoOiAyMDBweDtcbiAgICB9XG4gIH1cblxuICAuY3JvcHBlciB7XG4gICAgd2lkdGg6IDMwMHB4O1xuICAgIGhlaWdodDogMzAwcHg7XG4gICAgdG9wOiA1MHB4O1xuICAgIGxlZnQ6IDUwcHg7XG4gIH1cbiAgLmNyb3BwZXIgLm1vdmUge1xuICAgIHdpZHRoOiAxMDAlO1xuICAgIGN1cnNvcjogbW92ZTtcbiAgICBib3JkZXI6IDJweCBzb2xpZCByZWQgIWltcG9ydGFudDtcbiAgfVxufVxuLmF1dG9jb21wbGV0ZS0tb3B0aW9uIHtcbiAgaGVpZ2h0OiA3MHB4O1xuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgI0NDQztcbn1cbi5leGFtcGxlLW9wdGlvbi1pbWcge1xuICBoZWlnaHQ6IDUwcHg7XG4gIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG4gIG1hcmdpbi1yaWdodDogOHB4O1xufVxuLmN1cnNvci0tcG9pbnRlcntcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuLnJlbW92YWwtLXByb2Nlc3N7XG4gIGJvcmRlcjogMXB4IHNvbGlkICNDQ0M7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG59XG4uY2FwaXRhbGl6ZXtcbiAgdGV4dC10cmFuc2Zvcm06IGNhcGl0YWxpemU7XG59XG5cbi5tYXQtaGVhZGxpbmUge1xuICBmb250LXNpemU6IDIwcHggIWltcG9ydGFudDtcbn1cbiIsIi5pbXBsYW50LS1jb250YWluZXIgLmltYWdlLS1jcm9wcGVyIHtcbiAgbWF4LXdpZHRoOiA1MDBweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIge1xuICBoZWlnaHQ6IDEyNXB4O1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tbGFibGUge1xuICBkaXNwbGF5OiBmbGV4O1xuICBtYXJnaW46IDEwcHg7XG4gIGNvbG9yOiAjNTQ1NDU0O1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIHRvcDogMDtcbiAgcmlnaHQ6IDA7XG4gIGJvdHRvbTogMDtcbiAgbGVmdDogMDtcbiAgd2lkdGg6IDEwMCU7XG4gIGhlaWdodDogMTAwJTtcbiAgbWFyZ2luOiAwO1xuICBib3JkZXI6IDFweCBkYXNoZWQgI0NDQztcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xuICBhbGlnbi1pdGVtczogY2VudGVyO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgY3Vyc29yOiBwb2ludGVyO1xuICBjb2xvcjogIzE3NmFiYTtcbiAgZm9udC1zaXplOiAyMHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcC0tcHJldmlldyBsYWJlbCB7XG4gIGRpc3BsYXk6IGJsb2NrO1xuICBtYXJnaW4tdG9wOiAyMHB4O1xuICBjb2xvcjogIzU0NTQ1NDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3AtLXByZXZpZXcgaW1nIHtcbiAgbWF4LXdpZHRoOiAyMDBweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3BwZXIge1xuICB3aWR0aDogMzAwcHg7XG4gIGhlaWdodDogMzAwcHg7XG4gIHRvcDogNTBweDtcbiAgbGVmdDogNTBweDtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmNyb3BwZXIgLm1vdmUge1xuICB3aWR0aDogMTAwJTtcbiAgY3Vyc29yOiBtb3ZlO1xuICBib3JkZXI6IDJweCBzb2xpZCByZWQgIWltcG9ydGFudDtcbn1cblxuLmF1dG9jb21wbGV0ZS0tb3B0aW9uIHtcbiAgaGVpZ2h0OiA3MHB4O1xuICBib3JkZXItYm90dG9tOiAxcHggc29saWQgI0NDQztcbn1cblxuLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gIGhlaWdodDogNTBweDtcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcbiAgbWFyZ2luLXJpZ2h0OiA4cHg7XG59XG5cbi5jdXJzb3ItLXBvaW50ZXIge1xuICBjdXJzb3I6IHBvaW50ZXI7XG59XG5cbi5yZW1vdmFsLS1wcm9jZXNzIHtcbiAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgbWFyZ2luLWJvdHRvbTogMTBweDtcbn1cblxuLmNhcGl0YWxpemUge1xuICB0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbn1cblxuLm1hdC1oZWFkbGluZSB7XG4gIGZvbnQtc2l6ZTogMjBweCAhaW1wb3J0YW50O1xufSJdfQ== */"
 
 /***/ }),
 
@@ -28635,13 +28635,14 @@ module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImplantsComponent", function() { return ImplantsComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
-/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
+/* harmony import */ var _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/text-field */ "./node_modules/@angular/cdk/esm5/text-field.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28651,6 +28652,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -28685,10 +28687,10 @@ var ImplantsComponent = /** @class */ (function () {
         this.imageValidError = false;
         this.dialogRef = "";
         //function to filter manufacturer
-        this.filterManufacture = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["debounce"])(function () {
+        this.filterManufacture = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
             var manufactureSearch = _this.searchByString.trim().toLowerCase();
             if (manufactureSearch.length > 2) {
-                var allOptions = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["cloneDeep"])(_this.options);
+                var allOptions = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["cloneDeep"])(_this.options);
                 _this.filteredOptions = allOptions.filter(function (o) {
                     return o.implantManufacture.toLowerCase().indexOf(manufactureSearch) > -1;
                 });
@@ -28697,7 +28699,7 @@ var ImplantsComponent = /** @class */ (function () {
                 _this.filteredOptions = [];
             }
         }, 500);
-        this.filterName = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["debounce"])(function () {
+        this.filterName = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
             if (_this.searchByString) {
                 var nameSearch_1 = _this.searchName.trim().toLowerCase();
                 var manufactureSearch = _this.searchByString.trim();
@@ -28705,7 +28707,7 @@ var ImplantsComponent = /** @class */ (function () {
                     _this.api.apiRequest('post', 'implant/getImplantName', { implantManufacture: manufactureSearch }).subscribe(function (result) {
                         if (result.status == "success") {
                             _this.names = result.data.implantList;
-                            var allNames = Object(lodash__WEBPACK_IMPORTED_MODULE_3__["cloneDeep"])(_this.names);
+                            var allNames = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["cloneDeep"])(_this.names);
                             _this.filteredNames = allNames.filter(function (o) { return o.objectName.toLowerCase().indexOf(nameSearch_1) > -1; });
                         }
                     });
@@ -28722,8 +28724,8 @@ var ImplantsComponent = /** @class */ (function () {
     ImplantsComponent.prototype.ngOnInit = function () {
         /* Initiate the form structure */
         this.form = this.fb.group({
-            label: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].maxLength(150)]],
-            implantManufacture: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].maxLength(150)]],
+            label: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
+            implantManufacture: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
             removalSection: this.fb.array([
                 this.getRemovalProcess()
             ])
@@ -28736,9 +28738,9 @@ var ImplantsComponent = /** @class */ (function () {
      */
     ImplantsComponent.prototype.getRemovalProcess = function () {
         return this.fb.group({
-            removalProcess: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required],
-            surgeryDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required]],
-            surgeryLocation: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required]]
+            removalProcess: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            surgeryDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+            surgeryLocation: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]]
         });
     };
     /*
@@ -28809,9 +28811,7 @@ var ImplantsComponent = /** @class */ (function () {
                 _this.loaderHide();
                 if (result.status == "success") {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3000);
+                    _this.implantForm.resetForm();
                 }
                 else {
                     _this.snack.open(result.data, 'OK', { duration: 3000 });
@@ -28829,6 +28829,8 @@ var ImplantsComponent = /** @class */ (function () {
     };
     ImplantsComponent.prototype.resetValues = function () {
         this.uploadedFile = null;
+        this.croppedImage = "";
+        this.imageChangedEvent = null;
         this.imageWidth = 0;
         this.imageHeight = 0;
         this.labelWidth = 0;
@@ -28837,7 +28839,12 @@ var ImplantsComponent = /** @class */ (function () {
         this.labelOffsetY = 0;
         var img = document.getElementById('implantImage');
         img.value = "";
-        this.croppedImage = "";
+        var control = this.form.controls['removalSection'];
+        for (var i = 0; i <= control.length; i++) {
+            if (i > 0) {
+                this.delete(i);
+            }
+        }
     };
     ImplantsComponent.prototype.getManufacture = function () {
         var _this = this;
@@ -28850,7 +28857,7 @@ var ImplantsComponent = /** @class */ (function () {
     };
     // for loder
     ImplantsComponent.prototype.loader = function () {
-        this.dialogRef = this.dialog.open(app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_6__["SidLoderComponentComponent"], {
+        this.dialogRef = this.dialog.open(app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_7__["SidLoderComponentComponent"], {
             panelClass: 'lock--panel',
             backdropClass: 'lock--backdrop',
             disableClose: true
@@ -28859,18 +28866,115 @@ var ImplantsComponent = /** @class */ (function () {
     ImplantsComponent.prototype.loaderHide = function () {
         this.dialogRef.close();
     };
-    ImplantsComponent.prototype.test = function () {
-        window.alert('asdasdad');
-    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('autosize', { static: false }),
+        __metadata("design:type", _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_1__["CdkTextareaAutosize"])
+    ], ImplantsComponent.prototype, "autosize", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('implantForm', { static: false }),
+        __metadata("design:type", Object)
+    ], ImplantsComponent.prototype, "implantForm", void 0);
     ImplantsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-implants',
             template: __webpack_require__(/*! raw-loader!./implants.component.html */ "./node_modules/raw-loader/index.js!./src/app/implants/implants.component.html"),
             styles: [__webpack_require__(/*! ./implants.component.scss */ "./src/app/implants/implants.component.scss")]
         }),
-        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_5__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSnackBar"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], app_api_service__WEBPACK_IMPORTED_MODULE_6__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
     ], ImplantsComponent);
     return ImplantsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/implants/machine-learning/machine-learning.component.scss":
+/*!***************************************************************************!*\
+  !*** ./src/app/implants/machine-learning/machine-learning.component.scss ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".learning--status i {\n  float: right;\n  cursor: pointer;\n}\n\n.card-body-custome {\n  margin: 20px;\n  text-align: center;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9tYWNoaW5lLWxlYXJuaW5nL21hY2hpbmUtbGVhcm5pbmcuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2ltcGxhbnRzL21hY2hpbmUtbGVhcm5pbmcvbWFjaGluZS1sZWFybmluZy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7RUFDQSxlQUFBO0FDQ0o7O0FEQ0E7RUFDSSxZQUFBO0VBQ0Esa0JBQUE7QUNFSiIsImZpbGUiOiJzcmMvYXBwL2ltcGxhbnRzL21hY2hpbmUtbGVhcm5pbmcvbWFjaGluZS1sZWFybmluZy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5sZWFybmluZy0tc3RhdHVzIGkge1xuICAgIGZsb2F0OiByaWdodDtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG59XG4uY2FyZC1ib2R5LWN1c3RvbWUge1xuICAgIG1hcmdpbjogMjBweDtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59IiwiLmxlYXJuaW5nLS1zdGF0dXMgaSB7XG4gIGZsb2F0OiByaWdodDtcbiAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uY2FyZC1ib2R5LWN1c3RvbWUge1xuICBtYXJnaW46IDIwcHg7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn0iXX0= */"
+
+/***/ }),
+
+/***/ "./src/app/implants/machine-learning/machine-learning.component.ts":
+/*!*************************************************************************!*\
+  !*** ./src/app/implants/machine-learning/machine-learning.component.ts ***!
+  \*************************************************************************/
+/*! exports provided: MachineLearningComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MachineLearningComponent", function() { return MachineLearningComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MachineLearningComponent = /** @class */ (function () {
+    function MachineLearningComponent(router, api, snack) {
+        var _this = this;
+        this.router = router;
+        this.api = api;
+        this.snack = snack;
+        this.collectionStatus = "Waiting....";
+        this.getCollectionStatus = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
+            _this.api.apiRequest('post', 'implant/getCollectionStatus', {}).subscribe(function (result) {
+                if (result.status == "success") {
+                    _this.collectionStatus = result.data.description;
+                }
+                else {
+                    _this.snack.open("Something went wrong while fetching machine learning status!", 'OK', { duration: 3000 });
+                }
+            }, function (err) {
+                console.error(err);
+            });
+        }, 2000);
+        this.startCollectionTraining = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
+            _this.api.apiRequest('post', 'implant/startCollectionTraining', {}).subscribe(function (result) {
+                if (result.status == "success") {
+                    _this.collectionStatus = result.data.description;
+                }
+                else {
+                    _this.snack.open("Something went wrong while startimg machine learning!", 'OK', { duration: 3000 });
+                }
+                // this.getCollectionStatus()
+            }, function (err) {
+                console.error(err);
+            });
+        }, 2000);
+    }
+    MachineLearningComponent.prototype.ngOnInit = function () {
+        this.getCollectionStatus();
+    };
+    MachineLearningComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-machine-learning',
+            template: __webpack_require__(/*! raw-loader!./machine-learning.component.html */ "./node_modules/raw-loader/index.js!./src/app/implants/machine-learning/machine-learning.component.html"),
+            styles: [__webpack_require__(/*! ./machine-learning.component.scss */ "./src/app/implants/machine-learning/machine-learning.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], app_api_service__WEBPACK_IMPORTED_MODULE_1__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"]])
+    ], MachineLearningComponent);
+    return MachineLearningComponent;
 }());
 
 
@@ -28908,7 +29012,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_implants_implants_list_implants_list_component__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! app/implants/implants-list/implants-list.component */ "./src/app/implants/implants-list/implants-list.component.ts");
 /* harmony import */ var app_implants_implants_details_implants_details_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! app/implants/implants-details/implants-details.component */ "./src/app/implants/implants-details/implants-details.component.ts");
 /* harmony import */ var _ckeditor_ckeditor5_angular__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @ckeditor/ckeditor5-angular */ "./node_modules/@ckeditor/ckeditor5-angular/fesm5/ckeditor-ckeditor5-angular.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var app_implants_machine_learning_machine_learning_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! app/implants/machine-learning/machine-learning.component */ "./src/app/implants/machine-learning/machine-learning.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28938,6 +29043,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AdminLayoutModule = /** @class */ (function () {
     function AdminLayoutModule() {
     }
@@ -28948,24 +29054,24 @@ var AdminLayoutModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(_admin_layout_routing__WEBPACK_IMPORTED_MODULE_4__["AdminLayoutRoutes"]),
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatRippleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatTooltipModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatTableModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatPaginatorModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatSortModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatSlideToggleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatDatepickerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatNativeDateModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatAutocompleteModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatRippleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatTooltipModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatPaginatorModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatSortModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatSlideToggleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatDatepickerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatNativeDateModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatAutocompleteModule"],
                 ngx_image_cropper__WEBPACK_IMPORTED_MODULE_12__["ImageCropperModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatTabsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_21__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatTabsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_22__["MatProgressSpinnerModule"],
                 _ckeditor_ckeditor5_angular__WEBPACK_IMPORTED_MODULE_20__["CKEditorModule"]
             ],
             entryComponents: [app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_13__["ConfirmModelComponent"], app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_14__["UserDetailComponent"], app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_17__["SupportEditComponent"]],
@@ -28983,7 +29089,8 @@ var AdminLayoutModule = /** @class */ (function () {
                 app_cms_cms_component__WEBPACK_IMPORTED_MODULE_15__["CMSComponent"],
                 app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_17__["SupportEditComponent"],
                 app_implants_implants_list_implants_list_component__WEBPACK_IMPORTED_MODULE_18__["ImplantsListComponent"],
-                app_implants_implants_details_implants_details_component__WEBPACK_IMPORTED_MODULE_19__["ImplantsDetailsComponent"]
+                app_implants_implants_details_implants_details_component__WEBPACK_IMPORTED_MODULE_19__["ImplantsDetailsComponent"],
+                app_implants_machine_learning_machine_learning_component__WEBPACK_IMPORTED_MODULE_21__["MachineLearningComponent"]
             ],
             providers: [app_admin_guard__WEBPACK_IMPORTED_MODULE_11__["AdminGuard"]],
         })
@@ -29016,6 +29123,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_supports_supports_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! app/supports/supports.component */ "./src/app/supports/supports.component.ts");
 /* harmony import */ var app_implants_implants_list_implants_list_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! app/implants/implants-list/implants-list.component */ "./src/app/implants/implants-list/implants-list.component.ts");
 /* harmony import */ var app_implants_implants_details_implants_details_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! app/implants/implants-details/implants-details.component */ "./src/app/implants/implants-details/implants-details.component.ts");
+/* harmony import */ var app_implants_machine_learning_machine_learning_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! app/implants/machine-learning/machine-learning.component */ "./src/app/implants/machine-learning/machine-learning.component.ts");
+
 
 
 
@@ -29069,6 +29178,10 @@ var AdminLayoutRoutes = [
     {
         path: 'implant-view/:id',
         component: app_implants_implants_details_implants_details_component__WEBPACK_IMPORTED_MODULE_10__["ImplantsDetailsComponent"]
+    },
+    {
+        path: 'machine-learning',
+        component: app_implants_machine_learning_machine_learning_component__WEBPACK_IMPORTED_MODULE_11__["MachineLearningComponent"]
     }
 ];
 

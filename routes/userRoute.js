@@ -74,6 +74,8 @@ async function list (req, res) {
 
 //function to get list of user as per given criteria
 async function profile (req, res) {
+  console.log('header', req.headers);
+  console.log('body', req.body);
   if (!req.body.userId || req.body.userId == "") {
     res.status(400).send(resFormat.rError("Invalid request"))
   } else {

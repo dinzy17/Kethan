@@ -24,6 +24,7 @@ module.exports = (req, res, next) => {
                         return res.status(401).send(resFormat.rError({auth: false, message:Message.en.auth[17]}))
                     } else {
                         req.headers.userId = user._id;
+                        req.body.userId = user._id;
                         next();
                     }
                 })
