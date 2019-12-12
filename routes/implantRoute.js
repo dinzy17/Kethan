@@ -110,9 +110,15 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
   try {
       const imgS3Path = req.file.location
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
-      console.log('sdsad', watsonRes);
       if(watsonRes.status == "success") {
-        res.send(resFormat.rSuccess(watsonRes.data))
+        implant = [];
+        if(watsonRes.data.images && watsonRes.data.images[0] && watsonRes.data.images[0].objects.collections && watsonRes.data.images[0].objects.collections.length > 0 ) {
+          console.log('testing test', watsonRes.data.images[0].objects.collections[0].objects);
+            implant = await getImplantDetailByName( watsonRes.data.images[0].objects.collections[0].objects )
+          console.log('implant', implant);
+        }
+        
+        res.send(resFormat.rSuccess({wastson:watsonRes.data, implantData: implant }))
       } else {
         res.send(resFormat.rError(messages.common['2']))
       }//end of sending response
@@ -121,6 +127,20 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
     res.send(resFormat.rError(e))
   }
 })
+
+
+async function getImplantDetailByName (objectName) {
+  name = [];
+  for (var i=0; i < objectName.length; i++) {
+    name.push(objectName[i].object);
+  }
+  let implantList = await ImpantImage.find({objectName:{ $in: name }});
+  if(implantList){
+    return implantList;
+  } else {
+    return "no result found"
+  }
+}
 
 //function to get list of user as per given criteria
 async function getManufacture (req, res) {
