@@ -28853,7 +28853,7 @@ var ImplantsComponent = /** @class */ (function () {
                     _this.implantForm.resetForm();
                 }
                 else {
-                    _this.snack.open(result.data, 'OK', { duration: 3000 });
+                    _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
                 }
                 _this.resetValues();
             }, function (err) {
