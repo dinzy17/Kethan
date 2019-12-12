@@ -10,6 +10,7 @@ const EmailTemplate = require('./../models/EmailTemplate')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
+const common = require('./../helpers/common')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const auth = require('./../helpers/authMiddleware');
 
@@ -212,10 +213,12 @@ async function setPassword(req, res) {
   } else {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
+      // decript password.
+      const password = common.decryptPassword(req.body.password);
         const {
           salt,
           hash
-        } = user.setPassword(req.body.password)
+        } = user.setPassword(password)
         let upateUser = await User.update({
           _id: user._id
         }, {
@@ -507,10 +510,13 @@ async function resetPassword(req, res) {
     })
     if (user) {
       if (user.resetOtp == req.body.resetOtp) {
+        // decript password.
+        const password = common.decryptPassword(req.body.password);
+
         const {
           salt,
           hash
-        } = user.setPassword(req.body.password)
+        } = user.setPassword(password)
 
         let upateUser = await User.update({
           _id: user._id
@@ -544,13 +550,19 @@ async function changePassword(req, res) {
   else {
     let user = await User.findById(req.body.userId)
     if (user) {
-      if (!user.validPassword(req.body.oldPassword, user)) {
+        // decript password.
+        const oldPassword = common.decryptPassword(req.body.oldPassword);
+
+      if (!user.validPassword(oldPassword, user)) {
         res.status(406).send(resFormat.rError({message:'Invalid current password'}))
       } else {
+        // decript password.
+        const password = common.decryptPassword(req.body.password);
         const {
           salt,
           hash
-        } = user.setPassword(req.body.password)
+        } = user.setPassword(password)
+
         let upateUser = await User.update({
           _id: user._id
         }, {
@@ -742,33 +754,6 @@ async function getUserEmail (req,res) {
 }
 
 
-const crypto = require('crypto');
-const decrypt = (textBase64, keyBase64, ivBase64) => {
-    const algorithm = 'aes-128-cbc';
-    const ivBuffer = Buffer.from(ivBase64, 'base64');
-    const keyBuffer = Buffer.from(keyBase64, 'base64');
-    const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
-    decipher.setAutoPadding(false);
-
-    let decrypted = decipher.update(textBase64, 'base64', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-}
-
-function decryptTest(req, res){
-  const encryptedMessage = 'mIBOVqk3bDCQPupFcIWNReXrdNRnb2P+iKl35yYRgbA=';
-  const key = '6IAVE+56U5t7USZhb+9wCcqrTyJHqAu09j0t6fBngNo=';
-  const iv = Buffer.from(encryptedMessage, 'base64').slice(0, 16);
-
-  // the message comes from the bytes AFTER the IV - this is what you should decrypt
-  const message = Buffer.from(encryptedMessage, 'base64').slice(16);
-
-  const result = decrypt(message, key, iv);
-  res.send(resFormat.rSuccess(result))
-}
-
-
-
 
 
 router.post("/signin", signin)
@@ -786,7 +771,6 @@ router.post("/adminSigin", adminSigin)
 router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
-router.post('/decrypt', decryptTest)
 
 
 

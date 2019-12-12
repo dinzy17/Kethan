@@ -44,10 +44,11 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
       width: parseInt(requestParams.labelWidth),
       height: parseInt(requestParams.labelHeight)
     }
-
+    console.log('sdsas', objectLocation);
     implantImage.implantManufacture = requestParams.implantManufacture
     implantImage.removImplant = JSON.parse(requestParams.removeImplant);
-    implantImage.location = objectLocation    
+    implantImage.objectLocation = objectLocation
+    console.log('test', implantImage.location);    
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){

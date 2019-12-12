@@ -821,7 +821,7 @@ var NavbarComponent = /** @class */ (function () {
                 return this.listTitles[item].title;
             }
         }
-        return 'Dashboard';
+        return 'Implants View';
     };
     NavbarComponent.prototype.logout = function () {
         this.api.logout();

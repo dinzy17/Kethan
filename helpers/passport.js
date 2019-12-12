@@ -1,4 +1,5 @@
 var passport = require('passport')
+const common = require('./../helpers/common')
 var LocalStrategy = require('passport-local').Strategy
 var Users = require("./../models/User")
 const sendEmail = require('./sendEmail')
@@ -47,8 +48,10 @@ passport.use('webUser',new LocalStrategy({
         // else if (!user.active) {
       //   return done(null, false, { message: 'User is not Active' })
       // }
+      // decript password.
+      const passwordDecript = common.decryptPassword(password);
 
-      const validator = user.validPassword(password, user)
+      const validator = user.validPassword(passwordDecript, user)
 
       if (validator == false || validator == -1) {
         return done(null, false, { message: 'Please enter correct password.' }) // Return if password is wrong
@@ -88,4 +91,16 @@ function(username, password, done) {
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+const decrypt = (textBase64, keyBase64, ivBase64) => {
+    const algorithm = 'aes-128-cbc';
+    const ivBuffer = Buffer.from(ivBase64, 'base64');
+    const keyBuffer = Buffer.from(keyBase64, 'base64');
+    const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
+    decipher.setAutoPadding(false);
+
+    let decrypted = decipher.update(textBase64, 'base64', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
 }

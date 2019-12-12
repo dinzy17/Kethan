@@ -8,6 +8,26 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const auth = require('./../helpers/authMiddleware');
+var multer  = require('multer')
+const multerS3 = require('multer-s3')
+const AWS = require('aws-sdk')
+const s3 = new AWS.S3({
+    accessKeyId: constants.awsS3.accessKey,
+    secretAccessKey: constants.awsS3.secretAccessKey
+})
+
+var multipartUpload = multer({storage: multerS3({
+    s3: s3,
+    bucket: constants.awsS3.bucket,
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname })
+    },
+    key: function (req, file, cb) {
+      cb(null,"profile/" + file.fieldname + Date.now().toString() + ".png" )
+    }
+  })
+}).single('profileImage')
 
 
 //function to update user details
