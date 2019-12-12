@@ -48,14 +48,25 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
     implantImage.implantManufacture = requestParams.implantManufacture
     implantImage.removImplant = JSON.parse(requestParams.removeImplant);
     implantImage.objectLocation = objectLocation
-    console.log('test', implantImage.location);    
+    console.log('test', req.file.location);    
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){
+      console.log('grv',implantImage);
       let imgS3Path = implantImage.imgName
-      let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.location, imgS3Path)
-      if(watsonRes.status == "success") {
-        res.send(resFormat.rSuccess(implantImage))
+      let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.objectLocation, imgS3Path)
+      console.log('testing', watsonRes);
+      if (watsonRes.status == "success") {
+        let updatedImplant = await ImpantImage.updateOne({
+          _id: implantImage._id
+        }, {
+          $set: { watsonImage_id: watsonRes.data.images[0].image_id }
+        })
+        if (updatedImplant) {
+          res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
+        } else {
+          res.send(resFormat.rError(messages.watson['1']))
+        }
       } else {
         res.send(resFormat.rError(messages.watson['1']))
       }//end of sending response
@@ -99,6 +110,7 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
   try {
       const imgS3Path = req.file.location
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
+      console.log('sdsad', watsonRes);
       if(watsonRes.status == "success") {
         res.send(resFormat.rSuccess(watsonRes.data))
       } else {

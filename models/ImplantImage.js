@@ -16,6 +16,7 @@ var ImpantImageSchema = new mongoose.Schema({
     width: Number,
     height: Number
   },
+  watsonImage_id: String,
   createdOn: Date,
   modifiedOn: Date
 })
