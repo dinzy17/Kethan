@@ -44,18 +44,14 @@ router.post("/addImageToCollection", multipartUpload, async function (req, res, 
       width: parseInt(requestParams.labelWidth),
       height: parseInt(requestParams.labelHeight)
     }
-    console.log('sdsas', objectLocation);
     implantImage.implantManufacture = requestParams.implantManufacture
     implantImage.removImplant = JSON.parse(requestParams.removeImplant);
     implantImage.objectLocation = objectLocation
-    console.log('test', req.file.location);    
     implantImage.createdOn = new Date()
 
     if(implantImage.save()){
-      console.log('grv',implantImage);
       let imgS3Path = implantImage.imgName
       let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.objectLocation, imgS3Path)
-      console.log('testing', watsonRes);
       if (watsonRes.status == "success") {
         let updatedImplant = await ImpantImage.updateOne({
           _id: implantImage._id
@@ -113,11 +109,8 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
       if(watsonRes.status == "success") {
         implant = [];
         if(watsonRes.data.images && watsonRes.data.images[0] && watsonRes.data.images[0].objects.collections && watsonRes.data.images[0].objects.collections.length > 0 ) {
-          console.log('testing test', watsonRes.data.images[0].objects.collections[0].objects);
-            implant = await getImplantDetailByName( watsonRes.data.images[0].objects.collections[0].objects )
-          console.log('implant', implant);
+          implant = await getImplantDetailByName( watsonRes.data.images[0].objects.collections[0].objects )
         }
-        
         res.send(resFormat.rSuccess({wastson:watsonRes.data, implantData: implant }))
       } else {
         res.send(resFormat.rError(messages.common['2']))
@@ -217,6 +210,20 @@ async function list (req, res) {
   }
 }
 
+async function listImage (req, res) {
+  try {
+    let watsonRes = await watsonLibrary.listImages(constants.watson.collectionID)
+    if(watsonRes.status == "success") {
+      res.send(resFormat.rSuccess(watsonRes))
+    } else {
+      res.send(resFormat.rError(messages.common['2']))
+    }//end of sending response
+
+  } catch(e) {
+    res.send(resFormat.rError(e))
+  }
+}
+
 // function to reset the password
 async function implantView (req,res) {
   ImpantImage.findOne({_id: req.body.id}, function(err, details) {
@@ -234,4 +241,5 @@ router.post("/getImplantName", getImplantName);
 router.post("/getImplantDetail", getImplantDetail);
 router.post("/list",list) //, auth
 router.post("/implantView",implantView)
+router.post("/listImage",listImage)
 module.exports = router

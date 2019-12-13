@@ -27826,7 +27826,7 @@ module.exports = "<div class=\"main-content implant--container\">\n  <div class=
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"card\">\n          <div class=\"card-header card-header-danger\">\n              <h4 class=\"card-title learning--status\">\n                Machine Learning Status\n                <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n              </h4>\n          </div>\n          <div class=\"card-body\">\n              {{collectionStatus}}\n          </div>\n        </div>\n      </div>\n    </div> <!-- End of Machine Learning Status -->\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n          <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <div class=\"card\">\n          <div class=\"card-header card-header-danger\">\n              <h4 class=\"card-title learning--status\">\n                Machine Learning Status\n                <i class=\"material-icons\" (click)=\"getCollectionStatus()\">refresh</i>\n              </h4>\n          </div>\n          <div class=\"card-body\">\n              {{collectionStatus}}\n          </div>\n        </div>\n      </div>\n    </div> <!-- End of Machine Learning Status -->\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n          <button class=\"btn btn-theme\" (click)=\"startCollectionTraining()\">Start Machine Learning</button>\n      </div>\n    </div>\n    <!-- lerning status \n    <div class=\"row\">\n      <div class=\"col-md-12\">\n          <button class=\"btn btn-theme\" (click)=\"getImagelist()\">get Image</button>\n      </div>\n    </div> -->\n  </div>\n</div>"
 
 /***/ }),
 
@@ -28031,7 +28031,7 @@ var AnalyzeComponent = /** @class */ (function () {
         this.router = router;
         this.dialog = dialog;
         this.userId = localStorage.getItem("userId") || "";
-        this.disabledSave = false;
+        this.disabledSave = true;
         this.imageName = "";
         this.objects = [];
         this.img_preview = false;
@@ -29017,6 +29017,19 @@ var MachineLearningComponent = /** @class */ (function () {
                     _this.snack.open("Something went wrong while startimg machine learning!", 'OK', { duration: 3000 });
                 }
                 // this.getCollectionStatus()
+            }, function (err) {
+                console.error(err);
+            });
+        }, 2000);
+        this.getImagelist = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
+            _this.api.apiRequest('post', 'implant/listImage', {}).subscribe(function (result) {
+                if (result.status == "success") {
+                    console.log(result);
+                }
+                else {
+                    console.log(result);
+                    _this.snack.open("Something went wrong while fetching machine learning status!", 'OK', { duration: 3000 });
+                }
             }, function (err) {
                 console.error(err);
             });
