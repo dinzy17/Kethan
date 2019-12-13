@@ -27,7 +27,7 @@ var multipartUpload = multer({storage: multerS3({
       cb(null,"profile/" + file.fieldname + Date.now().toString() + ".png" )
     }
   })
-}).single('profileImage')
+}).single('userImage')
 
 
 //function to update user details
@@ -36,6 +36,9 @@ function updateProfile(req, res) {
     fullName: req.body.name,
     contactNumber: req.body.contactNumber,
     profession: req.body.profession
+  }
+  if (req.file !== undefined && req.file.location !== undefined && req.file.location != ""){
+    params.userImage = req.file.location
   }
   User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
       if (err) {
@@ -47,6 +50,9 @@ function updateProfile(req, res) {
           'email':req.body.email,
           'profession': req.body.profession, 
           'userId':req.body.userId
+        }
+        if (req.file !== undefined && req.file.location !== undefined && req.file.location != ""){
+          responceData.userImage = req.file.location
         }
         res.send(resFormat.rSuccess(responceData))
       }
@@ -180,7 +186,7 @@ async function adminProfileUpdate(req, res) {
 
 router.post("/updateProfile", auth, updateProfile)
 router.post("/list",list) //, auth
-router.post("/profile", auth, profile) 
+router.post("/profile", [ auth, multipartUpload ] , profile) 
 router.post("/adminProfileUpdate", adminProfileUpdate) //auth,updateUserStatus
 router.post("/updateUserStatus", updateUserStatus)
 

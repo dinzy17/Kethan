@@ -25,6 +25,7 @@ var userSchema = new mongoose.Schema({
   socialPlatform: String,
   referralCode: String,
   useReferralCode: String,
+  userImage: String,
   createdAt: Date,
   updatedAt: Date,
   active: { type: Boolean, default: true },
