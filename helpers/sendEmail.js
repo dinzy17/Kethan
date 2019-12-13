@@ -24,5 +24,20 @@ const sendEmail = function (mailOptions) {
     });
 };
 
-module.exports = { sendEmail };
+const sendEmailWithAttachment = function (mailOptions) {
+    mailOptions.from = constants.mail.mail_id,
+    mailOptions.to = mailOptions.to,
+    mailOptions.html = mailOptions.html;
+    //mailOptions.replyTo = `request-${mailOptions.investigation_id}@dev.copious.care`;
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+};
+
+module.exports = { sendEmail, sendEmailWithAttachment };
 

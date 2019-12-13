@@ -5,6 +5,7 @@ var helper = {} ;
 //function to decript password
 helper.decryptPassword = function(encriptPassword) {
     const key = constants.passwordDecriptKey
+    console.log('key', key)
     const iv = Buffer.from(encriptPassword, 'base64').slice(0, 16);
     const passwordStr = Buffer.from(encriptPassword, 'base64').slice(16);
     const password = decrypt(passwordStr, key, iv);

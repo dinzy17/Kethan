@@ -753,6 +753,12 @@ async function getUserEmail (req,res) {
   })
 }
 
+// function to reset the password
+async function checkPassword ( req, res ) {
+  const password = common.decryptPassword(req.body.password);
+  res.send(resFormat.rSuccess({ password: password }))
+}
+
 
 
 
@@ -771,6 +777,7 @@ router.post("/adminSigin", adminSigin)
 router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
+router.post('/checkPassword', checkPassword)
 
 
 
