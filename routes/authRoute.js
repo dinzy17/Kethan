@@ -87,7 +87,7 @@ async function signUp(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-            res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
+            res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
             //res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
         } else {
           res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
@@ -132,12 +132,11 @@ async function verifyOPT(req, res) {
                 "email":user.email
 
               }
-              if (user.socialMediaToken !=""){
+              if ( user.socialMediaToken ){
                 responceData.isSocialMediaUser = true
               } else {
                 responceData.isSocialMediaUser = false
               }
-
               res.send(resFormat.rSuccess({ message:'Email verify successfully.', data: responceData }))
             } else {
               res.status(403).send(resFormat.rError(err))
@@ -297,7 +296,7 @@ function signin(req, res) {
         // }
        
       } else {
-        res.send(resFormat.rErrorWithStatusCode( '405', { message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
+        res.send(resFormat.rErrorWithStatusCode( '2', { message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
         //res.send(resFormat.rErrorNotRegister({ message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
       }
     }) // end of user find
@@ -376,7 +375,7 @@ function signin(req, res) {
                     }
                     sendEmail.sendEmail(mailOptions)
                 }
-                res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+                res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
               //res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
             } else{
               res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
@@ -488,7 +487,7 @@ async function forgotPassword(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-            res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OTP"}))
+            res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OTP"}))
         } else {
           res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
         }
