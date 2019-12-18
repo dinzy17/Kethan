@@ -110,11 +110,30 @@ router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
         implant = [];
         if(watsonRes.data.images && watsonRes.data.images[0] && watsonRes.data.images[0].objects.collections && watsonRes.data.images[0].objects.collections.length > 0 ) {
           implant = await getImplantDetailByName( watsonRes.data.images[0].objects.collections[0].objects )
+          /* mainObject = watsonRes.data.images[0].objects.collections[0].objects;
+          mailBody = '<h3>Result:</h3><div class="object--container">';
+          for (var i = 0; i < mainObject.length; i++){
+            mailBody = mailBody + '<div class="object--attr capitalize"><b>Object name:</b>'+ mainObject[i].object +'</div>'
+            mailBody = mailBody + '<div class="object--attr"><b>Score:</b>'+ mainObject[i].score +'</div>'
+            mailBody = mailBody + '<div class="object--more">'
+            for (var val = 0; val < implant.length; val++){
+              mailBody = mailBody + '<div class="object--attr capitalize"><b class="manufacturer--label--b">Manufacturer:</b> '+ implant[val].implantManufacture +'</div>'
+              for (var v = 0; v < implant[val].removImplant.length; v++){
+                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].removalProcess +'</div>'
+                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].surgeryDate +'</div>'
+                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].surgeryLocation +'</div>'
+              }
+              mailBody = mailBody + '</div>'
+            }
+            mailBody = mailBody + '</div>'
+          }
+          mailBody = mailBody + '</div>'
+          console.log('emailBody', mailBody); */
         }
         res.send(resFormat.rSuccess({wastson:watsonRes.data, implantData: implant }))
       } else {
         res.send(resFormat.rError(messages.common['2']))
-      }//end of sending response
+      } //end of sending response
 
   } catch(e) {
     res.send(resFormat.rError(e))
@@ -234,6 +253,10 @@ async function implantView (req,res) {
     }
   })
 }
+
+
+
+
 
 
 router.post("/getManufacture", getManufacture);

@@ -47,10 +47,12 @@ const listCollection = async () => {
 			}
 
 			request(options, function (error, response, body) {
+				// console.log("response",response)
 				if (error) {
-          console.log("request error:", error)
+          			console.log("request error:", error)
 					reject({ status: "error", data: error })
 				} else {
+					console.log("request body error:", body)
 					// console.log(body.collections[0])
 					resolve({ status: "success", data: body })
 				}
@@ -136,10 +138,10 @@ const listImages = async (collectionId) => {
 
 			request(options, function (error, response, body) {
 				if (error) {
-				//	console.log(error)
+					console.log("error", error)
 					reject({ status: "error", data: error })
 				} else {
-				//	console.log(body)
+					console.log("body", body)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -226,7 +228,7 @@ const analyzeImage = async (collectionId, imgUrl) => {
 				} else {
 					console.log(body)
           // console.log(body.images[0].objects.collections[0].objects)
-					 console.log(body.images[0].errors)
+					//  console.log(body.images[0].errors)
 					resolve({ status: "success", data: body })
 				}
 			})
@@ -239,3 +241,6 @@ const analyzeImage = async (collectionId, imgUrl) => {
 }
 
 module.exports = { createCollection, listCollection, deleteCollection, addImage, listImages, deleteImage, trainCollection, analyzeImage }
+
+listCollection(collectionID)
+listImages(collectionID)
