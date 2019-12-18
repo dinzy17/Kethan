@@ -87,7 +87,8 @@ async function signUp(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-          res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
+            res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
+            //res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
         } else {
           res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
         }
@@ -142,11 +143,11 @@ async function verifyOPT(req, res) {
               res.status(403).send(resFormat.rError(err))
             }
           } else {
-            res.status(406).send(resFormat.rError({message:"Your OPT is expire. please resend opt and verify email."}))  
+            res.status(406).send(resFormat.rError({message:"Your OTP is expire. please resend opt and verify email."}))  
           }
           
         } else {
-            res.status(406).send(resFormat.rError({message:"OTP not match. Enter correct OPT"}))  
+            res.status(406).send(resFormat.rError({message:"OTP not match. Enter correct OTP"}))  
         }
       } else {
         res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
@@ -191,7 +192,7 @@ async function resendOTP(req, res){
             "userId": user._id,
             "email":user.email
           }
-          res.status(406).send(resFormat.rError({message:"OPT sent in your email successfully."}))
+          res.status(406).send(resFormat.rSuccess({message:"OPT sent in your email successfully."}))
         } else {
           res.status(403).send(resFormat.rError(err))
         }
@@ -214,7 +215,8 @@ async function setPassword(req, res) {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
       // decript password.
-      const password = common.decryptPassword(req.body.password);
+    //  const password = common.decryptPassword(req.body.password);
+    const password = req.body.password
         const {
           salt,
           hash
@@ -295,7 +297,8 @@ function signin(req, res) {
         // }
        
       } else {
-        res.send(resFormat.rErrorNotRegister({ message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
+        res.send(resFormat.rErrorWithStatusCode( '405', { message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
+        //res.send(resFormat.rErrorNotRegister({ message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
       }
     }) // end of user find
   } else {
@@ -373,7 +376,8 @@ function signin(req, res) {
                     }
                     sendEmail.sendEmail(mailOptions)
                 }
-              res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+                res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+              //res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
             } else{
               res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
             }
@@ -484,12 +488,11 @@ async function forgotPassword(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-          res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
-        }else{
+            res.send(resFormat.rErrorWithStatusCode( '404', { message:"Your email is not verify. We have sent OTP in your email. please verify OTP"}))
+        } else {
           res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
         }
       }
-
     } else {
       res.status(404).send(resFormat.rError({message:"Looks like your account does not exist. Sign up to create an account."}))
     }
@@ -511,7 +514,8 @@ async function resetPassword(req, res) {
     if (user) {
       if (user.resetOtp == req.body.resetOtp) {
         // decript password.
-        const password = common.decryptPassword(req.body.password);
+        //const password = common.decryptPassword(req.body.password);
+        const password = req.body.password
 
         const {
           salt,
@@ -551,13 +555,15 @@ async function changePassword(req, res) {
     let user = await User.findById(req.body.userId)
     if (user) {
         // decript password.
-        const oldPassword = common.decryptPassword(req.body.oldPassword);
+        //const oldPassword = common.decryptPassword(req.body.oldPassword);
+        const oldPassword = req.body.oldPassword
 
       if (!user.validPassword(oldPassword, user)) {
         res.status(406).send(resFormat.rError({message:'Invalid current password'}))
       } else {
         // decript password.
-        const password = common.decryptPassword(req.body.password);
+        //const password = common.decryptPassword(req.body.password);
+        const password = req.body.password
         const {
           salt,
           hash

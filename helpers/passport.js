@@ -40,7 +40,7 @@ passport.use('webUser',new LocalStrategy({
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-          return done(null, false, { message: 'Your email is not verify. We have sent OTP in your email. please verify OPT.' })
+          return done(null, false, { message: 'Your email is not verify. We have sent OTP in your email. please verify OPT.', statusCode: '404' })
         } else {
           return done(null, false, { message: 'Your email is not verify.' })
         }
@@ -49,7 +49,8 @@ passport.use('webUser',new LocalStrategy({
       //   return done(null, false, { message: 'User is not Active' })
       // }
       // decript password.
-      const passwordDecript = common.decryptPassword(password);
+      //const passwordDecript = common.decryptPassword(password);
+      const passwordDecript = password
 
       const validator = user.validPassword(passwordDecript, user)
 

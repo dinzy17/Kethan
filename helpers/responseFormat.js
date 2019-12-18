@@ -13,9 +13,10 @@ helper.rSuccess = function(data = null) {
     return res
 }
 
-// for not register user while sign in for social media account.
-helper.rErrorNotRegister = function(msg) {
-    return { status: "notRegister", data: msg }
+
+// for send error status code.
+helper.rErrorWithStatusCode = function( statusCode, msg ) {
+    return { status: "error", data: msg, statusCode: statusCode }
 }
 
 module.exports = helper
