@@ -100,15 +100,15 @@ async function signUp(req, res) {
 
 //set password while signUp
 async function verifyOPT(req, res) {
-  if (!req.body.opt){
-    res.send(resFormat.rError({message:"OPT is required for verify email."}))
+  if (!req.body.otp){
+    res.send(resFormat.rError({message:"OTP is required for verify email."}))
   }else if(req.body.email =="" || req.body.email == undefined){
     res.send(resFormat.rError({message:"Email is required"}))
   }else {
     let user = await User.findOne({"email": req.body.email});
     if (user) {
       if(!user.emailVerified){
-        if(req.body.opt == user.emailVerifiedOtp) {
+        if(req.body.otp == user.emailVerifiedOtp) {
             // check expiry date.
           var expiryTime = new Date(user.createdEmailVerifiedOtp);
           expiryTime.setMinutes(expiryTime.getMinutes() + 15);
@@ -146,7 +146,7 @@ async function verifyOPT(req, res) {
           }
           
         } else {
-            res.status(406).send(resFormat.rError({message:"OPT not match. Enter correct OPT"}))  
+            res.status(406).send(resFormat.rError({message:"OTP not match. Enter correct OPT"}))  
         }
       } else {
         res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
