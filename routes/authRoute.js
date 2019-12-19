@@ -256,9 +256,9 @@ async function setPassword(req, res) {
         })
         if (upateUser) {
             userResponce = {
-              fullName: user.fullName,
+              name: user.fullName,
               country_code: user.countryCode ,
-              phoneNumber: user.contactNumber ,
+              contactNumber: user.contactNumber,
               email: user.email,
               profession: user.profession
             }
