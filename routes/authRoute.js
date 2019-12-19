@@ -500,20 +500,15 @@ async function forgotPassword(req, res) {
 
 //reset password using otp
 async function resetPassword(req, res) {
-  if (!req.body.email)
+  if (!req.body.email) {
     res.send(resFormat.rError({message:"Email is required"}))
-  else if (!req.body.password)
+  } else if (!req.body.password) {
     res.send(resFormat.rError({message:"Password is required"}))
-  else if (!req.body.resetOtp)
-    res.send(resFormat.rError({message:"Otp is required"}))
-  else {
+  } else {
     let user = await User.findOne({
       "email": req.body.email
     })
     if (user) {
-      if (user.resetOtp == req.body.resetOtp) {
-        // decript password.
-        //const password = common.decryptPassword(req.body.password);
         const password = req.body.password
 
         const {
@@ -536,6 +531,25 @@ async function resetPassword(req, res) {
           res.send(resFormat.rError(err))
         }
     } else {
+      res.send(resFormat.rError({message:"Looks like your account does not exist. Sign up to create an account."}))
+    }
+  }
+}
+
+//reset password using otp
+async function forgotPasswordVerifyOTP(req, res) {
+  if (!req.body.email){
+    res.send(resFormat.rError({message:"Email is required"}))
+  } else if (!req.body.resetOtp) {
+    res.send(resFormat.rError({message:"Otp is required"}))
+  } else {
+    let user = await User.findOne({
+      "email": req.body.email
+    })
+    if (user) {
+      if (user.resetOtp == req.body.resetOtp) {
+        res.send(resFormat.rSuccess({ email:req.body.email }))
+    } else {
         res.send(resFormat.rError({message:"Invalid OTP"}))
       }
     } else {
@@ -543,6 +557,8 @@ async function resetPassword(req, res) {
     }
   }
 }
+
+
 
 //change password
 async function changePassword(req, res) {
@@ -770,6 +786,7 @@ async function checkPassword ( req, res ) {
 router.post("/signin", signin)
 router.delete("/signout", auth, signout)
 router.post("/forgotPassword", forgotPassword)
+router.post("/forgotPasswordVerifyOTP", forgotPasswordVerifyOTP)
 router.post("/resetPassword", resetPassword)
 router.post("/changePassword", auth, changePassword)
 router.post("/changeEmail", auth, changeEmail)
