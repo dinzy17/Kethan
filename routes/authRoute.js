@@ -116,30 +116,56 @@ async function verifyOPT(req, res) {
           expiryTime.setMinutes(expiryTime.getMinutes() + 15);
           expiryTime = new Date(expiryTime);
           if(new Date() < new Date( expiryTime )){
-            params = {
+
+            var params = {
               emailVerified: true
             }
+
+            // genrate access token for social media token.
+
+            // for login 
+            let token = "";
+            if(user.socialMediaToken != undefined && user.socialMediaToken != "" ) {
+               token = user.generateJwt();
+
+              deviceTokens = user.deviceTokens
+              if(req.body.device_id && req.body.device_token) {
+                let tokenObj = {
+                  deviceId: req.body.device_id,
+                  deviceToken: req.body.device_token
+                }
+                existingIndex = user.deviceTokens.findIndex((o) => o.deviceId == req.body.device_id)
+                if(existingIndex > -1)
+                  deviceTokens.splice(existingIndex, 1)
+                deviceTokens.push(tokenObj)
+              }
+              params.accessToken = token;
+              params.deviceTokens = deviceTokens;
+            }
+            // END Social media token
+            
             let upateUser = await User.updateOne(
               {
                 _id: user._id
               }, {
-                $set: {
-                  emailVerified: true
-                }
+                $set: params
             })
             if (upateUser) {
-              responceData = {
-                "userId": user._id,
-                "email":user.email
-
+              userResponce = {
+                name: user.fullName,
+                country_code: user.countryCode ,
+                contactNumber: user.contactNumber,
+                email: user.email,
+                profession: user.profession,
+                userImage: user.userImage
               }
-              responceData.isSocialMediaUser = "0"
+              userResponce.isSocialMediaUser = "0"
               if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
-                responceData.isSocialMediaUser = "1"
+                userResponce.isSocialMediaUser = "1"
               } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
-                responceData.isSocialMediaUser = "2"
+                userResponce.isSocialMediaUser = "2"
               }
-              res.send(resFormat.rSuccess({ message:'Email verify successfully.', user: responceData }))
+              res.send(resFormat.rSuccess({ message:'Email verify successfully.',accessToken: token,  user: userResponce }))
             } else {
               res.send(resFormat.rError(err))
             }
@@ -238,12 +264,6 @@ async function setPassword(req, res) {
             deviceTokens.push(tokenObj)
           }
 
-          var params = {
-            accessToken: token,
-            deviceTokens: deviceTokens
-          }
-
-
         let upateUser = await User.update({
           _id: user._id
         }, {
@@ -260,7 +280,8 @@ async function setPassword(req, res) {
               country_code: user.countryCode ,
               contactNumber: user.contactNumber,
               email: user.email,
-              profession: user.profession
+              profession: user.profession,
+              userImage: user.userImage
             }
           res.send(resFormat.rSuccess({ message:'Password has been set successfully.', accessToken: token, user: userResponce }))
         } else {
@@ -275,7 +296,7 @@ async function setPassword(req, res) {
 //function to check and signin user details
 function signin(req, res) {
   if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
-    User.findOne({ $or: [ { socialMediaToken: req.body.socialMediaToken }, { email: req.body.email } ] }, async function(err,user){
+    User.findOne({ socialMediaToken: req.body.socialMediaToken } , async function(err,user){ //, { email: req.body.email }
       if (err) {
         res.send(resFormat.rError(err))
       } else if (user) {
@@ -313,7 +334,8 @@ function signin(req, res) {
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
                 email: user.email,
-                profession: user.profession
+                profession: user.profession,
+                userImage: user.userImage
               }
             }
             userObj.user.isSocialMediaUser = "0"
