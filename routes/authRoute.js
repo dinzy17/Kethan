@@ -133,12 +133,13 @@ async function verifyOPT(req, res) {
                 "email":user.email
 
               }
-              if ( user.socialMediaToken ){
-                responceData.isSocialMediaUser = true
-              } else {
-                responceData.isSocialMediaUser = false
+              responceData.isSocialMediaUser = "0"
+              if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+                responceData.isSocialMediaUser = "1"
+              } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+                responceData.isSocialMediaUser = "2"
               }
-              res.send(resFormat.rSuccess({ message:'Email verify successfully.', data: responceData }))
+              res.send(resFormat.rSuccess({ message:'Email verify successfully.', user: responceData }))
             } else {
               res.send(resFormat.rError(err))
             }
@@ -221,20 +222,47 @@ async function setPassword(req, res) {
           salt,
           hash
         } = user.setPassword(password)
+
+        // for login 
+        var token = user.generateJwt();
+
+          deviceTokens = user.deviceTokens
+          if(req.body.device_id && req.body.device_token){
+            let tokenObj = {
+              deviceId: req.body.device_id,
+              deviceToken: req.body.device_token
+            }
+            existingIndex = user.deviceTokens.findIndex((o) => o.deviceId == req.body.device_id)
+            if(existingIndex > -1)
+              deviceTokens.splice(existingIndex, 1)
+            deviceTokens.push(tokenObj)
+          }
+
+          var params = {
+            accessToken: token,
+            deviceTokens: deviceTokens
+          }
+
+
         let upateUser = await User.update({
           _id: user._id
         }, {
           $set: {
             salt,
-            hash
+            hash,
+            accessToken: token,
+            deviceTokens: deviceTokens
           }
         })
         if (upateUser) {
-            responceData = {
-              "userId":user._id,
-              "email":req.body.email
+            userResponce = {
+              fullName: user.fullName,
+              country_code: user.countryCode ,
+              phoneNumber: user.contactNumber ,
+              email: user.email,
+              profession: user.profession
             }
-          res.send(resFormat.rSuccess({message:'Password has been set successfully.', data:responceData}))
+          res.send(resFormat.rSuccess({ message:'Password has been set successfully.', accessToken: token, user: userResponce }))
         } else {
           res.send(resFormat.rError(err))
         }
@@ -281,13 +309,19 @@ function signin(req, res) {
             let userObj = {
               accessToken: token,
               user: {
-                fullName: user.fullName,
+                name: user.fullName,
                 country_code: user.countryCode ,
-                phoneNumber: user.contactNumber ,
+                contactNumber: user.contactNumber,
                 email: user.email,
                 profession: user.profession
               }
             }
+            userObj.user.isSocialMediaUser = "0"
+              if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+                userObj.user.isSocialMediaUser = "1"
+              } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+                userObj.user.isSocialMediaUser = "2"
+              }
             res.send(resFormat.rSuccess(userObj))
           } else {
             res.send(resFormat.rError({message:"Invalid email"}))
@@ -346,6 +380,12 @@ function signin(req, res) {
                     profession: user.profession
                   }
                 }
+                userObj.user.isSocialMediaUser = "0"
+                  if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+                    userObj.user.isSocialMediaUser = "1"
+                  } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+                    userObj.user.isSocialMediaUser = "2"
+                  }
                 res.send(resFormat.rSuccess(userObj))
               } else {
                 res.send(resFormat.rError({message:"Invalid email"}))
