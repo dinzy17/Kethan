@@ -40,7 +40,7 @@ passport.use('webUser',new LocalStrategy({
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-          return done(null, false, { message: 'Your email is not verify. We have sent OTP in your email. please verify OPT.', statusCode: '404' })
+          return done(null, false, { message: 'Your email is not verify. We have sent OTP in your email. please verify OTP.', statusCode: '1' })
         } else {
           return done(null, false, { message: 'Your email is not verify.' })
         }

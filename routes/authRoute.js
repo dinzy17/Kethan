@@ -23,7 +23,7 @@ async function signUp(req, res) {
     // check email and this is an verify email.
     User.find({ email: req.body.email }, { _id: 1, email:1, emailVerified:1 }, async function(err, result) {
       if (err) {
-        res.status(403).send(resFormat.rError(err))
+        res.send(resFormat.rError(err))
       } else if ( result && result.length == 0 ) {
           let otp = generateOTP()
           let referralCode = req.body.name.substring(0, 3)+'-'+ otp;
@@ -87,13 +87,13 @@ async function signUp(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-            res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
+            res.send(resFormat.rError({ message: 'Your email is not verify. We have sent OTP in your email. please verify OTP.', statusCode: '1' }))
             //res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
         } else {
-          res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+          res.send(resFormat.rError({ message:"Your email is not verify." }))
         }
       } else {
-        res.status(406).send(resFormat.rError({ message: "This email is already registered. use different email for signup." }))
+        res.send(resFormat.rError({ message: "This email is already registered. use different email for signup." }))
       }
     })
   }  
@@ -139,20 +139,20 @@ async function verifyOPT(req, res) {
               }
               res.send(resFormat.rSuccess({ message:'Email verify successfully.', data: responceData }))
             } else {
-              res.status(403).send(resFormat.rError(err))
+              res.send(resFormat.rError(err))
             }
           } else {
-            res.status(406).send(resFormat.rError({message:"Your OTP is expire. please resend opt and verify email."}))  
+            res.send(resFormat.rError({message:"Your OTP is expire. please resend opt and verify email."}))  
           }
           
         } else {
-            res.status(406).send(resFormat.rError({message:"OTP not match. Enter correct OTP"}))  
+            res.send(resFormat.rError({message:"OTP not match. Enter correct OTP"}))  
         }
       } else {
-        res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
+        res.send(resFormat.rError({message:"your email is already verified"}))  
       }
     } else {
-      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
+      res.send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
   }
 }
@@ -191,15 +191,15 @@ async function resendOTP(req, res){
             "userId": user._id,
             "email":user.email
           }
-          res.status(406).send(resFormat.rSuccess({message:"OPT sent in your email successfully."}))
+          res.send(resFormat.rSuccess({message:"OPT sent in your email successfully."}))
         } else {
-          res.status(403).send(resFormat.rError(err))
+          res.send(resFormat.rError(err))
         }
       } else {
-        res.status(406).send(resFormat.rError({message:"your email is already verified"}))  
+        res.send(resFormat.rError({message:"your email is already verified"}))  
       }
     } else {
-      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
+      res.send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
   }
 }
@@ -235,10 +235,10 @@ async function setPassword(req, res) {
             }
           res.send(resFormat.rSuccess({message:'Password has been set successfully.', data:responceData}))
         } else {
-          res.status(403).send(resFormat.rError(err))
+          res.send(resFormat.rError(err))
         }
     } else {
-      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
+      res.send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
   }
 }
@@ -248,7 +248,7 @@ function signin(req, res) {
   if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
     User.findOne({ $or: [ { socialMediaToken: req.body.socialMediaToken }, { email: req.body.email } ] }, async function(err,user){
       if (err) {
-        res.status(400).send(resFormat.rError(err))
+        res.send(resFormat.rError(err))
       } else if (user) {
        // if(new Date(user.subscription_expired_date) < new Date()){
           var token = user.generateJwt();
@@ -289,23 +289,22 @@ function signin(req, res) {
             }
             res.send(resFormat.rSuccess(userObj))
           } else {
-            res.status(400).send(resFormat.rError({message:"Invalid email"}))
+            res.send(resFormat.rError({message:"Invalid email"}))
           }
         // }else{
         //   res.send(resFormat.rError({message:"your subscription is expired"}))
         // }
        
       } else {
-        res.send(resFormat.rErrorWithStatusCode( '2', { message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
-        //res.send(resFormat.rErrorNotRegister({ message: "Not register user", socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
+        res.send(resFormat.rError({ message: "Not register user", statusCode: '2', socialMediaToken: req.body.socialMediaToken,socialPlatform: req.body.socialPlatform }))
       }
     }) // end of user find
   } else {
     passport.authenticate('webUser', "appUser" ,async function (err, user, info) {
       if (err) {
-        res.status(400).send(resFormat.rError(err))
+        res.send(resFormat.rError(err))
       } else if (info) {
-        res.status(400).send(resFormat.rError(info))
+        res.send(resFormat.rError(info))
       } else if (user) {
         if(user.emailVerified){
            //  if(new Date(user.subscription_expired_date) < new Date()){
@@ -347,7 +346,7 @@ function signin(req, res) {
                 }
                 res.send(resFormat.rSuccess(userObj))
               } else {
-                res.status(400).send(resFormat.rError({message:"Invalid email"}))
+                res.send(resFormat.rError({message:"Invalid email"}))
               }
             // }else{
             //   res.send(resFormat.rError({message:"your subscription is expired"}))
@@ -375,14 +374,13 @@ function signin(req, res) {
                     }
                     sendEmail.sendEmail(mailOptions)
                 }
-                res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
-              //res.status(406).send(resFormat.rError({message:"Your email is not verify. We have sent OTP in your email. please verify OPT"}))
+                res.send(resFormat.rError({ message: 'Your email is not verify. We have sent OTP in your email. please verify OTP.', statusCode: '1' }))
             } else{
-              res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+              res.send(resFormat.rError({message:"Your email is not verify."}))
             }
           }
       } else {
-        res.status(400).send(resFormat.rError({message:"Please enter correct password."}))
+        res.send(resFormat.rError({message:"Please enter correct password."}))
       }
     })(req, res)
   }
@@ -411,13 +409,13 @@ async function signout(req, res) {
         }
         res.send(resFormat.rSuccess())
       } else {
-        res.status(404).send(resFormat.rError({message:"User not found"}))
+        res.send(resFormat.rError({message:"User not found"}))
       }
   //  } else {
    //   res.send(resFormat.rSuccess())
    // }
   } else {
-    res.status(404).send(resFormat.rError({message:"User not found"}))
+    res.send(resFormat.rError({message:"User not found"}))
   }
 }
 
@@ -431,7 +429,7 @@ function generateOTP() {
 //send otp in email to reset password
 async function forgotPassword(req, res) {
   if (!req.body.email) {
-    res.status(400).send(resFormat.rError({message:"Email is required for forgot passwprd."}))
+    res.send(resFormat.rError({message:"Email is required for forgot passwprd."}))
   } else {
     let user = await User.findOne({
       "email": req.body.email
@@ -460,7 +458,7 @@ async function forgotPassword(req, res) {
             sendEmail.sendEmail(mailOptions)
             res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
           } else {
-            res.status(401).send(resFormat.rError('Some error Occured'))
+            res.send(resFormat.rError('Some error Occured'))
           }
         }) // forgot password email template ends*/
       } else {
@@ -487,13 +485,13 @@ async function forgotPassword(req, res) {
                 }
                 sendEmail.sendEmail(mailOptions)
             }
-            res.send(resFormat.rErrorWithStatusCode( '1', { message:"Your email is not verify. We have sent OTP in your email. please verify OTP"}))
+            res.send(resFormat.rError({ message: 'Your email is not verify. We have sent OTP in your email. please verify OTP.', statusCode: '1' }))
         } else {
-          res.status(406).send(resFormat.rError({message:"Your email is not verify."}))
+          res.send(resFormat.rError({message:"Your email is not verify."}))
         }
       }
     } else {
-      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist. Sign up to create an account."}))
+      res.send(resFormat.rError({message:"Looks like your account does not exist. Sign up to create an account."}))
     }
   }
 }
@@ -547,9 +545,9 @@ async function resetPassword(req, res) {
 //change password
 async function changePassword(req, res) {
   if (!req.body.password)
-    res.status(400).send(resFormat.rError({message:"New password is required"}))
+    res.send(resFormat.rError({message:"New password is required"}))
   else if (!req.body.oldPassword)
-    res.status(400).send(resFormat.rError({message:"Current Password is required"}))
+    res.send(resFormat.rError({message:"Current Password is required"}))
   else {
     let user = await User.findById(req.body.userId)
     if (user) {
@@ -558,7 +556,7 @@ async function changePassword(req, res) {
         const oldPassword = req.body.oldPassword
 
       if (!user.validPassword(oldPassword, user)) {
-        res.status(406).send(resFormat.rError({message:'Invalid current password'}))
+        res.send(resFormat.rError({message:'Invalid current password'}))
       } else {
         // decript password.
         //const password = common.decryptPassword(req.body.password);
@@ -580,11 +578,11 @@ async function changePassword(req, res) {
         if (upateUser) {
           res.send(resFormat.rSuccess({message:'Password has been changed successfully.'}))
         } else {
-          res.status(403).send(resFormat.rError(err))
+          res.send(resFormat.rError(err))
         }
       }
     } else {
-      res.status(404).send(resFormat.rError({message:"Looks like your account does not exist"}))
+      res.send(resFormat.rError({message:"Looks like your account does not exist"}))
     }
   }
 }
@@ -596,7 +594,7 @@ async function changeEmail(req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(401).send(resFormat.rError({ message: "Email ID has been already registered" }))
+        res.send(resFormat.rError({ message: "Email ID has been already registered" }))
       } else {
         // send OPT for verify email.
         let otp = generateOTP()
@@ -637,7 +635,7 @@ async function checkEmail( req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.status(402).send(resFormat.rError({ message:"Email ID has been already registered" }))
+        res.send(resFormat.rError({ message:"Email ID has been already registered" }))
       } else {
         res.send(resFormat.rSuccess())
       } // end of length > 0
@@ -690,7 +688,7 @@ async function adminForgotPassword (req, res) {
   //find user based on email id
   User.findOne({"email": req.body.email, "userType":"adminUser" }, {}, async function(err, user) {
     if (err) {
-      res.status(401).send(resFormat.rError(err))
+      res.send(resFormat.rError(err))
     } else if(!user){
       res.send(resFormat.rError("This email is not registered. Use registered email for forgot password."))
     } else{
@@ -710,7 +708,7 @@ async function adminForgotPassword (req, res) {
             sendEmail.sendEmail(mailOptions)
             res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
           } else {
-            res.status(401).send(resFormat.rError('Some error Occured'))
+            res.send(resFormat.rError('Some error Occured'))
           }
         }) // forgot password email template ends*/
       }
