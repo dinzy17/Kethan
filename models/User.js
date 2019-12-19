@@ -10,6 +10,7 @@ var userSchema = new mongoose.Schema({
     type: String,
   },
   fullName: String,
+  countryCode: String,
   contactNumber: String,
   salt: String,
   hash: String,

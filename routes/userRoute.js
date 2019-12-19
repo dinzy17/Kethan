@@ -34,6 +34,7 @@ var multipartUpload = multer({storage: multerS3({
 function updateProfile(req, res) {
   let params = {
     fullName: req.body.name,
+    countryCode: req.body.county_code,
     contactNumber: req.body.contactNumber,
     profession: req.body.profession
   }
@@ -46,6 +47,7 @@ function updateProfile(req, res) {
       } else {
         responceData = {
           'name':req.body.name,
+          'countryCode': req.body.county_code,
           'contactNumber':req.body.contactNumber,
           'email':req.body.email,
           'profession': req.body.profession, 
@@ -111,6 +113,7 @@ async function profile (req, res) {
         } else {
           responceData = {
             "name":user.fullName,
+            "countryCode": user.countryCode,
             "contactNumber":user.contactNumber,
             "email":user.email,
             'profession': user.profession,

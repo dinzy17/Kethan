@@ -36,7 +36,8 @@ async function signUp(req, res) {
             user.socialMediaToken = req.body.socialMediaToken
             user.socialPlatform = req.body.socialPlatform
           }
-          user.phoneNumber = req.body.phoneNumber;
+          user.countryCode = req.body.county_code;
+          user.contactNumber = req.body.phoneNumber;
           user.profession = req.body.profession;
           user.referralCode = referralCode;
           user.useReferralCode = req.body.referralCode;
@@ -282,6 +283,7 @@ function signin(req, res) {
               userId: user._id,
               user: {
                 fullName: user.fullName,
+                county_code: user.countryCode ,
                 phoneNumber: user.contactNumber ,
                 email: user.email,
                 profession: user.profession
@@ -339,6 +341,7 @@ function signin(req, res) {
                   userId: user._id,
                   user: {
                     name: user.fullName,
+                    county_code: user.countryCode ,
                     contactNumber: user.contactNumber,
                     email: user.email,
                     profession: user.profession
