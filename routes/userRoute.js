@@ -47,7 +47,7 @@ function updateProfile(req, res) {
       } else {
         responceData = {
           'name':req.body.name,
-          'countryCode': req.body.county_code,
+          'countryCode': req.body.country_code,
           'contactNumber':req.body.contactNumber,
           'email':req.body.email,
           'profession': req.body.profession, 
