@@ -242,5 +242,5 @@ const analyzeImage = async (collectionId, imgUrl) => {
 
 module.exports = { createCollection, listCollection, deleteCollection, addImage, listImages, deleteImage, trainCollection, analyzeImage }
 
-listCollection(collectionID)
-listImages(collectionID)
+//listCollection(collectionID)
+//listImages(collectionID)
