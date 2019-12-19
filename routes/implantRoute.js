@@ -30,48 +30,47 @@ var multipartUpload = multer({storage: multerS3({
     }
   })
 }).single('implantPicture')
-
 //function to test
-router.post("/addImageToCollection", auth, multipartUpload, async function (req, res, next) {
+router.post("/addImageToCollection", [ multipartUpload, auth ], async function (req, res, next) {
   try {
-    let requestParams = req.body 
-    let implantImage = new ImpantImage()
-    implantImage.objectName = requestParams.labelName
-    implantImage.imgName = req.file.location
-    const objectLocation = {
-      top: parseInt(requestParams.labelOffsetY),
-      left: parseInt(requestParams.labelOffsetX),
-      width: parseInt(requestParams.labelWidth),
-      height: parseInt(requestParams.labelHeight)
-    }
-    implantImage.implantManufacture = requestParams.implantManufacture
-    implantImage.removImplant = JSON.parse(requestParams.removeImplant);
-    implantImage.objectLocation = objectLocation
-    implantImage.createdOn = new Date()
-
-    if(implantImage.save()){
-      let imgS3Path = implantImage.imgName
-      let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.objectLocation, imgS3Path)
-      if (watsonRes.status == "success") {
-        let updatedImplant = await ImpantImage.updateOne({
-          _id: implantImage._id
-        }, {
-          $set: { watsonImage_id: watsonRes.data.images[0].image_id }
-        })
-        if (updatedImplant) {
-          res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
+      let requestParams = req.body 
+      let implantImage = new ImpantImage()
+      implantImage.objectName = requestParams.labelName
+      implantImage.imgName = req.file.location
+      const objectLocation = {
+        top: parseInt(requestParams.labelOffsetY),
+        left: parseInt(requestParams.labelOffsetX),
+        width: parseInt(requestParams.labelWidth),
+        height: parseInt(requestParams.labelHeight)
+      }
+      implantImage.implantManufacture = requestParams.implantManufacture
+      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+      implantImage.objectLocation = objectLocation
+      implantImage.createdOn = new Date()
+  
+      if(implantImage.save()){
+        let imgS3Path = implantImage.imgName
+        let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.objectLocation, imgS3Path)
+        if (watsonRes.status == "success") {
+          let updatedImplant = await ImpantImage.updateOne({
+            _id: implantImage._id
+          }, {
+            $set: { watsonImage_id: watsonRes.data.images[0].image_id }
+          })
+          if (updatedImplant) {
+            res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
+          } else {
+            res.send(resFormat.rError(messages.watson['1']))
+          }
         } else {
           res.send(resFormat.rError(messages.watson['1']))
-        }
+        }//end of sending response
       } else {
-        res.send(resFormat.rError(messages.watson['1']))
-      }//end of sending response
-    } else {
-      res.send(resFormat.rError(messages.common['2']))
-    } //end of implant save 
-  } catch(e) {
-    res.send(resFormat.rError(e))
-  }
+        res.send(resFormat.rError(messages.common['2']))
+      } //end of implant save 
+    } catch(e) {
+      res.send(resFormat.rError(e))
+    }
 })
 
 router.post("/getCollectionStatus", async function (req, res) {
@@ -102,7 +101,7 @@ router.post("/startCollectionTraining", async function (req, res) {
   }
 })
 
-router.post("/analyzeImage", auth, multipartUpload, async function (req, res, next) {
+router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res, next) {
   try {
       const imgS3Path = req.file.location
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
@@ -259,10 +258,11 @@ async function implantView (req,res) {
 
 
 
-router.post("/getManufacture", getManufacture);
-router.post("/getImplantName", getImplantName);
-router.post("/getImplantDetail", getImplantDetail);
+router.post("/getManufacture",auth, getManufacture);
+router.post("/getImplantName",auth, getImplantName);
+router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
-router.post("/implantView",implantView)
-router.post("/listImage",listImage)
+router.post("/implantView", auth,implantView)
+router.post("/listImage", auth,listImage)
+
 module.exports = router
