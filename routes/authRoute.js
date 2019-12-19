@@ -458,7 +458,7 @@ async function forgotPassword(req, res) {
               html: body
             }
             sendEmail.sendEmail(mailOptions)
-            res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
+            res.send(resFormat.rSuccess({ message:'We have sent you reset instructions. Please check your email.' }))
           } else {
             res.send(resFormat.rError('Some error Occured'))
           }
@@ -708,7 +708,7 @@ async function adminForgotPassword (req, res) {
               html: body
             }
             sendEmail.sendEmail(mailOptions)
-            res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
+            res.send(resFormat.rSuccess({ message:'We have sent you reset instructions. Please check your email.'}))
           } else {
             res.send(resFormat.rError('Some error Occured'))
           }

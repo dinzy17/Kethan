@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 var async = require('async')
 var multer  = require('multer')
-
+const auth = require('./../helpers/authMiddleware');
 const constants = require('./../config/constants')
 const messages = require('./../config/messages')
 const resFormat = require('./../helpers/responseFormat')
@@ -32,7 +32,7 @@ var multipartUpload = multer({storage: multerS3({
 }).single('implantPicture')
 
 //function to test
-router.post("/addImageToCollection", multipartUpload, async function (req, res, next) {
+router.post("/addImageToCollection", auth, multipartUpload, async function (req, res, next) {
   try {
     let requestParams = req.body 
     let implantImage = new ImpantImage()
@@ -102,7 +102,7 @@ router.post("/startCollectionTraining", async function (req, res) {
   }
 })
 
-router.post("/analyzeImage", multipartUpload, async function (req, res, next) {
+router.post("/analyzeImage", auth, multipartUpload, async function (req, res, next) {
   try {
       const imgS3Path = req.file.location
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
@@ -262,7 +262,7 @@ async function implantView (req,res) {
 router.post("/getManufacture", getManufacture);
 router.post("/getImplantName", getImplantName);
 router.post("/getImplantDetail", getImplantDetail);
-router.post("/list",list) //, auth
+router.post("/list", auth, list) //, auth
 router.post("/implantView",implantView)
 router.post("/listImage",listImage)
 module.exports = router
