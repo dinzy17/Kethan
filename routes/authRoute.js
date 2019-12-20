@@ -170,7 +170,7 @@ async function verifyOPT(req, res) {
               res.send(resFormat.rError(err))
             }
           } else {
-            res.send(resFormat.rError({message:"Your OTP is expire. please resend opt and verify email."}))  
+            res.send(resFormat.rError({message:"Your OTP is expire. please resend otp and verify email."}))  
           }
           
         } else {
@@ -184,7 +184,7 @@ async function verifyOPT(req, res) {
     }
   }
 }
-// resend OPT
+// resend OTP
 async function resendOTP(req, res){
   if (!req.body.email){
     res.send(resFormat.rError({message:"email is required for resend email."}))
@@ -219,7 +219,7 @@ async function resendOTP(req, res){
             "userId": user._id,
             "email":user.email
           }
-          res.send(resFormat.rSuccess({message:"OPT sent in your email successfully."}))
+          res.send(resFormat.rSuccess({message:"OTP sent in your email successfully."}))
         } else {
           res.send(resFormat.rError(err))
         }
@@ -699,7 +699,7 @@ async function changeEmail(req, res) {
               }
               sendEmail.sendEmail(mailOptions)
             } 
-            res.send(resFormat.rSuccess({message: 'OPT send in your email confirm this OPT', data: {"email": req.body.email, "userId":req.body.userId}}))
+            res.send(resFormat.rSuccess({message: 'OTP send in your email confirm this OTP', data: {"email": req.body.email, "userId":req.body.userId}}))
           }
         }) //end of update
       } // end of length > 0
