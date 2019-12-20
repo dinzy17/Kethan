@@ -227,7 +227,9 @@ async function list (req, res) {
       if(key !== "status" && key !== "SearchQuery") {
         query[key] = new RegExp(query[key], 'i')
       } else if (key === "SearchQuery") {
-        query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
+        // query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
+        query['implantManufacture'] = new RegExp(query[key], 'i')
+        query['objectName'] = new RegExp(query[key], 'i')
         delete query.SearchQuery;
       }
     })
@@ -268,16 +270,54 @@ async function implantView (req,res) {
   })
 }
 
+async function getTotalManufactureName( req,res ){
+  let implantList = await ImpantImage.find();
+  if(implantList){
+    var manufactureName = {}
+    let brandName = {}
+    for (let i= 0; i < implantList.length; i++){
+      manufactureName[i] = implantList[i].implantManufacture 
+      brandName[i] = implantList[i].objectName 
+    }
+    res.send(resFormat.rSuccess({ manufecture : manufactureName, brandName : brandName }))
+  } else {
+    res.send(resFormat.rError())
+  }
+}
 
-
-
+async function searchByText( req,res ) {
+  query = {}
+  if((req.body.manufecture && req.body.manufecture !="") || (req.body.brandName && req.body.brandName !="")){
+    if(req.body.manufecture && req.body.manufecture !=""){
+      query['implantManufacture'] = req.body.manufecture
+    }
+    if(req.body.brandName && req.body.brandName !="") {
+      query['objectName'] = req.body.brandName
+    }
+    let implantList = await ImpantImage.find(query);
+    if(implantList.length > 0 ){
+      var implantListObj = {}
+      let brandName = {}
+      for (let i= 0; i < implantList.length; i++){
+        implantListObj[i] = implantList[i]
+      }
+      res.send(resFormat.rSuccess({ implant:implantListObj }))
+    } else {
+      res.send(resFormat.rSuccess({ message:'No Result found.' }))  
+    }
+  } else {
+    res.send(resFormat.rError({message: "Enter either manufacture or either brand/name." }))
+  }
+}
 
 
 router.post("/getManufacture",auth, getManufacture);
 router.post("/getImplantName",auth, getImplantName);
 router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
-router.post("/implantView", auth,implantView)
+router.post("/implantView", implantView) //auth
 router.post("/listImage", auth,listImage)
+router.post("/getTotalManufactureName", getTotalManufactureName)
+router.post("/searchByText", searchByText)
 
 module.exports = router
