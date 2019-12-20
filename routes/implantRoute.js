@@ -9,6 +9,7 @@ const resFormat = require('./../helpers/responseFormat')
 const s3Upload = require('./../helpers/s3Upload')
 const watsonLibrary = require('./../helpers/watsonLibrary')
 const User = require('./../models/User')
+const sendEmail = require('./../helpers/sendEmail')
 const ImpantImage = require('./../models/ImplantImage')
 const { isEmpty } = require('lodash')
 const multerS3 = require('multer-s3')
@@ -109,25 +110,39 @@ router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res
         implant = [];
         if(watsonRes.data.images && watsonRes.data.images[0] && watsonRes.data.images[0].objects.collections && watsonRes.data.images[0].objects.collections.length > 0 ) {
           implant = await getImplantDetailByName( watsonRes.data.images[0].objects.collections[0].objects )
-          /* mainObject = watsonRes.data.images[0].objects.collections[0].objects;
-          mailBody = '<h3>Result:</h3><div class="object--container">';
+          mainObject = watsonRes.data.images[0].objects.collections[0].objects;
+          mailBody = 'Hello Admin,<br/>This is result for image search.<br/><br/><h3>Result:</h3><div class="object--container">';
           for (var i = 0; i < mainObject.length; i++){
-            mailBody = mailBody + '<div class="object--attr capitalize"><b>Object name:</b>'+ mainObject[i].object +'</div>'
-            mailBody = mailBody + '<div class="object--attr"><b>Score:</b>'+ mainObject[i].score +'</div>'
-            mailBody = mailBody + '<div class="object--more">'
+            mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 200px;">Object name:</b>'+ mainObject[i].object +'</div>'
+            mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 200px;">Score:</b>'+ mainObject[i].score +'</div>'
+            mailBody = mailBody + '<div style="border: 1px dotted #3f51b5; padding: 15px; min-width: 50%;width: auto;display: inline-block;margin: 10px;">'
             for (var val = 0; val < implant.length; val++){
-              mailBody = mailBody + '<div class="object--attr capitalize"><b class="manufacturer--label--b">Manufacturer:</b> '+ implant[val].implantManufacture +'</div>'
+              mailBody = mailBody + '<div style="margin-bottom: 15px;"><b style="display: inline-block;min-width: 180px;">Manufacturer:</b> '+ implant[val].implantManufacture +'</div>'
               for (var v = 0; v < implant[val].removImplant.length; v++){
-                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].removalProcess +'</div>'
-                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].surgeryDate +'</div>'
-                mailBody = mailBody + '<div class="object--attr"><b>Removal Steps:</b>'+ implant[val].removImplant[v].surgeryLocation +'</div>'
+                mailBody = mailBody + '<div style="border: 1px solid #cccccc; margin-bottom: 10px;">'
+                mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Removal Steps:</b>'+ implant[val].removImplant[v].removalProcess +'</div>'
+                mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Surgery Date:</b>'+ implant[val].removImplant[v].surgeryDate +'</div>'
+                mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Surgery Location:</b>'+ implant[val].removImplant[v].surgeryLocation +'</div>'
+                mailBody = mailBody + '</div>'
               }
               mailBody = mailBody + '</div>'
             }
             mailBody = mailBody + '</div>'
           }
           mailBody = mailBody + '</div>'
-          console.log('emailBody', mailBody); */
+          mailBody = mailBody + '<div style="mix-width: 200px"><label style="display: block; margin-top: 20px;"><h3>Image: </h3></label>'
+          mailBody = mailBody + '<img style="max-width: 200px; margin: 10px 0 0 20px;" src="'+ watsonRes.data.images[0].source.source_url +'">'
+          mailBody = mailBody + '</div>'
+          
+          console.log('emailBody', mailBody); 
+          
+          
+          const mailOptions = {
+            to: "gaurav@arkenea.com",
+            subject: "Search result",
+            html: mailBody
+          }
+          sendEmail.sendEmail(mailOptions); 
         }
         res.send(resFormat.rSuccess({wastson:watsonRes.data, implantData: implant }))
       } else {
