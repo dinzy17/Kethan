@@ -41,6 +41,7 @@ async function signUp(req, res) {
           user.profession = req.body.profession;
           user.referralCode = referralCode;
           user.useReferralCode = req.body.referralCode;
+          user.userImage = req.body.userImage;
           user.userType = "appUser";
           user.active = false;
           user.createdOn = new Date();
@@ -158,6 +159,9 @@ async function verifyOPT(req, res) {
                 email: user.email,
                 profession: user.profession,
                 userImage: user.userImage
+              }
+              if(user.userImage == undefined || user.userImage == ""){
+                userImage = ""
               }
               userResponce.isSocialMediaUser = "0"
               if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
@@ -281,7 +285,11 @@ async function setPassword(req, res) {
               contactNumber: user.contactNumber,
               email: user.email,
               profession: user.profession,
-              userImage: user.userImage
+              userImage: user.userImage,
+              isSocialMediaUser: "0"
+            }
+            if(user.userImage == undefined || user.userImage == ""){
+              userImage = ""
             }
           res.send(resFormat.rSuccess({ message:'Password has been set successfully.', accessToken: token, user: userResponce }))
         } else {
@@ -337,6 +345,9 @@ function signin(req, res) {
                 profession: user.profession,
                 userImage: user.userImage
               }
+            }
+            if(user.userImage == undefined || user.userImage == ""){
+              userObj.user.userImage =  ""
             }
             userObj.user.isSocialMediaUser = "0"
               if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
