@@ -119,9 +119,14 @@ router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res
             for (var val = 0; val < implant.length; val++){
               mailBody = mailBody + '<div style="margin-bottom: 15px;"><b style="display: inline-block;min-width: 180px;">Manufacturer:</b> '+ implant[val].implantManufacture +'</div>'
               for (var v = 0; v < implant[val].removImplant.length; v++){
+                let surgeryDateFormate = ""
+               // if(implant[val].removImplant[v].surgeryDate != undefined && implant[val].removImplant[v].surgeryDate !=""){
+                let current_datetime = new Date(implant[val].removImplant[v].surgeryDate)
+                 surgeryDateFormate = (current_datetime.getMonth() + 1) + "/" + current_datetime.getDate() + "/" + current_datetime.getFullYear()
+               // }
                 mailBody = mailBody + '<div style="border: 1px solid #cccccc; margin-bottom: 10px;">'
                 mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Removal Steps:</b>'+ implant[val].removImplant[v].removalProcess +'</div>'
-                mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Surgery Date:</b>'+ implant[val].removImplant[v].surgeryDate +'</div>'
+                mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Surgery Date:</b>'+ surgeryDateFormate +'</div>'
                 mailBody = mailBody + '<div style="margin: 10px;"><b style="display: inline-block;min-width: 172px;">Surgery Location:</b>'+ implant[val].removImplant[v].surgeryLocation +'</div>'
                 mailBody = mailBody + '</div>'
               }

@@ -18,7 +18,7 @@ module.exports = "\n<router-outlet></router-outlet>\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-wrapper\">\n          <a class=\"navbar-brand\" href=\"javascript:void(0)\">\n                <div class=\"logo-img\"><img src=\"/assets/img/login_logo.png\"/> Console</div>\n            </a>\n        </div>\n    </div>\n</nav>\n"
+module.exports = "<nav class=\"navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-wrapper\">\n          <a class=\"navbar-brand\" href=\"javascript:void(0)\">\n                <div class=\"logo-img\"><img src=\"/assets/img/login_logo.png\"/> <span class=\"header--logo--span\">Console</span></div>\n            </a>\n        </div>\n    </div>\n</nav>\n"
 
 /***/ }),
 
@@ -309,6 +309,11 @@ var APIService = /** @class */ (function () {
     };
     //function to make request to server
     APIService.prototype.apiRequest = function (method, apiUrl, req_vars) {
+        // console.log('access toekn', localStorage.getItem('token'));
+        var token = localStorage.getItem('token');
+        if (token !== undefined && token != "") {
+            req_vars.accessToken = token;
+        }
         return this.request(method, apiUrl, req_vars);
     };
     //function to sync mails in background
@@ -588,7 +593,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".logo-img{\n    font-weight: 500;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hdXRoLWhlYWRlci9hdXRoLWhlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksZ0JBQWdCO0FBQ3BCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9hdXRoLWhlYWRlci9hdXRoLWhlYWRlci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxvZ28taW1ne1xuICAgIGZvbnQtd2VpZ2h0OiA1MDA7XG59Il19 */"
+module.exports = ".logo-img{\n    font-weight: 500;\n}\n.header--logo--span{\n    margin: 5px;\n    vertical-align: sub;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hdXRoLWhlYWRlci9hdXRoLWhlYWRlci5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksZ0JBQWdCO0FBQ3BCO0FBQ0E7SUFDSSxXQUFXO0lBQ1gsbUJBQW1CO0FBQ3ZCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9hdXRoLWhlYWRlci9hdXRoLWhlYWRlci5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmxvZ28taW1ne1xuICAgIGZvbnQtd2VpZ2h0OiA1MDA7XG59XG4uaGVhZGVyLS1sb2dvLS1zcGFue1xuICAgIG1hcmdpbjogNXB4O1xuICAgIHZlcnRpY2FsLWFsaWduOiBzdWI7XG59Il19 */"
 
 /***/ }),
 
