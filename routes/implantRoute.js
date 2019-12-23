@@ -183,7 +183,7 @@ async function getManufacture (req, res) {
     res.send(resFormat.rSuccess({ implantList }))
   }
   else{
-    res.status(401).send(resFormat.rError(err))
+    res.send(resFormat.rError(err))
   }
 }
 
@@ -273,11 +273,12 @@ async function implantView (req,res) {
 async function getTotalManufactureName( req,res ){
   let implantList = await ImpantImage.find();
   if(implantList){
-    var manufactureName = {}
-    let brandName = {}
+    let manufactureName = []
+    let brandName = []
     for (let i= 0; i < implantList.length; i++){
       manufactureName[i] = implantList[i].implantManufacture 
-      brandName[i] = implantList[i].objectName 
+      manufactureName.push(implantList[i].implantManufacture);
+      brandName.push(implantList[i].objectName );
     }
     res.send(resFormat.rSuccess({ manufecture : manufactureName, brandName : brandName }))
   } else {
@@ -296,10 +297,9 @@ async function searchByText( req,res ) {
     }
     let implantList = await ImpantImage.find(query);
     if(implantList.length > 0 ){
-      var implantListObj = {}
-      let brandName = {}
+      let implantListObj = []
       for (let i= 0; i < implantList.length; i++){
-        implantListObj[i] = implantList[i]
+        implantListObj.push (implantList[i])
       }
       res.send(resFormat.rSuccess({ implant:implantListObj }))
     } else {
