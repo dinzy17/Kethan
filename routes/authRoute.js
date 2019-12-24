@@ -524,7 +524,9 @@ async function forgotPassword(req, res) {
         emailTemplatesRoute.getEmailTemplateByCode("sendResetPwd").then((template) => {
           if(template) {
             template = JSON.parse(JSON.stringify(template));
+            //console.log('template', template);
             let body = template.mailBody.replace("{otp}", otp);
+            body = body.replace("{name}", user.fullName);
             const mailOptions = {
               to : req.body.email,
               subject : template.mailSubject,
@@ -535,7 +537,7 @@ async function forgotPassword(req, res) {
           } else {
             res.send(resFormat.rError('Some error Occured'))
           }
-        }) // forgot password email template ends*/
+        })  // forgot password email template ends*/
       } else {
         // send OTP for verify email
         let otp = generateOTP()
@@ -792,7 +794,7 @@ async function adminForgotPassword (req, res) {
             template = JSON.parse(JSON.stringify(template));
             let body = template.mailBody.replace("{link}", link);
             const mailOptions = {
-              to : req.body.email, //gaurav@arkenea.com
+              to : "gaurav@arkenea.com", // req.body.email, //gaurav@arkenea.com
               subject : template.mailSubject,
               html: body
             }
