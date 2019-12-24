@@ -17,6 +17,8 @@ var ImpantImageSchema = new mongoose.Schema({
     height: Number
   },
   watsonImage_id: String,
+  isApproved: { type: Boolean, default: false },
+  isRejected: { type: Boolean, default: false },
   createdOn: Date,
   modifiedOn: Date
 })

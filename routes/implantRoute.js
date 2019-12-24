@@ -47,7 +47,14 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
       implantImage.implantManufacture = requestParams.implantManufacture
       implantImage.removImplant = JSON.parse(requestParams.removeImplant);
       implantImage.objectLocation = objectLocation
+      console.log('addBy', requestParams.addBy);
+      if (requestParams.addBy !== undefined && requestParams.addBy == "admin") {
+        implantImage.isApproved = true
+      } else {
+        implantImage.isApproved = false
+      }
       implantImage.createdOn = new Date()
+      implantImage.modifiedOn = new Date()
   
       if(implantImage.save()){
         let imgS3Path = implantImage.imgName
@@ -73,6 +80,183 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
       res.send(resFormat.rError(e))
     }
 })
+
+router.post("/editImageToCollection", [ multipartUpload, auth ], async function (req, res, next) {
+  try {
+    let requestParams = req.body 
+    console.log('sads', requestParams);
+    console.log('dfdf', req.file);
+    let prams = {};
+
+      
+      //let implantImage = new ImpantImage()
+      prams.objectName = requestParams.labelName
+      if (req.file !== undefined) {
+        prams.imgName = req.file.location
+        const objectLocation = {
+          top: parseInt(requestParams.labelOffsetY),
+          left: parseInt(requestParams.labelOffsetX),
+          width: parseInt(requestParams.labelWidth),
+          height: parseInt(requestParams.labelHeight)
+        }
+        prams.objectLocation = objectLocation
+       deleteFileS3(requestParams.implantId);
+      }
+      
+      prams.implantManufacture = requestParams.implantManufacture
+      prams.removImplant = JSON.parse(requestParams.removeImplant);
+      //prams.objectLocation = objectLocation
+      prams.isApproved = true
+      prams.modifiedOn = new Date()
+      // for update data.
+      let updatedImplant = await ImpantImage.updateOne({
+        _id: requestParams.implantId
+      }, {
+        $set: prams
+      })
+
+      if(updatedImplant){
+       // res.send(resFormat.rSuccess({mesage:"Implant Update successfully."}))
+          ImpantImage.findOne({_id: requestParams.implantId}, async function(err, details) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              // add implant to watson for AI
+              deleteImplant(details.watsonImage_id);
+              let imgS3Path = details.imgName
+              let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, details.objectName, details.objectLocation, imgS3Path)
+             // console.log(watsonRes.data);
+              if (watsonRes.status == "success") {
+                let updatedImplant = await ImpantImage.updateOne({
+                  _id: details._id
+                }, {
+                  $set: { watsonImage_id: watsonRes.data.images[0].image_id }
+                })
+                if (updatedImplant) {
+                  res.send(resFormat.rSuccess({image:details, watson:watsonRes }))
+                } else {
+                  res.send(resFormat.rError(messages.watson['1']))
+                }
+              } else {
+                res.send(resFormat.rError(messages.watson['1']))
+              }
+            }
+          })
+      } else {
+        res.send(resFormat.rError(messages.common['2']))
+      } 
+    } catch(e) {
+      res.send(resFormat.rError(e))
+    }
+})
+
+function deleteImplant(id) {
+  let watsonDelete = watsonLibrary.deleteImage((constants.watson.collectionID, id))
+}
+
+function deleteFileS3(id){
+  ImpantImage.findOne({ _id: id }, function(err, implant) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    }else{
+      if(implant.imgName !=""){
+        AWS.config.update({
+          accessKeyId: constants.awsS3.accessKey,
+          secretAccessKey: constants.awsS3.secretAccessKey,
+          region: 'us-east-1',
+        });
+          const s3 = new AWS.S3();
+          const params = {
+            Bucket: constants.awsS3.bucket,
+            Key: implant.imgName
+          }
+        s3.deleteObject(params).promise()
+        console.log('image delete');
+      }
+    }
+  })
+}
+
+
+router.post("/addImplantUser", [ multipartUpload, auth ], async function (req, res, next) {
+  try {
+      let requestParams = req.body 
+      let implantImage = new ImpantImage()
+      implantImage.objectName = requestParams.labelName
+      implantImage.imgName = req.file.location
+      const objectLocation = {
+        top: parseInt(requestParams.labelOffsetY),
+        left: parseInt(requestParams.labelOffsetX),
+        width: parseInt(requestParams.labelWidth),
+        height: parseInt(requestParams.labelHeight)
+      }
+      implantImage.implantManufacture = requestParams.implantManufacture
+      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+      implantImage.objectLocation = objectLocation
+      implantImage.isApproved = false
+      implantImage.createdOn = new Date()
+      implantImage.save(async function(err, newImplant) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          res.send(resFormat.rSuccess({message:"Save implant successfully."}))
+        }
+      })
+      //end of implant save 
+    } catch(e) {
+      res.send(resFormat.rError(e))
+    }
+})
+
+// function approve implant by admin
+async function implantApproved (req,res) {
+  ImpantImage.findOne({_id: req.body.id}, async function(err, details) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      // add implant to watson for AI
+      let imgS3Path = details.imgName
+      let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, details.objectName, details.objectLocation, imgS3Path)
+      if (watsonRes.status == "success") {
+        let updatedImplant = await ImpantImage.updateOne({
+          _id: details._id
+        }, {
+          $set: { watsonImage_id: watsonRes.data.images[0].image_id }
+        })
+        if (updatedImplant) {
+          res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
+        } else {
+          res.send(resFormat.rError(messages.watson['1']))
+        }
+      } else {
+        res.send(resFormat.rError(messages.watson['1']))
+      }
+    }
+  })
+}
+
+// Implant rejected.
+
+async function implantRejected (req,res) {
+  ImpantImage.findOne({_id: req.body.id}, async function(err, details) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      let updatedImplant = await ImpantImage.updateOne({
+          _id: details._id
+        }, {
+          $set: { isRejected: true }
+        })
+        if (updatedImplant) {
+          res.send(resFormat.rSuccess({ message:'Implant successfully rejected' }))
+        } else {
+          res.send(resFormat.rError(messages.watson['1']))
+        }
+    }
+  })
+}
+
+
 
 router.post("/getCollectionStatus", async function (req, res) {
   try {
@@ -199,7 +383,7 @@ async function getImplantName (req, res) {
     res.send(resFormat.rSuccess({ implantList }))
   }
   else{
-    res.status(401).send(resFormat.rError(err))
+    res.send(resFormat.rError(err))
   }
 }
 
@@ -238,6 +422,61 @@ async function list (req, res) {
         delete query.SearchQuery;
       }
     })
+    
+  }
+  //query['isApproved'] = true
+  //query['isRejected'] = false
+  //console.log(query);  
+  let implantList = await ImpantImage.find(query, fields, { sort: order });
+  if(implantList){
+    totalImplant = implantList.length
+    res.send(resFormat.rSuccess({ implantList, totalImplant}))
+  }
+  else{
+    res.status(401).send(resFormat.rError(err))
+  }
+}
+
+// update Implant list
+async function updateList (req, res) {
+  
+  let implantList = await ImpantImage.find({});
+  if(implantList){
+    for (var i=0; i<implantList.length; i++) {
+      updateImplant(implantList[i]._id, implantList[i].createdOn)
+    }
+  }
+  else{
+    res.send(resFormat.rError(err))
+  }
+  async function updateImplant(id, date){
+    let updatedImplant = await ImpantImage.updateOne({
+      _id: id
+    }, {
+      $set: { modifiedOn: date }
+    })
+  }
+}
+
+
+
+// list unverify implant.
+async function unVerifyList (req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalUsers = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function(key, index) {
+      if(key !== "status" && key !== "SearchQuery") {
+        query[key] = new RegExp(query[key], 'i')
+      } else if (key === "SearchQuery") {
+        // query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
+        query['implantManufacture'] = new RegExp(query[key], 'i')
+        query['objectName'] = new RegExp(query[key], 'i')
+        delete query.SearchQuery;
+      }
+      query['isApproved'] = false
+      query['isRejected'] = false
+    })
   }
   
   let implantList = await ImpantImage.find(query, fields, { sort: order });
@@ -246,7 +485,7 @@ async function list (req, res) {
     res.send(resFormat.rSuccess({ implantList, totalImplant}))
   }
   else{
-    res.status(401).send(resFormat.rError(err))
+    res.send(resFormat.rError(err))
   }
 }
 
@@ -264,7 +503,7 @@ async function listImage (req, res) {
   }
 }
 
-// function to reset the password
+// function to implant view
 async function implantView (req,res) {
   ImpantImage.findOne({_id: req.body.id}, function(err, details) {
     if (err) {
@@ -320,9 +559,9 @@ router.post("/getManufacture",auth, getManufacture);
 router.post("/getImplantName",auth, getImplantName);
 router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
-router.post("/implantView", implantView) //auth
-router.post("/listImage", auth,listImage)
+router.post("/implantView",auth, implantView)
+router.post("/listImage",listImage) //, auth
 router.post("/getTotalManufactureName", getTotalManufactureName)
 router.post("/searchByText", searchByText)
-
+router.post("/updateList", updateList)
 module.exports = router

@@ -152,12 +152,12 @@ const listImages = async (collectionId) => {
 	})
 }
 
-const deleteImage = async (collectionId) => {
+const deleteImage = async (collectionId, imageId) => {
 	return new Promise((resolve, reject) => {
     try {
   		let options = {
   			method: 'DELETE',
-  			url: apiVersionUrl + '/collections/'+collectionId+'/images/Depuy_Skyline2_2f520487e710bc3373f7c120d821a517?version=2019-02-11',
+  			url: apiVersionUrl + '/collections/'+collectionId+'/images/'+ imageId +'?version=2019-02-11',
   			headers: { 'content-type': 'application/json' },
   			json: true,
   			auth: { user: 'apikey', pass: apiKey},
