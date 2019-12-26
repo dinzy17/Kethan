@@ -41,22 +41,31 @@ function updateProfile(req, res) {
   if (req.file !== undefined && req.file.location !== undefined && req.file.location != ""){
     params.userImage = req.file.location
   }
-  User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
+  User.update({ _id: req.body.userId },{ $set: params} ,async function(err, updatedUser) {
       if (err) {
         res.status(403).send(resFormat.rError(err))
       } else {
-        responceData = {
-          'name':req.body.name,
-          'countryCode': req.body.country_code,
-          'contactNumber':req.body.contactNumber,
-          'email':req.body.email,
-          'profession': req.body.profession, 
-          'userId':req.body.userId
+        let user = await User.findOne({"_id": req.body.userId});
+        userResponce = {
+          userId: user._id,
+          name: user.fullName,
+          country_code: user.countryCode ,
+          contactNumber: user.contactNumber,
+          email: user.email,
+          profession: user.profession,
+          referralCode: user.referralCode,
+          userImage: user.userImage
         }
-        if (req.file !== undefined && req.file.location !== undefined && req.file.location != ""){
-          responceData.userImage = req.file.location
+        if(user.userImage === undefined || user.userImage == ""){
+          userResponce.userImage = ""
         }
-        res.send(resFormat.rSuccess(responceData))
+        userResponce.isSocialMediaUser = "0"
+        if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+          userResponce.isSocialMediaUser = "1"
+        } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+          userResponce.isSocialMediaUser = "2"
+        }
+        res.send(resFormat.rSuccess({ user:userResponce }))
       }
   })
 }
@@ -102,8 +111,6 @@ async function list (req, res) {
 
 //function to get list of user as per given criteria
 async function profile (req, res) {
-  console.log('header', req.headers);
-  console.log('body', req.body);
   if (!req.body.userId || req.body.userId == "") {
     res.send(resFormat.rError("Invalid request"))
   } else {
@@ -111,16 +118,26 @@ async function profile (req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          responceData = {
-            "name":user.fullName,
-            "countryCode": user.countryCode,
-            "contactNumber":user.contactNumber,
-            "email":user.email,
-            'profession': user.profession,
-            'referralCode':user.referralCode,
-            "userId":user._id
+          userResponce = {
+            userId: user._id,
+            name: user.fullName,
+            country_code: user.countryCode ,
+            contactNumber: user.contactNumber,
+            email: user.email,
+            profession: user.profession,
+            referralCode: user.referralCode,
+            userImage: user.userImage
           }
-          res.send(resFormat.rSuccess(responceData))
+          if(user.userImage === undefined || user.userImage == ""){
+            userResponce.userImage = ""
+          }
+          userResponce.isSocialMediaUser = "0"
+          if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+            userResponce.isSocialMediaUser = "1"
+          } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+            userResponce.isSocialMediaUser = "2"
+          }
+          res.send(resFormat.rSuccess({ user: userResponce }))
         }
     })
   }

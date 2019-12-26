@@ -717,7 +717,7 @@ async function changeEmail(req, res) {
               }
               sendEmail.sendEmail(mailOptions)
             } 
-            res.send(resFormat.rSuccess({message: 'OTP send in your email confirm this OTP', data: {"email": req.body.email, "userId":req.body.userId}}))
+            res.send(resFormat.rSuccess({message: 'The verification code send in your email for confirm.', data: {"email": req.body.email, "userId":req.body.userId}}))
           }
         }) //end of update
       } // end of length > 0

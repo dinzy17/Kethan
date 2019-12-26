@@ -84,10 +84,10 @@ async function addAns(req, res) {
     if ((req.body.replay &&  req.body.replay == "") || (req.body.id &&  req.body.id == "")) {
         res.send(resFormat.rError("All field required"));
     } else {
-        req.body.replay = req.body.replay.replace(/\n/g,"<br />")
+        req.body.replay = req.body.replay.replace(/\n/g,"<br>")
         let params = {
             replay: req.body.replay,
-            sendReplay: true,   
+            sendReplay: true,
             modifiedOn: new Date()
         }
 
