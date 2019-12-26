@@ -55,7 +55,7 @@ passport.use('webUser',new LocalStrategy({
       const validator = user.validPassword(passwordDecript, user)
 
       if (validator == false || validator == -1) {
-        return done(null, false, { message: 'Please enter correct password.' }) // Return if password is wrong
+        return done(null, false, { message: 'The password seems to be incorrect.' }) // Return if password is wrong
       }
 
       return done(null, user) // If credentials are correct, return the user object

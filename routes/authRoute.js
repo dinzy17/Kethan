@@ -174,7 +174,7 @@ async function verifyOPT(req, res) {
               res.send(resFormat.rError(err))
             }
           } else {
-            res.send(resFormat.rError({message:"Your OTP is expire. please resend otp and verify email."}))  
+            res.send(resFormat.rError({message:"The verification code is expire. please resend verification code and verify email."}))  
           }
           
         } else {
@@ -189,7 +189,7 @@ async function verifyOPT(req, res) {
   }
 }
 // resend OTP
-async function resendOTP(req, res){
+async function resendOTP(req, res) {
   if (!req.body.email){
     res.send(resFormat.rError({message:"email is required for resend email."}))
   } else {
@@ -625,7 +625,7 @@ async function forgotPasswordVerifyOTP(req, res) {
       if (user.resetOtp == req.body.resetOtp) {
         res.send(resFormat.rSuccess({ email:req.body.email }))
     } else {
-        res.send(resFormat.rError({message:"Invalid OTP"}))
+        res.send(resFormat.rError({message:"The verification code seems to be incorrect"}))
       }
     } else {
       res.send(resFormat.rError({message:"Looks like your account does not exist. Sign up to create an account."}))
