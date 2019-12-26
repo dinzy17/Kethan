@@ -153,6 +153,7 @@ async function verifyOPT(req, res) {
             })
             if (upateUser) {
               userResponce = {
+                accessToken: token,
                 name: user.fullName,
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
@@ -160,8 +161,8 @@ async function verifyOPT(req, res) {
                 profession: user.profession,
                 userImage: user.userImage
               }
-              if(user.userImage == undefined || user.userImage == ""){
-                userImage = ""
+              if(user.userImage === undefined || user.userImage == ""){
+                userResponce.userImage = ""
               }
               userResponce.isSocialMediaUser = "0"
               if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
@@ -169,7 +170,7 @@ async function verifyOPT(req, res) {
               } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
                 userResponce.isSocialMediaUser = "2"
               }
-              res.send(resFormat.rSuccess({ message:'Email verify successfully.',accessToken: token,  user: userResponce }))
+              res.send(resFormat.rSuccess({ message:'Email verify successfully.',  user: userResponce }))
             } else {
               res.send(resFormat.rError(err))
             }
@@ -280,6 +281,7 @@ async function setPassword(req, res) {
         })
         if (upateUser) {
             userResponce = {
+              accessToken: token,
               name: user.fullName,
               country_code: user.countryCode ,
               contactNumber: user.contactNumber,
@@ -288,10 +290,10 @@ async function setPassword(req, res) {
               userImage: user.userImage,
               isSocialMediaUser: "0"
             }
-            if(user.userImage == undefined || user.userImage == ""){
-              userImage = ""
+            if(user.userImage === undefined || user.userImage == ""){
+              userResponce.userImage = ""
             }
-          res.send(resFormat.rSuccess({ message:'Password has been set successfully.', accessToken: token, user: userResponce }))
+          res.send(resFormat.rSuccess({ message:'Password has been set successfully.', user: userResponce }))
         } else {
           res.send(resFormat.rError(err))
         }
@@ -336,8 +338,8 @@ function signin(req, res) {
 
           if (updatedUser) {
             let userObj = {
-              accessToken: token,
               user: {
+                accessToken: token,
                 name: user.fullName,
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
@@ -346,7 +348,7 @@ function signin(req, res) {
                 userImage: user.userImage
               }
             }
-            if(user.userImage == undefined || user.userImage == ""){
+            if(user.userImage === undefined || user.userImage == "") {
               userObj.user.userImage =  ""
             }
             userObj.user.isSocialMediaUser = "0"
@@ -403,15 +405,18 @@ function signin(req, res) {
 
               if (updatedUser) {
                 let userObj = {
-                  accessToken: token,
-                  userId: user._id,
                   user: {
+                    accessToken: token,
+                    userId: user._id,
                     name: user.fullName,
                     country_code: user.countryCode ,
                     contactNumber: user.contactNumber,
                     email: user.email,
                     profession: user.profession
                   }
+                }
+                if(user.userImage === undefined || user.userImage == "") {
+                  userObj.user.userImage =  ""
                 }
                 userObj.user.isSocialMediaUser = "0"
                   if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
