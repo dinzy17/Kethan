@@ -95,7 +95,7 @@ async function signUp(req, res) {
           res.send(resFormat.rError({ message:"Your email is not verify." }))
         }
       } else {
-        res.send(resFormat.rError({ message: "This email is already registered. use different email for signup." }))
+        res.send(resFormat.rError({ message: "The Email ID is already registered with us. Login to access the application." }))
       }
     })
   }  
@@ -178,7 +178,7 @@ async function verifyOPT(req, res) {
           }
           
         } else {
-            res.send(resFormat.rError({message:"OTP not match. Enter correct OTP"}))  
+            res.send(resFormat.rError({message:"The verification code seems to be incorrect."}))  
         }
       } else {
         res.send(resFormat.rError({message:"your email is already verified"}))  
@@ -649,7 +649,7 @@ async function changePassword(req, res) {
         const oldPassword = req.body.oldPassword
 
       if (!user.validPassword(oldPassword, user)) {
-        res.send(resFormat.rError({message:'Invalid current password'}))
+        res.send(resFormat.rError({message:'The password seems to be incorrect'}))
       } else {
         // decript password.
         //const password = common.decryptPassword(req.body.password);
@@ -687,7 +687,7 @@ async function changeEmail(req, res) {
       res.send(resFormat.rError(err))
     } else {
       if(checkUsers && checkUsers.length > 0){
-        res.send(resFormat.rError({ message: "Email ID has been already registered" }))
+        res.send(resFormat.rError({ message: "The Email ID is already registered with us. Login to access the application." }))
       } else {
         // send OPT for verify email.
         let otp = generateOTP()

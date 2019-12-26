@@ -68,7 +68,7 @@ function updateUserStatus(req, res) {
   }
   User.update({ _id: req.body.userId },{ $set: params} , function(err, updatedUser) {
       if (err) {
-        res.status(403).send(resFormat.rError(err))
+        res.send(resFormat.rError(err))
       } else {
         res.send(resFormat.rSuccess())
       }
@@ -105,11 +105,11 @@ async function profile (req, res) {
   console.log('header', req.headers);
   console.log('body', req.body);
   if (!req.body.userId || req.body.userId == "") {
-    res.status(400).send(resFormat.rError("Invalid request"))
+    res.send(resFormat.rError("Invalid request"))
   } else {
     User.findOne({_id:req.body.userId}, function(err, user) {
         if (err) {
-          res.status(403).send(resFormat.rError(err))
+          res.send(resFormat.rError(err))
         } else {
           responceData = {
             "name":user.fullName,
@@ -187,9 +187,9 @@ async function adminProfileUpdate(req, res) {
     }
 }
 
-router.post("/updateProfile", auth, updateProfile)
+router.post("/updateProfile", [ multipartUpload, auth ], updateProfile)
 router.post("/list",list) //, auth
-router.post("/profile", [ multipartUpload, auth ], profile) 
+router.post("/profile", auth, profile) 
 router.post("/adminProfileUpdate", adminProfileUpdate) //auth,updateUserStatus
 router.post("/updateUserStatus", updateUserStatus)
 
