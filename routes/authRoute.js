@@ -854,6 +854,32 @@ async function getUserEmail (req,res) {
   })
 }
 
+const crypto = require('crypto');
+
+// function to reset the password
+async function encPassword ( req, res ) {
+  let text = req.body.text
+  var mykey = crypto.createCipher('aes-128-cbc', '6IAVE+56U5t7USZhb+9wCcqrTyJHqAu09j0t6fBngNo');
+  var mystr = mykey.update(text, 'utf8', 'hex')
+  mystr += mykey.final('hex');
+  let buff = new Buffer(mystr);
+  let base64data = buff.toString('base64');
+  res.send(resFormat.rSuccess({ stringData: base64data }))
+}
+
+// function to reset the password
+async function decPassword ( req, res ) {
+  let data = req.body.text
+  let buff = new Buffer(data, 'base64')
+  let text = buff.toString('ascii')
+
+  var mykey = crypto.createDecipher('aes-128-cbc', '6IAVE+56U5t7USZhb+9wCcqrTyJHqAu09j0t6fBngNo');
+  var mystr = mykey.update(text, 'hex', 'utf8')
+  mystr += mykey.final('utf8');
+  console.log('mystr', mystr)
+  res.send(resFormat.rSuccess({ stringData: mystr }))
+}
+
 // function to reset the password
 async function checkPassword ( req, res ) {
   const password = common.decryptPassword(req.body.password);
@@ -880,7 +906,8 @@ router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
 router.post('/checkPassword', checkPassword)
-
+router.post('/encPassword', encPassword)
+router.post('/decPassword', decPassword)
 
 
 module.exports = router

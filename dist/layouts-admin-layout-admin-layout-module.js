@@ -27782,7 +27782,7 @@ module.exports = "<div class=\"confirm--header\">\n  <mat-icon (click)=\"closeMo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n    <div class=\"container-fluid\">\n        <!-- start blocks-->\n        <!-- <div class=\"row\">\n                <div class=\"offset-md-2\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            3 New Verification Request\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            5 New Support messages Received\n                        </div>\n                    </div>\n                </div>\n            </div> -->\n        <!-- <div class=\"row\">\n                    <div class=\"offset-md-2\"></div>\n                    <div class=\"col-md-3\">\n                        <div class=\"card\">\n                            <div class=\"card-body card-body-custome\">\n                                {{ totalUser }}\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"offset-md-1\"></div>\n                    <div class=\"col-md-3 cursor-pointer\" (click)=\"implant()\">\n                        <div class=\"card\">\n                            <div class=\"card-body card-body-custome\">\n                                {{ totalImplant }}\n                            </div>\n                        </div>\n                    </div>       \n            </div> -->\n\n        <div class=\"dashboard--wrapper col-sm-10 col-md-10 col-lg-10 col-xl-8\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        <h3>3</h3>\n                        <p> New Verification Request</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        <h3>5</h3>\n                        <p>New Support messages Received</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                            <h3>{{ totalUser }}</h3>\n                            <p>Total Users</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                                <h3>{{ totalImplant }}</h3>\n                                <p>Total Implant </p>\n                        </div>\n                    </div>\n                </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"main-content\">\n    <div class=\"container-fluid\">\n        <!-- start blocks-->\n        <!-- <div class=\"row\">\n                <div class=\"offset-md-2\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            3 New Verification Request\n                        </div>\n                    </div>\n                </div>\n                <div class=\"offset-md-1\"></div>\n                <div class=\"col-md-3\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                            5 New Support messages Received\n                        </div>\n                    </div>\n                </div>\n            </div> -->\n        <!-- <div class=\"row\">\n                    <div class=\"offset-md-2\"></div>\n                    <div class=\"col-md-3\">\n                        <div class=\"card\">\n                            <div class=\"card-body card-body-custome\">\n                                {{ totalUser }}\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"offset-md-1\"></div>\n                    <div class=\"col-md-3 cursor-pointer\" (click)=\"implant()\">\n                        <div class=\"card\">\n                            <div class=\"card-body card-body-custome\">\n                                {{ totalImplant }}\n                            </div>\n                        </div>\n                    </div>       \n            </div> -->\n\n        <div class=\"dashboard--wrapper col-sm-10 col-md-10 col-lg-10 col-xl-8\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        <h3>3</h3>\n                        <p> New Verification Request</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 cursor-pointer\" (click)=\"supports()\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                        <h3>{{ totalSupports }}</h3>\n                        <p>New Support messages Received</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6\">\n                <div class=\"card\">\n                    <div class=\"card-body card-body-custome\">\n                            <h3>{{ totalUser }}</h3>\n                            <p>Total Users</p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 cursor-pointer\" (click)=\"implant()\">\n                    <div class=\"card\">\n                        <div class=\"card-body card-body-custome\">\n                                <h3>{{ totalImplant }}</h3>\n                                <p>Total Implant </p>\n                        </div>\n                    </div>\n                </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -27870,7 +27870,7 @@ module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"card\">\n                <div class=\"card-header card-header-danger\">\n                    <h4 class=\"card-title\">Replay to support</h4>\n                </div>\n                <div class=\"card-body\">\n                    <form [formGroup]=\"form\" (ngSubmit)=\"send(form.value)\" #emialForm=\"ngForm\">\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Sender Email: </label> <span>{{ data.senderEmail }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Query: </label> <span>{{ data.query }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                              <div class=\"col-md-12\">\n                                  <mat-form-field class=\"example-full-width\">\n                                      <textarea matInput placeholder=\"Message\" formControlName=\"replay\" name=\"replay\"  rows=\"5\" ></textarea>\n                                      <mat-error class=\"error--handing\"\n                                          *ngIf=\"form.controls['replay'].hasError('required') && (form.controls['replay'].dirty || form.controls['replay'].touched)\">\n                                          {{ \"Message is required.\" }}\n                                      </mat-error>\n                                  </mat-form-field>\n                              </div>\n                          </div>\n                        <button mat-raised-button type=\"submit\" [disabled]=\"!form.valid\" class=\"btn btn-theme\">Send Replay</button>\n                        <div class=\"clearfix\"></div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n</div>\n          "
+module.exports = "<div class=\"confirm--header\">\n    <mat-icon (click)=\"closeModal()\" class=\"modal--close icon--cross cursor-pointer\">cancel</mat-icon>\n</div>\n<div class=\"main-content\">\n  <div class=\"container-fluid\">\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n            <div class=\"card\">\n                <div class=\"card-header card-header-danger\">\n                    <h4 class=\"card-title\">Reply to support</h4>\n                </div>\n                <div class=\"card-body\">\n                    <form [formGroup]=\"form\" (ngSubmit)=\"send(form.value)\" #emialForm=\"ngForm\">\n                            <div class=\"row\">\n                                    <div class=\"col-md-12\">\n                                        <label class=\"example-full-width\" >Raised On: </label> <span>{{ data.createdOn | date: 'MM/dd/yyyy' }}</span>\n                                    </div>\n                                </div>\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Name: </label> <span>{{ data.name }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Email: </label> <span>{{ data.senderEmail }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-md-12\">\n                                <label class=\"example-full-width\" >Query: </label> <span>{{ data.query }}</span>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                              <div class=\"col-md-12\">\n                                  <mat-form-field class=\"example-full-width\">\n                                      <textarea matInput placeholder=\"Message\" formControlName=\"replay\" name=\"replay\"  rows=\"5\" ></textarea>\n                                      <mat-error class=\"error--handing\"\n                                          *ngIf=\"form.controls['replay'].hasError('required') && (form.controls['replay'].dirty || form.controls['replay'].touched)\">\n                                          {{ \"Message is required.\" }}\n                                      </mat-error>\n                                  </mat-form-field>\n                              </div>\n                          </div>\n                          <button mat-raised-button type=\"button\" (click)=\"closeModal()\" class=\"btn cancelBtn\">Cancel</button>\n                        <button mat-raised-button type=\"submit\" [disabled]=\"!form.valid\" class=\"btn btn-theme\">Send</button>\n                        <div class=\"clearfix\"></div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n</div>\n          "
 
 /***/ }),
 
@@ -27881,7 +27881,7 @@ module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"col-md-12\">\n          <div class=\"card\">\n              <div class=\"card-header card-header-danger\">\n                  <h4 class=\"card-title\">Support List</h4>\n              </div>\n              <div class=\"card-body\">\n                  <div class=\"row\" >\n                      <form class=\"full-width\">\n                        <mat-form-field class=\"full--width\">\n                          <input matInput placeholder=\"Search by Sender Email, Quary and replay ans\" name=\"searchByString\" [(ngModel)]=\"searchByString\" (keyup)=\"searchBy()\">\n                        </mat-form-field>\n                      </form>\n                    </div>\n                <div class=\"row\" >\n                  <table *ngIf=\"recordsExists\" mat-table [dataSource]=\"supportList\" matSort class=\"mat-elevation-z8 full-width\">\n                    <ng-container matColumnDef=\"senderEmail\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Email</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.senderEmail}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"query\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Query</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.query}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"sendReplay\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> sendReplay</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.sendReplay }} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"createdOn\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> createdOn</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.createdOn | date: 'MM/dd/yyyy' }}</td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"_id\">\n                      <th mat-header-cell *matHeaderCellDef> Action </th>\n                      <td mat-cell *matCellDef=\"let element\">\n                        <a class=\"cursor-pointer btn btn-theme white-color\" (click)=\"view(element)\">Replay</a>\n                      </td>\n                    </ng-container>\n              \n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n                  </table>\n                  <mat-paginator class=\"full-width\" *ngIf=\"recordsExists\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n                </div>\n                <div class=\"row\" *ngIf=\"recordsExists < 1\">\n                    No record found!\n                </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\">\n      <div class=\"col-md-12\">\n          <div class=\"card\">\n              <div class=\"card-header card-header-danger\">\n                  <h4 class=\"card-title\">Support List</h4>\n              </div>\n              <div class=\"card-body\">\n                  <div class=\"row\" >\n                      <form class=\"full-width\">\n                        <mat-form-field class=\"full--width\">\n                          <input matInput placeholder=\"Search by Sender Email, Quary and replay ans\" name=\"searchByString\" [(ngModel)]=\"searchByString\" (keyup)=\"searchBy()\">\n                        </mat-form-field>\n                      </form>\n                    </div>\n                <div class=\"row\" >\n                  <table *ngIf=\"recordsExists\" mat-table [dataSource]=\"supportList\" matSort class=\"mat-elevation-z8 full-width\">\n                    <ng-container matColumnDef=\"name\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.name }} </td>\n                    </ng-container>\n                    <ng-container matColumnDef=\"senderEmail\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Email</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.senderEmail}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"query\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Query</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{element.query}} </td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"sendReplay\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.sendReplay == 'Yes' ? \"Resolved\" : \"Un-resolved\" }}</td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"createdOn\">\n                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Raised On</th>\n                      <td mat-cell *matCellDef=\"let element\"> {{ element.createdOn | date: 'MM/dd/yyyy' }}</td>\n                    </ng-container>\n              \n                    <ng-container matColumnDef=\"_id\">\n                      <th mat-header-cell *matHeaderCellDef> Action </th>\n                      <td mat-cell *matCellDef=\"let element\">\n                        <a [hidden] = \"element.sendReplay == 'Yes'\"  class=\"cursor-pointer btn btn-theme white-color\" (click)=\"view(element)\">Reply</a>\n                      </td>\n                    </ng-container>\n              \n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n                  </table>\n                  <mat-paginator class=\"full-width\" *ngIf=\"recordsExists\" [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n                </div>\n                <div class=\"row\" *ngIf=\"recordsExists < 1\">\n                    No record found!\n                </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -28197,6 +28197,7 @@ var CMSComponent = /** @class */ (function () {
     CMSComponent.prototype.ngOnInit = function () {
         this.getCmsPages();
     };
+    // for file upload
     CMSComponent.prototype.save = function () {
         var _this = this;
         this.api.apiRequest('post', 'cms/modify', this.pages).subscribe(function (result) {
@@ -28215,7 +28216,6 @@ var CMSComponent = /** @class */ (function () {
         this.api.apiRequest('post', 'cms/getPages', this.pages).subscribe(function (result) {
             if (result.status == "success") {
                 _this.pages = result.data.cmsList;
-                console.log(_this.pages);
             }
             else {
                 _this.snack.open(result.data, 'OK', { duration: 3000 });
@@ -28369,15 +28369,17 @@ var DashboardComponent = /** @class */ (function () {
         this.snack = snack;
         this.totalUser = "0";
         this.totalImplant = "0";
+        this.totalSupports = "0";
     }
     DashboardComponent.prototype.ngOnInit = function () {
         this.getTotalUser();
         this.getTotalImplant();
+        this.getTotalSupports();
     };
     DashboardComponent.prototype.getTotalUser = function () {
         var _this = this;
         var req_vars = {
-            query: Object.assign({ userType: "appUser" }),
+            query: Object.assign({}),
             fields: { _id: 1 },
             offset: '',
             limit: '',
@@ -28407,8 +28409,21 @@ var DashboardComponent = /** @class */ (function () {
         }, function (err) {
         });
     };
+    DashboardComponent.prototype.getTotalSupports = function () {
+        var _this = this;
+        this.api.apiRequest("post", "support/totalUnresolved", {}).subscribe(function (result) {
+            if (result.data.totalSupport > 0) {
+                _this.totalSupports = result.data.totalSupport;
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
     DashboardComponent.prototype.implant = function () {
         this.router.navigate(['/', 'admin', 'implant-list']);
+    };
+    DashboardComponent.prototype.supports = function () {
+        this.router.navigate(['/', 'admin', 'supports']);
     };
     DashboardComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -30114,7 +30129,7 @@ var NotificationsComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3N1cHBvcnRzL3N1cHBvcnQtZWRpdC9zdXBwb3J0LWVkaXQuY29tcG9uZW50LnNjc3MifQ== */"
+module.exports = ".cancelBtn {\n  border: 2px solid #235da8 !important;\n  color: #235da8 !important;\n  background-color: #ffff !important;\n  margin-right: 25px !important;\n  padding: 10px 30px !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9zdXBwb3J0cy9zdXBwb3J0LWVkaXQvc3VwcG9ydC1lZGl0LmNvbXBvbmVudC5zY3NzIiwic3JjL2FwcC9zdXBwb3J0cy9zdXBwb3J0LWVkaXQvc3VwcG9ydC1lZGl0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksb0NBQUE7RUFDQSx5QkFBQTtFQUNBLGtDQUFBO0VBQ0EsNkJBQUE7RUFDQSw2QkFBQTtBQ0NKIiwiZmlsZSI6InNyYy9hcHAvc3VwcG9ydHMvc3VwcG9ydC1lZGl0L3N1cHBvcnQtZWRpdC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5jYW5jZWxCdG4ge1xuICAgIGJvcmRlcjogMnB4IHNvbGlkICMyMzVkYTggIWltcG9ydGFudDtcbiAgICBjb2xvcjogIzIzNWRhOCAhaW1wb3J0YW50O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNmZmZmICFpbXBvcnRhbnQ7XG4gICAgbWFyZ2luLXJpZ2h0OiAyNXB4ICFpbXBvcnRhbnQ7XG4gICAgcGFkZGluZzogMTBweCAzMHB4ICFpbXBvcnRhbnQ7XG4gIH0iLCIuY2FuY2VsQnRuIHtcbiAgYm9yZGVyOiAycHggc29saWQgIzIzNWRhOCAhaW1wb3J0YW50O1xuICBjb2xvcjogIzIzNWRhOCAhaW1wb3J0YW50O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZiAhaW1wb3J0YW50O1xuICBtYXJnaW4tcmlnaHQ6IDI1cHggIWltcG9ydGFudDtcbiAgcGFkZGluZzogMTBweCAzMHB4ICFpbXBvcnRhbnQ7XG59Il19 */"
 
 /***/ }),
 
@@ -30162,8 +30177,8 @@ var SupportEditComponent = /** @class */ (function () {
         this.form = this.fb.group({
             replay: [this.data.replay, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].compose([_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required])],
         });
-        this.data.replay.replace(/<br ?\/?>/g, "\n");
-        this.form.get('replay').setValue(this.data.replay);
+        var replace = this.data.replay.replace(/<br>/gi, '\n');
+        this.form.get('replay').setValue(replace);
     };
     SupportEditComponent.prototype.closeModal = function () {
         this.dialog.closeAll();
@@ -30254,7 +30269,7 @@ var SupportsComponent = /** @class */ (function () {
         this.snackBar = snackBar;
         this.supportList = [];
         this.dbSupportList = [];
-        this.displayedColumns = ['senderEmail', 'query', 'sendReplay', 'createdOn', '_id'];
+        this.displayedColumns = ['name', 'senderEmail', 'query', 'sendReplay', 'createdOn', '_id'];
         this.noRecords = false;
         this.showErrorDetails = false;
         this.recordsExists = true;
@@ -30268,10 +30283,10 @@ var SupportsComponent = /** @class */ (function () {
         if (searchString === void 0) { searchString = null; }
         var req_vars = {
             query: Object.assign({}),
-            fields: { senderEmail: 1, query: 1, replay: 1, sendReplay: 1, _id: 1, createdOn: 1 },
+            fields: { name: 1, senderEmail: 1, query: 1, replay: 1, sendReplay: 1, _id: 1, createdOn: 1 },
             offset: '',
             limit: '',
-            order: { "createdOn": 1 },
+            order: { "createdOn": -1 },
         };
         if (searchString) {
             var searchTrim = this.searchByString.trim();
