@@ -7,20 +7,21 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const auth = require('./../helpers/authMiddleware');
 const { isEmpty } = require('lodash')
+const User = require('./../models/User')
 
 
 
 //function to create or register new user
 async function create(req, res) { 
     var support = new Support();
-    if (req.body.query == undefined || req.body.email == undefined) {
-        res.send(resFormat.rError("All field required"));
-    }else if (req.body.query == "" ||  req.body.email == "") {
+    if (req.body.query == undefined) {
         res.send(resFormat.rError("All field required"));
     } else {
+        let user = await User.findOne({"_id": req.body.userId});
         let email = req.body.email
-        support.query = req.body.query
-        support.senderEmail = req.body.email
+        support.query = req.body.query,
+        support.senderEmail = user.email,
+        support.name = user.fullName,
         support.createdOn = new Date();
         support.modifiedOn = new Date();
         support.save(async function(err, newSupport) {
@@ -132,6 +133,16 @@ async function list (req, res) {
     }
 }
 
+
+async function totalUnresolved (req, res) {
+    let supportList = await Support.find({ "sendReplay": { "$ne": true } });
+    if(supportList){
+      totalSupport = supportList.length
+      res.send(resFormat.rSuccess({ totalSupport }))
+    } else {
+        res.send(resFormat.rError(err))
+    }
+}
 //function to delete 
 async function deleteSupport (req, res) {
     if ((req.body.supportId &&  req.body.supportId == "")) {
@@ -147,10 +158,11 @@ async function deleteSupport (req, res) {
     }
 }
 
-router.post("/create", create) //, auth
+router.post("/create", auth, create) //, auth
 router.post("/addAns", auth, addAns)
 router.post("/list", list) //auth,
 router.post("/delete", auth, deleteSupport)
 router.post("/sendReplay", sendReplay)
+router.post("/totalUnresolved", totalUnresolved)
 
 module.exports = router
