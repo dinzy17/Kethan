@@ -29645,7 +29645,7 @@ var ImplantsComponent = /** @class */ (function () {
             }
             fd.append('removeImplant', JSON.stringify(implantData.removalSection));
             fd.append('addBy', "admin");
-            this.api.apiRequest('post', 'implant/addImageToCollectionTest', fd).subscribe(function (result) {
+            this.api.apiRequest('post', 'implant/addImageToCollection', fd).subscribe(function (result) {
                 _this.loaderHide();
                 if (result.status == "success") {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
