@@ -47,7 +47,6 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
       implantImage.implantManufacture = requestParams.implantManufacture
       implantImage.removImplant = JSON.parse(requestParams.removeImplant);
       implantImage.objectLocation = objectLocation
-      console.log('addBy', requestParams.addBy);
       if (requestParams.addBy !== undefined && requestParams.addBy == "admin") {
         implantImage.isApproved = true
       } else {
@@ -73,6 +72,57 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
         } else {
           res.send(resFormat.rError(messages.watson['1']))
         }//end of sending response
+      } else {
+        res.send(resFormat.rError(messages.common['2']))
+      } //end of implant save 
+    } catch(e) {
+      res.send(resFormat.rError(e))
+    }
+})
+
+// test
+router.post("/addImageToCollectionTest", [ multipartUpload, auth ], async function (req, res, next) {
+  try {
+      let requestParams = req.body 
+      let implantImage = new ImpantImage()
+      implantImage.objectName = requestParams.labelName
+      // implantImage.imgName = req.file.location
+      const objectLocation = {
+        top: parseInt(requestParams.labelOffsetY),
+        left: parseInt(requestParams.labelOffsetX),
+        width: parseInt(requestParams.labelWidth),
+        height: parseInt(requestParams.labelHeight)
+      }
+      const imageData = [{
+        imageName: req.file.location,
+        objectLocation: objectLocation
+      }]
+      implantImage.implantManufacture = requestParams.implantManufacture
+      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+      //implantImage.objectLocation = objectLocation
+      implantImage.imageData = imageData
+      if (requestParams.addBy !== undefined && requestParams.addBy == "admin") {
+        implantImage.isApproved = true
+      } else {
+        implantImage.isApproved = false
+      }
+      implantImage.createdOn = new Date()
+      implantImage.modifiedOn = new Date()
+  
+      if(implantImage.save()){
+        let imgS3Path = req.file.location
+        let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, objectLocation, imgS3Path)
+        if (watsonRes.status == "success") {
+          // update implant
+          let updatedImplant  = await ImpantImage.findOneAndUpdate({'imageData.imageName': req.file.location },{"$set": { "imageData.$.watsonImage_id": watsonRes.data.images[0].image_id }})
+          if (updatedImplant) {
+            res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
+          } else {
+            res.send(resFormat.rError(messages.watson['1']))
+          }
+        } else {
+          res.send(resFormat.rError(messages.watson['1']))
+        } //end of sending response
       } else {
         res.send(resFormat.rError(messages.common['2']))
       } //end of implant save 
@@ -322,10 +372,7 @@ router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res
           mailBody = mailBody + '<div style="mix-width: 200px"><label style="display: block; margin-top: 20px;"><h3>Image: </h3></label>'
           mailBody = mailBody + '<img style="max-width: 200px; margin: 10px 0 0 20px;" src="'+ watsonRes.data.images[0].source.source_url +'">'
           mailBody = mailBody + '</div>'
-          
-          console.log('emailBody', mailBody); 
-          
-          
+          // send email in admin
           const mailOptions = {
             to: "gaurav@arkenea.com",
             subject: "Search result",
@@ -552,14 +599,39 @@ async function searchByText( req,res ) {
   }
 }
 
+async function searchByArray( req,res ) {
+  // ImpantImage.findOne({'imageData.imageName': "https://staging-sid.s3.amazonaws.com/implantPicture1577704040940.png" }, function (err, user) {
+  //   if (err){
+  //       return done(err);
+  //   }    
+  //   if (user) {
+  //       console.log("ROOM NAME FOUND");
+  //       res.send(resFormat.rSuccess({ message: user }))  
+  //     }
+  // });
+
+  ImpantImage.findOneAndUpdate({'imageData.imageName': "https://staging-sid.s3.amazonaws.com/implantPicture1577710091978.png" },
+  {"$set": {
+        "imageData.$.watsonImage_id": "wxyz"
+    }}, function(err, users) { 
+  if(err) {
+    res.send(resFormat.rError(err))
+  } 
+  if (users) {
+    res.send(resFormat.rSuccess({ message: users }))  
+  }
+});
+}
+
 
 router.post("/getManufacture",auth, getManufacture);
 router.post("/getImplantName",auth, getImplantName);
 router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
-router.post("/implantView",auth, implantView)
+router.post("/implantView", implantView) //,auth
 router.post("/listImage",listImage) //, auth
 router.post("/getTotalManufactureName", getTotalManufactureName)
 router.post("/searchByText", searchByText)
 router.post("/updateList", updateList)
+router.post("/searchByArray", searchByArray)
 module.exports = router
