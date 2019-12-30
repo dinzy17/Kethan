@@ -853,7 +853,7 @@ async function getUserEmail (req,res) {
     }
   })
 }
-
+/*
 const crypto = require('crypto');
 
 // function to reset the password
@@ -878,7 +878,7 @@ async function decPassword ( req, res ) {
   mystr += mykey.final('utf8');
   console.log('mystr', mystr)
   res.send(resFormat.rSuccess({ stringData: mystr }))
-}
+} */
 
 // function to reset the password
 async function checkPassword ( req, res ) {
@@ -887,6 +887,36 @@ async function checkPassword ( req, res ) {
 }
 
 
+
+// Nodejs encryption with CTR
+const crypto = require('crypto');
+const algorithm = 'aes-256-cbc';
+let key = Buffer.from("55e630afc202384a539ed7c9f164812d01d2de935ed1a0ade32f06d52b73c141", 'hex');
+let iv =  Buffer.from("fa68ac88b48a3f019bbb3287d6ae39d5", 'hex');
+
+function encrypt(text) {
+ let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
+ let encrypted = cipher.update(text);
+ encrypted = Buffer.concat([encrypted, cipher.final()]);
+ return { key:key.toString('hex'),iv: iv.toString('hex'), encryptedData: encrypted.toString('hex') };
+}
+
+function decrypt(text) {
+ let iv = Buffer.from(text.iv, 'hex');
+ let keyTest = Buffer.from(text.key, 'hex');
+ let encryptedText = Buffer.from(text.encryptedData, 'hex');
+ let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(keyTest), iv);
+ let decrypted = decipher.update(encryptedText);
+ decrypted = Buffer.concat([decrypted, decipher.final()]);
+ return { decrypted:decrypted.toString() }
+}
+
+async function checkPassword ( req, res ) {
+  let hw = encrypt("123456")
+  let decriptPassword = decrypt(hw);
+  //const password = common.decryptPassword(req.body.password);
+  res.send(resFormat.rSuccess({ encript: hw, decript: decriptPassword }))
+}
 
 
 router.post("/signin", signin)
@@ -906,8 +936,8 @@ router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
 router.post('/checkPassword', checkPassword)
-router.post('/encPassword', encPassword)
-router.post('/decPassword', decPassword)
+// router.post('/encPassword', encPassword)
+// router.post('/decPassword', decPassword)
 
 
 module.exports = router
