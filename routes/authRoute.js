@@ -90,12 +90,12 @@ async function signUp(req, res) {
                 sendEmail.sendEmail(mailOptions)
             }
             res.send(resFormat.rError({ message: 'Your email is not verify. We have sent OTP in your email. please verify OTP.', statusCode: '1' }))
-            //res.send(resFormat.rError({ message:"Your email is not verify. We have sent OTP in your email. please verify OPT",  data: { "email": req.body.email }}))
         } else {
           res.send(resFormat.rError({ message:"Your email is not verify." }))
         }
       } else {
-        res.send(resFormat.rError({ message: "The Email ID is already registered with us. Login to access the application." }))
+        //res.send(resFormat.rError({ message: "The Email ID is already registered with us. Login to access the application." }))
+        res.send(resFormat.rError({ message: "Looks like your account is already registered with us.Simply reset your password from the Login screen to be able to login to your account." }))
       }
     })
   }  
