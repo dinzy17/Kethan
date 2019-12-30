@@ -416,10 +416,8 @@ async function list (req, res) {
       if(key !== "status" && key !== "SearchQuery") {
         query[key] = new RegExp(query[key], 'i')
       } else if (key === "SearchQuery") {
-        // query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
-        query['implantManufacture'] = new RegExp(query[key], 'i')
-        query['objectName'] = new RegExp(query[key], 'i')
-        delete query.SearchQuery;
+         query['$or'] = [{'implantManufacture': new RegExp(query[key], 'i')},{'objectName': new RegExp(query[key], 'i')}]
+         delete query.SearchQuery;
       }
     })
     

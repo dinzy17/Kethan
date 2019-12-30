@@ -818,7 +818,6 @@ var NavbarComponent = /** @class */ (function () {
     };
     NavbarComponent.prototype.getTitle = function () {
         var titlee = this.location.prepareExternalUrl(this.location.path());
-        console.log('title test', titlee);
         if (titlee.charAt(0) === '#') {
             titlee = titlee.slice(1);
         }
