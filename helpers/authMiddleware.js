@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
         token = req.body.accessToken
     }
     console.log('auth token', token);
+    console.log('auth token headrs', req.headers);
     if (!token) {
         return res.send(resFormat.rError({auth: false, message: Message.en.auth[16]}))
     } else {
