@@ -19,6 +19,7 @@ module.exports = (req, res, next) => {
         console.log('else in', token);
         jwt.verify(token, CONFIG.jwtSecret, (err, decoded) => {
             if (err) {
+                console.log('assdadsa test');
                 return res.send(resFormat.rError({auth: false, message:Message.en.auth[17]}))
             }
             else {
