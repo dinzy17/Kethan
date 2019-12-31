@@ -8,7 +8,7 @@ var ImpantImageSchema = new mongoose.Schema({
   surgeryDate: String,
   surgeryLocation: String,
   removalProcess: String,
-  removImplant: Object,
+  removImplant: Array,
   imgName: String,
   objectLocation: {
     left: Number,
@@ -16,7 +16,7 @@ var ImpantImageSchema = new mongoose.Schema({
     width: Number,
     height: Number
   },
-  imageData: Object,
+  imageData: Array,
   watsonImage_id: String,
   isApproved: { type: Boolean, default: false },
   isRejected: { type: Boolean, default: false },

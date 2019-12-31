@@ -29004,7 +29004,7 @@ var ImplantsEditComponent = /** @class */ (function () {
     }
     ImplantsEditComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.loader();
+        //this.loader()
         this.activatedRoute.params.subscribe(function (params) {
             _this.id = params.id;
             _this.getDetail();
@@ -29178,12 +29178,13 @@ var ImplantsEditComponent = /** @class */ (function () {
             fd.append('removeImplant', JSON.stringify(implantData.removalSection));
             fd.append('addBy', "admin");
             fd.append('implantId', this.id);
-            this.api.apiRequest('post', 'implant/editImageToCollection', fd).subscribe(function (result) {
+            // this.api.apiRequest('post', 'implant/editImageToCollection', fd).subscribe(result => {
+            this.api.apiRequest('post', 'implant/editImplantApi', fd).subscribe(function (result) {
                 _this.loaderHide();
                 if (result.status == "success") {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
                     _this.router.navigate(['/', 'admin', 'implant-list']);
-                    //this.implantForm.resetForm();
+                    _this.implantForm.resetForm();
                 }
                 else {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
@@ -29645,7 +29646,8 @@ var ImplantsComponent = /** @class */ (function () {
             }
             fd.append('removeImplant', JSON.stringify(implantData.removalSection));
             fd.append('addBy', "admin");
-            this.api.apiRequest('post', 'implant/addImageToCollection', fd).subscribe(function (result) {
+            // this.api.apiRequest('post', 'implant/addImageToCollection', fd).subscribe(result => {
+            this.api.apiRequest('post', 'implant/addImpnatApi', fd).subscribe(function (result) {
                 _this.loaderHide();
                 if (result.status == "success") {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
