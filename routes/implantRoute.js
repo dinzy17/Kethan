@@ -131,6 +131,32 @@ router.post("/addImageToCollectionTest", [ multipartUpload, auth ], async functi
     }
 })
 
+router.post("/appendImplant", [ multipartUpload, auth ], async function (req, res, next) {
+  try {
+      let requestParams = req.body 
+      const objectLocation = {
+        top: parseInt(requestParams.labelOffsetY),
+        left: parseInt(requestParams.labelOffsetX),
+        width: parseInt(requestParams.labelWidth),
+        height: parseInt(requestParams.labelHeight)
+      }
+      const imageData = [{
+        imageName: req.file.location,
+        objectLocation: objectLocation
+      }]
+      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+      //implantImage.objectLocation = objectLocation
+      implantImage.imageData = imageData
+
+      ImpantImage.update(
+        { _id: requestParams.id }, 
+        { $push: { imageData: imageData, removImplant:requestParams.removImplant }});
+        
+    } catch(e) {
+      res.send(resFormat.rError(e))
+    }
+})
+
 router.post("/editImageToCollection", [ multipartUpload, auth ], async function (req, res, next) {
   try {
     let requestParams = req.body 
@@ -379,8 +405,12 @@ router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res
             html: mailBody
           }
           sendEmail.sendEmail(mailOptions); 
+          implantRep = { status:"success", implant:implant }
+        } else {
+          implantRep = { status:"error", implant:implant }
         }
-        res.send(resFormat.rSuccess({wastson:watsonRes.data, implantData: implant }))
+        
+        res.send(resFormat.rSuccess({ wastson:watsonRes.data, implantData: implant, implantApi:implantRep }))
       } else {
         res.send(resFormat.rError(messages.common['2']))
       } //end of sending response
