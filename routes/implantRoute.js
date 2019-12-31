@@ -435,10 +435,10 @@ router.post("/startCollectionTraining", async function (req, res) {
   }
 })
 
-router.post("/analyzeImage", [ multipartUpload, auth ], async function (req, res, next) {
+router.post("/analyzeImage", [ auth ], async function (req, res, next) { //multipartUpload,
   try {
     console.log('implant body',req.body )
-    console.log('implant body',req.file )
+    console.log('implant body',req.file)
       const imgS3Path = req.file.location
       let watsonRes = await watsonLibrary.analyzeImage(constants.watson.collectionID, imgS3Path)
       if(watsonRes.status == "success") {
