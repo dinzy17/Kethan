@@ -26,7 +26,7 @@ module.exports = (req, res, next) => {
                 User.findOne({ accessToken: token }, function(err, user) {
                     if (err || !user) {
                         console.log(user)
-                        return res.send(resFormat.rError({auth: false, message:Message.en.auth[17]}))
+                        return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
                     } else {
                         console.log("auth user", user)
                         req.headers.userId = user._id;
