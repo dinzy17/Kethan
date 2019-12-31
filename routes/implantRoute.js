@@ -435,7 +435,7 @@ router.post("/startCollectionTraining", async function (req, res) {
   }
 })
 
-router.post("/analyzeImage", [ auth ], async function (req, res, next) { //multipartUpload,
+router.post("/analyzeImage", [ multipartUpload. auth ], async function (req, res, next) { //multipartUpload,
   try {
     console.log('implant body',req.body )
     console.log('implant body',req.file)
