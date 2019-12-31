@@ -11,24 +11,18 @@ module.exports = (req, res, next) => {
     } else {
         token = req.body.accessToken
     }
-    console.log('auth token', token);
-    console.log('auth token headrs', req.headers);
     if (!token) {
         return res.send(resFormat.rError({auth: false, message: Message.auth[16]}))
     } else {
-        console.log('else in', token);
         jwt.verify(token, CONFIG.jwtSecret, (err, decoded) => {
             if (err) {
-                console.log('assdadsa test');
                 return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
             }
             else {
                 User.findOne({ accessToken: token }, function(err, user) {
                     if (err || !user) {
-                        console.log(user)
                         return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
                     } else {
-                        console.log("auth user", user)
                         req.headers.userId = user._id;
                         req.body.userId = user._id;
                         next();
