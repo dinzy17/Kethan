@@ -83,6 +83,7 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
 // test
 router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res, next) {
   try {
+      console.log('req.body', req.body);
       let requestParams = req.body 
       let implantImage = new ImpantImage()
       implantImage.objectName = requestParams.labelName
@@ -107,8 +108,28 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
           res.send(resFormat.rError(e))
         }
         if( newImplant ) {
-          res.send(resFormat.rSuccess({ implant : implantImage } ))
-        }
+          if(requestParams.addBy == "admin") {
+            let imgS3Path = req.file.location
+            let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, objectLocation, imgS3Path)
+            if (watsonRes.status == "success") {
+              ImpantImage.findOneAndUpdate({'imageData.imageName': imgS3Path },
+              {"$set": {
+                    "imageData.$.watsonImage_id": watsonRes.data.images[0].image_id
+                }}, function(err, usersImplant) { 
+              if(err) {
+                res.send(resFormat.rError(messages.watson['1']))
+              } 
+              if (usersImplant) {
+                res.send(resFormat.rSuccess({image:usersImplant, watson:watsonRes}))
+              }
+            });
+            } else {
+              res.send(resFormat.rError(messages.watson['1']))
+            } //end of sending response
+          } else {
+            res.send(resFormat.rSuccess({ implant : implantImage } ))
+          }
+        } 
       })  //end of implant save 
     } catch(e) {
       res.send(resFormat.rError(e))
