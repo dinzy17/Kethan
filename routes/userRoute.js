@@ -47,6 +47,7 @@ function updateProfile(req, res) {
       } else {
         let user = await User.findOne({"_id": req.body.userId});
         userResponce = {
+          accessToken:user.accessToken,
           userId: user._id,
           name: user.fullName,
           country_code: user.countryCode ,
@@ -119,6 +120,7 @@ async function profile (req, res) {
           res.send(resFormat.rError(err))
         } else {
           userResponce = {
+            accessToken:user.accessToken,
             userId: user._id,
             name: user.fullName,
             country_code: user.countryCode ,
