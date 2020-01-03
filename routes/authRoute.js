@@ -1001,7 +1001,7 @@ router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
 router.post('/checkPassword', checkPassword)
-router.post('/changeEmailverifyOPT', changeEmailverifyOPT)
+router.post('/changeEmailverifyOPT', auth,changeEmailverifyOPT)
 // router.post('/decPassword', decPassword)
 
 
