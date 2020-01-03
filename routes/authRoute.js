@@ -37,7 +37,7 @@ async function signUp(req, res) {
             user.socialPlatform = req.body.socialPlatform
           }
           user.countryCode = req.body.country_code;
-          user.contactNumber = req.body.phoneNumber;
+          user.contactNumber = req.body.contactNumber;
           user.profession = req.body.profession;
           user.referralCode = referralCode;
           user.useReferralCode = req.body.referralCode;
@@ -412,7 +412,8 @@ function signin(req, res) {
                     country_code: user.countryCode ,
                     contactNumber: user.contactNumber,
                     email: user.email,
-                    profession: user.profession
+                    profession: user.profession,
+                    userImage: user.userImage
                   }
                 }
                 if(user.userImage === undefined || user.userImage == "") {
