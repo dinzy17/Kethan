@@ -730,6 +730,7 @@ async function changeEmailverifyOPT(req, res) {
   if (!req.body.otp){
     res.send(resFormat.rError({message:"OTP is required for verify email."}))
   } else {
+    console.log("req.body", req.body)
     let user = await User.findOne({"_id": req.body.userId });
     if (user) {
       if(!user.emailVerified){
