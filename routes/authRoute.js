@@ -726,6 +726,69 @@ async function changeEmail(req, res) {
   }) //end of user find
 }
 
+async function changeEmailverifyOPT(req, res) {
+  if (!req.body.otp){
+    res.send(resFormat.rError({message:"OTP is required for verify email."}))
+  } else {
+    let user = await User.findOne({"_id": req.body.userId });
+    if (user) {
+      if(!user.emailVerified){
+        if(req.body.otp == user.emailVerifiedOtp) {
+            // check expiry date.
+          var expiryTime = new Date(user.createdEmailVerifiedOtp);
+          expiryTime.setMinutes(expiryTime.getMinutes() + 15);
+          expiryTime = new Date(expiryTime);
+          if(new Date() < new Date( expiryTime )){
+
+            var params = {
+              emailVerified: true
+            }
+
+            let upateUser = await User.updateOne(
+              {
+                _id: user._id
+              }, {
+                $set: params
+            })
+            if (upateUser) {
+              userResponce = {
+                accessToken: token,
+                name: user.fullName,
+                country_code: user.countryCode ,
+                contactNumber: user.contactNumber,
+                email: user.email,
+                profession: user.profession,
+                userImage: user.userImage
+              }
+              if(user.userImage === undefined || user.userImage == ""){
+                userResponce.userImage = ""
+              }
+              userResponce.isSocialMediaUser = "0"
+              if(user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "facebook") {
+                userResponce.isSocialMediaUser = "1"
+              } else if (user.socialMediaToken != undefined && user.socialMediaToken != "" && user.socialPlatform == "google") {
+                userResponce.isSocialMediaUser = "2"
+              }
+              res.send(resFormat.rSuccess({ message:'Email verify successfully.',  user: userResponce }))
+            } else {
+              res.send(resFormat.rError(err))
+            }
+          } else {
+            res.send(resFormat.rError({message:"The verification code is expire. please resend verification code and verify email."}))  
+          }
+          
+        } else {
+            res.send(resFormat.rError({message:"The verification code seems to be incorrect."}))  
+        }
+      } else {
+        res.send(resFormat.rError({message:"your email is already verified"}))  
+      }
+    } else {
+      res.send(resFormat.rError({message:"Looks like your account does not exist"}))
+    }
+  }
+}
+
 // function to check user email for already registerd or not.
 async function checkEmail( req, res) {
   let set = { email: req.body.email }
@@ -937,7 +1000,7 @@ router.post("/adminForgotPassword", adminForgotPassword)
 router.post('/adminResetPassword', adminResetPassword)
 router.post('/getUserEmail', getUserEmail)
 router.post('/checkPassword', checkPassword)
-// router.post('/encPassword', encPassword)
+router.post('/changeEmailverifyOPT', changeEmailverifyOPT)
 // router.post('/decPassword', decPassword)
 
 
