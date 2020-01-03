@@ -753,7 +753,7 @@ async function changeEmailverifyOPT(req, res) {
             })
             if (upateUser) {
               userResponce = {
-                accessToken: token,
+                accessToken: user.accessToken,
                 name: user.fullName,
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
