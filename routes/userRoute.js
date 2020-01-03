@@ -34,7 +34,7 @@ var multipartUpload = multer({storage: multerS3({
 function updateProfile(req, res) {
   let params = {
     fullName: req.body.name,
-    countryCode: req.body.county_code,
+    countryCode: req.body.country_code,
     contactNumber: req.body.contactNumber,
     profession: req.body.profession
   }

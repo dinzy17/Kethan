@@ -83,7 +83,6 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
 // test
 router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res, next) {
   try {
-      console.log('req.body', req.body);
       let requestParams = req.body 
       let implantImage = new ImpantImage()
       implantImage.objectName = requestParams.labelName
@@ -95,10 +94,20 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
       }
       let imageData = [{
         imageName: req.file.location,
-        objectLocation: objectLocation
+        objectLocation: objectLocation,
+        id: generateId(),
+        createdDate: new Date(),
+        isApproved: false,
+        userId: requestParams.userId
       }]
       implantImage.implantManufacture = requestParams.implantManufacture
       implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+      for (let r = 0; r < implantImage.removImplant.length; r++) {
+        implantImage.removImplant[r].id = generateId()
+        implantImage.removImplant[r].createdDate = new Date()
+        implantImage.removImplant[r].isApproved = false,
+        implantImage.removImplant[r].userId = requestParams.userId
+      }
       implantImage.imageData = imageData
       implantImage.isApproved = false
       implantImage.createdOn = new Date()
@@ -214,8 +223,24 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
       if(implantDetail){
         let updated_data = {}
         if(requestParams.removeImplant !== undefined){
-          updated_data.removImplant = JSON.parse(requestParams.removeImplant);
+          // add key and user created date in removal process.
+          removalProcess = JSON.parse(requestParams.removeImplant)
+          console.log('first', removalProcess.length)
+          console.log('first', removalProcess)
+          for (let r = 0; r < removalProcess.length; r++) {
+            console.log('in')
+            if( removalProcess[r]["id"] === undefined ) {
+              console.log('ifin', removalProcess[r])
+              removalProcess[r].id = generateId()
+              removalProcess[r].createdDate = new Date()
+              removalProcess[r].isApproved = false
+              removalProcess[r].userId = requestParams.userId
+            }
+          }
+          console.log('out', removalProcess)
+          updated_data.removImplant = removalProcess
         }
+        console.log('req.file', req.file);
         if (req.file !== undefined) {
           let objectLocation = {
             top: parseInt(requestParams.labelOffsetY),
@@ -225,7 +250,11 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
           }
           let imageDataObj = {
             imageName: req.file.location,
-            objectLocation: objectLocation
+            objectLocation: objectLocation,
+            id: generateId(),
+            createdDate: new Date(),
+            isApproved: false,
+            userId: requestParams.userId
           }
           updated_data.imageData = implantDetail.imageData
           if(implantDetail.imageData.length == 0 || Object.keys(implantDetail.imageData).length == 0 || ( implantDetail.imageData[0] &&  implantDetail.imageData[0] == {} )) {
@@ -723,28 +752,18 @@ async function searchByText( req,res ) {
   }
 }
 
-async function searchByArray( req,res ) {
-  // ImpantImage.findOne({'imageData.imageName': "https://staging-sid.s3.amazonaws.com/implantPicture1577704040940.png" }, function (err, user) {
-  //   if (err){
-  //       return done(err);
-  //   }    
-  //   if (user) {
-  //       console.log("ROOM NAME FOUND");
-  //       res.send(resFormat.rSuccess({ message: user }))  
-  //     }
-  // });
+// genrate id
+function generateId() {
+  var mongoose = require('mongoose');
+  var id = mongoose.Types.ObjectId();
+  return id
+}
 
-  ImpantImage.findOneAndUpdate({'imageData.imageName': "https://staging-sid.s3.amazonaws.com/implantPicture1577710091978.png" },
-  {"$set": {
-        "imageData.$.watsonImage_id": "wxyz"
-    }}, function(err, users) { 
-  if(err) {
-    res.send(resFormat.rError(err))
-  } 
-  if (users) {
-    res.send(resFormat.rSuccess({ message: users }))  
-  }
-});
+async function test( req,res ) {
+  var mongoose = require('mongoose');
+  var id = mongoose.Types.ObjectId();
+  var id2 = mongoose.Types.ObjectId();
+  res.send(resFormat.rSuccess({ message1: id, message2: id }))    
 }
 
 
@@ -757,5 +776,5 @@ router.post("/listImage",listImage) //, auth
 router.post("/getTotalManufactureName", getTotalManufactureName)
 router.post("/searchByText", searchByText)
 router.post("/updateList", updateList)
-router.post("/searchByArray", searchByArray)
+router.post("/test", test)
 module.exports = router
