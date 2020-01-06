@@ -83,6 +83,8 @@ router.post("/addImageToCollection", [ multipartUpload, auth ], async function (
 // test
 router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res, next) {
   try {
+      console.log('req.body', req.file);
+      console.log('req.body', req.body);
       let requestParams = req.body 
       let implantImage = new ImpantImage()
       implantImage.objectName = requestParams.labelName
@@ -576,6 +578,16 @@ async function getManufacture (req, res) {
   }
 }
 
+async function getManufactureAndBrandName (req, res) {
+  let implantList = await ImpantImage.find({}, { implantManufacture: 1 });
+  if(implantList){
+    res.send(resFormat.rSuccess({ implantList }))
+  }
+  else{
+    res.send(resFormat.rError(err))
+  }
+}
+
 //function to get list of user as per given criteria
 async function getImplantName (req, res) {
   let implantList = await ImpantImage.aggregate([{ "$match": { "implantManufacture": req.body.implantManufacture }},{ "$group" : { _id:"$objectName", 'imgName': { "$first": "$imgName" } ,'objectName': { "$first": "$objectName" } } } ]);
@@ -759,15 +771,30 @@ function generateId() {
   return id
 }
 
-async function test( req,res ) {
-  var mongoose = require('mongoose');
-  var id = mongoose.Types.ObjectId();
-  var id2 = mongoose.Types.ObjectId();
-  res.send(resFormat.rSuccess({ message1: id, message2: id }))    
+async function deleteImage( req,res ) {
+
+  let watsonDelete = await watsonLibrary.deleteImage((constants.watson.collectionID, req.body.watsonImage_id))
+  ImpantImage.findOne({_id: req.body._id }, async function(err, details) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+        
+        let afterDeleteArray = details.imageData.filter(function(value) { return value.imageName !== req.body.imageName });
+        let updateImplant = await ImpantImage.findOneAndUpdate({ _id: req.body._id },{
+          $set: { imageData: afterDeleteArray }})
+         if( updateImplant ) {
+          let implantUpdated = await ImpantImage.findOne({ "_id": req.body._id });
+          res.send(resFormat.rSuccess({ implant : implantUpdated }))
+         } else {
+           res.send(resFormat.rError())
+         }
+    }
+   })
 }
 
 
-router.post("/getManufacture",auth, getManufacture);
+router.post("/getManufacture",auth, getManufacture);getManufactureAndBrandName
+router.post("/getManufactureAndBrandName",auth, getManufactureAndBrandName);
 router.post("/getImplantName",auth, getImplantName);
 router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
@@ -776,5 +803,5 @@ router.post("/listImage",listImage) //, auth
 router.post("/getTotalManufactureName", getTotalManufactureName)
 router.post("/searchByText", searchByText)
 router.post("/updateList", updateList)
-router.post("/test", test)
+router.post("/deleteImage", deleteImage)
 module.exports = router
