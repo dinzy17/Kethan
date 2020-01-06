@@ -103,12 +103,14 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
         userId: requestParams.userId
       }]
       implantImage.implantManufacture = requestParams.implantManufacture
-      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
-      for (let r = 0; r < implantImage.removImplant.length; r++) {
-        implantImage.removImplant[r].id = generateId()
-        implantImage.removImplant[r].createdDate = new Date()
-        implantImage.removImplant[r].isApproved = false,
-        implantImage.removImplant[r].userId = requestParams.userId
+      if(requestParams.removeImplant != undefined && requestParams.removeImplant != ""){
+        implantImage.removImplant = JSON.parse(requestParams.removeImplant);
+        for (let r = 0; r < implantImage.removImplant.length; r++) {
+          implantImage.removImplant[r].id = generateId()
+          implantImage.removImplant[r].createdDate = new Date()
+          implantImage.removImplant[r].isApproved = false,
+          implantImage.removImplant[r].userId = requestParams.userId
+        }
       }
       implantImage.imageData = imageData
       implantImage.isApproved = false
