@@ -7,5 +7,6 @@ router.use("/faq", require("./routes/faqRoute"))
 router.use("/support", require("./routes/supportRoute"))
 router.use("/implant", require("./routes/implantRoute"))
 router.use("/cms", require("./routes/cmsRoute"))
+router.use("/verificationImplant", require("./routes/verificationImplantRoute"))
 
 module.exports = router

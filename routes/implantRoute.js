@@ -94,9 +94,18 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
         width: parseInt(requestParams.labelWidth),
         height: parseInt(requestParams.labelHeight)
       }
+      let imageObjective = {
+        imageWidth: parseInt(requestParams.imageWidth),
+        imageHeight: parseInt(requestParams.imageHeight),
+        top: parseInt(requestParams.labelOffsetY),
+        left: parseInt(requestParams.labelOffsetX),
+        width: parseInt(requestParams.labelWidth),
+        height: parseInt(requestParams.labelHeight)
+      }
       let imageData = [{
         imageName: req.file.location,
         objectLocation: objectLocation,
+        imageObjective: imageObjective,
         id: generateId(),
         createdDate: new Date(),
         isApproved: false,
@@ -114,6 +123,10 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
       }
       implantImage.imageData = imageData
       implantImage.isApproved = false
+      implantImage.isNewImplant = true
+      if(requestParams.addBy == "admin") {
+        implantImage.isNewImplant = false
+      }
       implantImage.createdOn = new Date()
       implantImage.modifiedOn = new Date()
       implantImage.save ( async function( err, newImplant ) {
@@ -229,22 +242,17 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
         if(requestParams.removeImplant !== undefined){
           // add key and user created date in removal process.
           removalProcess = JSON.parse(requestParams.removeImplant)
-          console.log('first', removalProcess.length)
-          console.log('first', removalProcess)
           for (let r = 0; r < removalProcess.length; r++) {
-            console.log('in')
             if( removalProcess[r]["id"] === undefined ) {
-              console.log('ifin', removalProcess[r])
               removalProcess[r].id = generateId()
               removalProcess[r].createdDate = new Date()
               removalProcess[r].isApproved = false
               removalProcess[r].userId = requestParams.userId
             }
           }
-          console.log('out', removalProcess)
           updated_data.removImplant = removalProcess
         }
-        console.log('req.file', req.file);
+        let imageDataObj = {}
         if (req.file !== undefined) {
           let objectLocation = {
             top: parseInt(requestParams.labelOffsetY),
@@ -252,9 +260,20 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             width: parseInt(requestParams.labelWidth),
             height: parseInt(requestParams.labelHeight)
           }
-          let imageDataObj = {
+
+          let imageObjective = {
+            imageWidth: parseInt(requestParams.imageWidth),
+            imageHeight: parseInt(requestParams.imageHeight),
+            top: parseInt(requestParams.labelOffsetY),
+            left: parseInt(requestParams.labelOffsetX),
+            width: parseInt(requestParams.labelWidth),
+            height: parseInt(requestParams.labelHeight)
+          }
+
+          imageDataObj = {
             imageName: req.file.location,
             objectLocation: objectLocation,
+            imageObjective:imageObjective,
             id: generateId(),
             createdDate: new Date(),
             isApproved: false,
@@ -269,14 +288,40 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
           }
           updated_data.imageData.push(imageDataObj)
         }
-        
+        updated_data.modifiedOn - new Date()
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
           let implantUpdated = await ImpantImage.findOne({ "_id": implantDetail._id });
-          res.send(resFormat.rSuccess({ implant : implantUpdated }))
-         } else {
-           res.send(resFormat.rError())
-         }
+          // send image in watson.
+          if (req.file !== undefined) {
+            if(requestParams.addBy == "admin") {
+              
+              let imgS3Path = req.file.location
+              let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantUpdated.objectName, imageDataObj.objectLocation, imgS3Path)
+              if (watsonRes.status == "success") {
+                ImpantImage.findOneAndUpdate({'imageData.imageName': imgS3Path },
+                {"$set": {
+                      "imageData.$.watsonImage_id": watsonRes.data.images[0].image_id
+                  }}, function(err, usersImplant) { 
+                if(err) {
+                  res.send(resFormat.rError(messages.watson['1']))
+                } 
+                if (usersImplant) {
+                  res.send(resFormat.rSuccess({image:usersImplant, watson:watsonRes}))
+                }
+              });
+              } else {
+                res.send(resFormat.rError(messages.watson['1']))
+              } //end of sending response
+            } else {
+              res.send(resFormat.rSuccess({ implant : implantUpdated }))
+            }
+          } else {
+            res.send(resFormat.rSuccess({ implant : implantUpdated }))
+          }
+        } else {
+          res.send(resFormat.rError())
+        }
       }
     } catch(e) {
       res.send(resFormat.rError(e))

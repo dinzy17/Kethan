@@ -20,6 +20,9 @@ var ImpantImageSchema = new mongoose.Schema({
   watsonImage_id: String,
   isApproved: { type: Boolean, default: false },
   isRejected: { type: Boolean, default: false },
+  isNewImplant: { type: Boolean, default: true },
+  approvedDate: Date,
+  rejectedDate: Date,
   createdOn: Date,
   modifiedOn: Date
 })
