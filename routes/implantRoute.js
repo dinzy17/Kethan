@@ -109,6 +109,7 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
         id: generateId(),
         createdDate: new Date(),
         isApproved: false,
+        isRejected: false,
         userId: requestParams.userId
       }]
       implantImage.implantManufacture = requestParams.implantManufacture
@@ -118,6 +119,7 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
           implantImage.removImplant[r].id = generateId()
           implantImage.removImplant[r].createdDate = new Date()
           implantImage.removImplant[r].isApproved = false,
+          implantImage.removImplant[r].isRejected = false,
           implantImage.removImplant[r].userId = requestParams.userId
         }
       }
@@ -127,6 +129,7 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
       if(requestParams.addBy == "admin") {
         implantImage.isNewImplant = false
       }
+      implantImage.createdUserId = requestParams.userId
       implantImage.createdOn = new Date()
       implantImage.modifiedOn = new Date()
       implantImage.save ( async function( err, newImplant ) {
@@ -247,6 +250,7 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
               removalProcess[r].id = generateId()
               removalProcess[r].createdDate = new Date()
               removalProcess[r].isApproved = false
+              removalProcess[r].isRejected = false
               removalProcess[r].userId = requestParams.userId
             }
           }
@@ -277,6 +281,7 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             id: generateId(),
             createdDate: new Date(),
             isApproved: false,
+            isRejected: false,
             userId: requestParams.userId
           }
           updated_data.imageData = implantDetail.imageData
@@ -762,13 +767,28 @@ async function listImage (req, res) {
 
 // function to implant view
 async function implantView (req,res) {
-  ImpantImage.findOne({_id: req.body.id}, function(err, details) {
+  ImpantImage.findOne({_id: req.body.id}, async function(err, details) {
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess({ details }))
+      let userFullName = ""
+      if(details.createdUserId !== undefined &&  details.createdUserId !=""){
+        let createdBy = await getUserByUserID([details.createdUserId])
+        userFullName = createdBy[0].fullName
+      }
+      let imageDataUserArray = details.imageData.map((o) => o.userId)
+      let processUserArray = details.removImplant.map((o) => o.userId)
+      let userArray = imageDataUserArray.concat(processUserArray)
+
+      let users = await getUserByUserID(userArray)
+      res.send(resFormat.rSuccess({ details, users, userFullName: userFullName }))
     }
   })
+}
+
+async function getUserByUserID(userId) {
+  let user = await User.find({_id: { $in:userId}}, {fullName: 1,})
+  return user
 }
 
 async function getTotalManufactureName( req,res ){

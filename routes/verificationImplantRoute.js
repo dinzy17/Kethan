@@ -24,7 +24,7 @@ async function list (req, res) {
         }
       })
     }
-    query['$or'] = [{ 'removImplant.isApproved': false },{ 'imageData.isApproved':false }, { 'isApproved':false }]
+    query['$or'] = [{ 'removImplant.isApproved': false },{ 'imageData.isApproved':false }]
     let implantList = await ImpantImage.find(query, fields, { sort: order });
     if(implantList){
       totalImplant = implantList.length
@@ -45,6 +45,7 @@ async function list (req, res) {
         let imageDataObj = {}
         updated_data.modifiedOn = new Date()
         updated_data.isApproved = true
+        updated_data.isNewImplant = false
         updated_data.approvedDate = new Date()
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
@@ -53,6 +54,11 @@ async function list (req, res) {
           for (let i = 0; i < implantDetail.imageData.length; i++) {
             await saveImplantWatson(implantDetail.objectName, implantDetail.imageData[i].imageName, implantDetail.imageData[i].objectLocation);
           }
+          // save true
+          for (let i = 0; i < implantDetail.removImplant.length; i++) {
+            await saveImplantProcess( implantDetail.removImplant[i].id, "approved" );
+          }
+
           res.send(resFormat.rSuccess())
         } else {
           res.send(resFormat.rError())
@@ -108,7 +114,6 @@ async function list (req, res) {
     async function saveImplantReject( imagePath ){
         ImpantImage.findOneAndUpdate({'imageData.imageName': imagePath },
           {"$set": {
-                "imageData.$.watsonImage_id": watsonRes.data.images[0].image_id,
                 "imageData.$.isRejected": true,
                 "imageData.$.verifyDate": new Date()
             }}, function(err, usersImplant) { 
@@ -131,6 +136,7 @@ async function list (req, res) {
         let updated_data = {}
         updated_data.modifiedOn = new Date()
         updated_data.isRejected = true
+        updated_data.isNewImplant = false
         updated_data.rejectedDate = new Date()
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
@@ -157,7 +163,7 @@ async function list (req, res) {
           // send image in watson.
           for (let i = 0; i < implantDetail.imageData.length; i++) {
             if( implantDetail.imageData[i].id == requestParams.id ) {
-              await saveImplantReject(implantDetail.objectName, implantDetail.imageData[i].imageName, implantDetail.imageData[i].objectLocation);
+              await saveImplantReject(implantDetail.imageData[i].imageName);
             }
           }
           res.send(resFormat.rSuccess())
@@ -215,22 +221,12 @@ async function list (req, res) {
 
   async function saveImplantProcess(id, action ){
     if(action == "approved") {
-
-      // ImpantImage.findOne({_id: implantId}).then(doc => {
-      //   item = doc.removImplant.id = id;
-      //   item["isApproved"] = true;
-      //   item["verifyDate"] = new Date();
-      //   doc.save();
-      
-      //   //sent respnse to client
-      // }).catch(err => {
-      //   console.log(err)
-      // });
-
+    let img = await  ImpantImage.findOne({'removImplant.id':id })
+      console.log(img)
       ImpantImage.findOneAndUpdate( {'removImplant.id':id },
       {"$set": {
-            "imageData.$.isApproved": true,
-            "imageData.$.verifyDate": new Date()
+            "removImplant.$.isApproved": true,
+            "removImplant.$.verifyDate": new Date()
         }}, function(err, usersImplant) { 
       if(err) {
         return "error";
@@ -240,10 +236,10 @@ async function list (req, res) {
       }
     }); 
     } else {
-      ImpantImage.findOneAndUpdate({'removImplant.id': mongoose.Types.ObjectId(id)},
+      ImpantImage.findOneAndUpdate({'removImplant.id': id},
       {"$set": {
-            "imageData.$.isRejected": true,
-            "imageData.$.verifyDate": new Date()
+            "removImplant.$.isRejected": true,
+            "removImplant.$.verifyDate": new Date()
         }}, function(err, usersImplant) { 
       if(err) {
         return "error";

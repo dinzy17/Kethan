@@ -23,6 +23,7 @@ var ImpantImageSchema = new mongoose.Schema({
   isNewImplant: { type: Boolean, default: true },
   approvedDate: Date,
   rejectedDate: Date,
+  createdUserId: String,
   createdOn: Date,
   modifiedOn: Date
 })
