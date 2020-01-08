@@ -314,7 +314,8 @@ var APIService = /** @class */ (function () {
         if (token !== undefined && token != "") {
             req_vars.accessToken = token;
         }
-        return this.request(method, apiUrl, req_vars);
+        var responce = this.request(method, apiUrl, req_vars);
+        return responce;
     };
     //function to sync mails in background
     APIService.prototype.syncMailInBackground = function (userId, authCode, emailApiType, limit, folder, offset) {
