@@ -41,20 +41,6 @@ async function create(req, res) {
                    // sendClientEmail(email);
                    res.send(resFormat.rSuccess({message:"Supports added successfully."}))
                 } 
-                /*
-                async function sendClientEmail(email){
-                    let templateAdmin = await emailTemplatesRoute.getEmailTemplateByCode("supportClient")
-                    if (templateAdmin) {
-                        templateAdmin = JSON.parse(JSON.stringify(templateAdmin));
-                        let body = templateAdmin.mailBody;
-                        const mailOptionsAdmin = {
-                        to: "gaurav@arkenea.com", //req.body.email,
-                        subject: templateAdmin.mailSubject,
-                        html: body
-                        }
-                        sendEmail.sendEmail(mailOptionsAdmin)
-                    }
-                } */
             }
         })
     } 

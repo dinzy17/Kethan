@@ -477,18 +477,22 @@ async function signout(req, res) {
         let tokenIndex = _.findIndex(deviceTokens, {
           deviceId: req.headers.deviceid
         })
-        if (tokenIndex != -1) {
-          deviceTokens.splice(tokenIndex, 1)
+       // if (tokenIndex != -1) {
+         // deviceTokens.splice(tokenIndex, 1)
           let upatedUser = await User.updateOne({
             _id: user._id
           }, {
             $set: {
-              deviceTokens: deviceTokens,
+              deviceTokens: undefined,
               accessToken: undefined
             }
           })
-        }
+       // }
+       if(upatedUser) {
         res.send(resFormat.rSuccess())
+       } else {
+        res.send(resFormat.rError()) 
+       }
       } else {
         res.send(resFormat.rError({message:"User not found"}))
       }
