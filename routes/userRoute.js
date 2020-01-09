@@ -55,7 +55,19 @@ function updateProfile(req, res) {
           email: user.email,
           profession: user.profession,
           referralCode: user.referralCode,
-          userImage: user.userImage
+          userImage: user.userImage,
+          creditPoint: ""
+        }
+
+        if(user.contactNumber == undefined || user.contactNumber == ""){
+          userResponce.contactNumber =  ""
+        }
+
+        if(user.countryCode == undefined || user.countryCode == ""){
+          userResponce.country_code =  ""
+        }
+        if(user.profession == undefined || user.profession == ""){
+          userResponce.profession =  ""
         }
         if(user.userImage === undefined || user.userImage == ""){
           userResponce.userImage = ""
@@ -128,7 +140,19 @@ async function profile (req, res) {
             email: user.email,
             profession: user.profession,
             referralCode: user.referralCode,
-            userImage: user.userImage
+            userImage: user.userImage,
+            creditPoint: ""
+          }
+
+          if(user.contactNumber == undefined || user.contactNumber == ""){
+            userResponce.contactNumber =  ""
+          }
+
+          if(user.countryCode == undefined || user.countryCode == ""){
+            userResponce.country_code =  ""
+          }
+          if(user.profession == undefined || user.profession == ""){
+            userResponce.profession =  ""
           }
           if(user.userImage === undefined || user.userImage == ""){
             userResponce.userImage = ""

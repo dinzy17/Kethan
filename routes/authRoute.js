@@ -153,13 +153,26 @@ async function verifyOPT(req, res) {
             })
             if (upateUser) {
               userResponce = {
+                userId: user._id,
                 accessToken: token,
                 name: user.fullName,
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
                 email: user.email,
                 profession: user.profession,
-                userImage: user.userImage
+                userImage: user.userImage,
+                creditPoint: "",
+                referralCode:user.referralCode,
+              }
+              if(user.contactNumber == undefined || user.contactNumber == ""){
+                userResponce.contactNumber =  ""
+              }
+
+              if(user.countryCode == undefined || user.countryCode == ""){
+                userResponce.country_code =  ""
+              }
+              if(user.profession == undefined || user.profession == ""){
+                userResponce.profession =  ""
               }
               if(user.userImage === undefined || user.userImage == ""){
                 userResponce.userImage = ""
@@ -281,6 +294,7 @@ async function setPassword(req, res) {
         })
         if (upateUser) {
             userResponce = {
+              userId: user._id,
               accessToken: token,
               name: user.fullName,
               country_code: user.countryCode ,
@@ -288,7 +302,20 @@ async function setPassword(req, res) {
               email: user.email,
               profession: user.profession,
               userImage: user.userImage,
-              isSocialMediaUser: "0"
+              isSocialMediaUser: "0",
+              creditPoint: "",
+              referralCode:user.referralCode,
+            }
+
+            if(user.contactNumber == undefined || user.contactNumber == ""){
+              userResponce.contactNumber =  ""
+            }
+
+            if(user.countryCode == undefined || user.countryCode == ""){
+              userResponce.country_code =  ""
+            }
+            if(user.profession == undefined || user.profession == ""){
+              userResponce.profession =  ""
             }
             if(user.userImage === undefined || user.userImage == ""){
               userResponce.userImage = ""
@@ -339,14 +366,27 @@ function signin(req, res) {
           if (updatedUser) {
             let userObj = {
               user: {
+                userId: user._id,
                 accessToken: token,
                 name: user.fullName,
                 country_code: user.countryCode ,
                 contactNumber: user.contactNumber,
                 email: user.email,
                 profession: user.profession,
-                userImage: user.userImage
+                userImage: user.userImage,
+                creditPoint: "",
+                referralCode:user.referralCode,
               }
+            }
+            if(user.contactNumber == undefined || user.contactNumber == ""){
+              userObj.user.contactNumber =  ""
+            }
+
+            if(user.countryCode == undefined || user.countryCode == ""){
+              userObj.user.country_code =  ""
+            }
+            if(user.profession == undefined || user.profession == ""){
+              userObj.user.profession =  ""
             }
             if(user.userImage === undefined || user.userImage == "") {
               userObj.user.userImage =  ""
@@ -413,8 +453,20 @@ function signin(req, res) {
                     contactNumber: user.contactNumber,
                     email: user.email,
                     profession: user.profession,
-                    userImage: user.userImage
+                    userImage: user.userImage,
+                    creditPoint: "",
+                    referralCode:user.referralCode,
                   }
+                }
+                if(user.contactNumber == undefined || user.contactNumber == ""){
+                  userObj.user.contactNumber =  ""
+                }
+
+                if(user.countryCode == undefined || user.countryCode == ""){
+                  userObj.user.country_code =  ""
+                }
+                if(user.profession == undefined || user.profession == ""){
+                  userObj.user.profession =  ""
                 }
                 if(user.userImage === undefined || user.userImage == "") {
                   userObj.user.userImage =  ""
