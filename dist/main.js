@@ -885,7 +885,7 @@ var ROUTES = [
     // { path: '/admin/user-profile', title: 'User Profile',  icon:'person', class: '' },
     // { path: '/admin/notifications', title: 'Notifications',  icon:'notifications', class: '' },
     { path: '/admin/implants', title: 'Add Implant Image', icon: 'image', class: '' },
-    { path: '/admin/implant-verification', title: 'Verification Requests', icon: 'image', class: '' },
+    { path: '/admin/implant-verification', title: 'Verification Requests', icon: 'verified_user', class: '' },
     { path: '/admin/implant-list', title: 'Implant Image Listing', icon: 'image', class: '' },
     { path: '/admin/machine-learning', title: 'Machine Learning Status', icon: 'computer', class: '' },
     { path: '/admin/analyze', title: 'Analyze Image', icon: 'image_search', class: '' },
