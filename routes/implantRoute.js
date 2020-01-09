@@ -403,32 +403,7 @@ router.post("/editImageToCollectionTest", [ multipartUpload, auth ], async funct
     }
 })
 
-function deleteImplant(id) {
-  let watsonDelete = watsonLibrary.deleteImage((constants.watson.collectionID, id))
-}
 
-function deleteFileS3(id){
-  ImpantImage.findOne({ _id: id }, function(err, implant) {
-    if (err) {
-      res.send(resFormat.rError(err))
-    }else{
-      if(implant.imgName !=""){
-        AWS.config.update({
-          accessKeyId: constants.awsS3.accessKey,
-          secretAccessKey: constants.awsS3.secretAccessKey,
-          region: 'us-east-1',
-        });
-          const s3 = new AWS.S3();
-          const params = {
-            Bucket: constants.awsS3.bucket,
-            Key: implant.imgName
-          }
-        s3.deleteObject(params).promise()
-        console.log('image delete');
-      }
-    }
-  })
-}
 
 
 router.post("/addImplantUser", [ multipartUpload, auth ], async function (req, res, next) {
@@ -860,6 +835,59 @@ async function deleteImage( req,res ) {
 }
 
 
+async function deleteImplant( req,res ) {
+  let requestParams = req.body
+  ImpantImage.findOne({_id: requestParams.id}, async function(err, details) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      // add implant to watson for AI
+      let totalLength = details.imageData.length
+      let callMethod = totalLength - 1
+      for (let i = 0; i < totalLength; i++) {
+        await deleteImplantImage( details.imageData[i].watsonImage_id )
+        await deleteFileS3( details.imageData[i].imageName )
+        if(i == callMethod){
+          deleteImplatDB(requestParams.id);
+        }
+      }
+    }
+    async function deleteImplatDB (id) {
+      await ImpantImage.remove({ _id: id }, function(err) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        }
+        else {
+          res.send(resFormat.rSuccess())
+        }
+      });
+    }
+  })
+}
+
+
+
+function deleteImplantImage(id) {
+  let watsonDelete = watsonLibrary.deleteImage((constants.watson.collectionID, id))
+  return true
+}
+
+function deleteFileS3( name ){
+  AWS.config.update({
+      accessKeyId: constants.awsS3.accessKey,
+      secretAccessKey: constants.awsS3.secretAccessKey,
+      region: 'us-east-1',
+    });
+      const s3 = new AWS.S3();
+      const params = {
+        Bucket: constants.awsS3.bucket,
+        Key: name
+      }
+    s3.deleteObject(params).promise()
+    console.log('image delete');
+    return true;
+}
+
 router.post("/getManufacture",auth, getManufacture);getManufactureAndBrandName
 router.post("/getManufactureAndBrandName",auth, getManufactureAndBrandName);
 router.post("/getImplantName",auth, getImplantName);
@@ -871,4 +899,5 @@ router.post("/getTotalManufactureName", getTotalManufactureName)
 router.post("/searchByText", searchByText)
 router.post("/updateList", updateList)
 router.post("/deleteImage", deleteImage)
+router.post("/deleteImplant", deleteImplant)
 module.exports = router

@@ -976,7 +976,7 @@ function decrypt(text) {
 }
 
 async function checkPassword ( req, res ) {
-  let hw = encrypt("123456")
+  let hw = encrypt(req.body.password)
   let decriptPassword = decrypt(hw);
   //const password = common.decryptPassword(req.body.password);
   res.send(resFormat.rSuccess({ encript: hw, decript: decriptPassword }))
