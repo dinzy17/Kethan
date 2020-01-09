@@ -242,6 +242,23 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
     let implantDetail = await ImpantImage.findOne({ "_id": requestParams.implantId });
       if(implantDetail){
         let updated_data = {}
+        // for delete image
+        if(requestParams.deletedimage) {
+          console.log('sdasdasddsasda=========================')
+          let deleteImage =  JSON.parse(requestParams.deletedimage);
+          console.log('sdasdasddsa++++++++++++', deleteImage)
+            let resultImgArray = []
+            implantDetail.imageData.map((o)=> {
+            if(deleteImage.indexOf(o.id.toString()) == -1) {
+              resultImgArray.push(o)
+            }
+          })
+          console.log('resultImgArray*******************', resultImgArray)
+          implantDetail.imageData = resultImgArray
+          console.log('sdasdasddsa---------------------', implantDetail.imageData)
+        }
+        
+
         if(requestParams.removeImplant !== undefined){
           // add key and user created date in removal process.
           removalProcess = JSON.parse(requestParams.removeImplant)
@@ -256,6 +273,20 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
           }
           updated_data.removImplant = removalProcess
         }
+
+        // for delete removal process
+        if(requestParams.deletedprocess) {
+          let deleteProcess =  JSON.parse(requestParams.deletedprocess);
+            let resultProcArray = []
+            updated_data.removImplant.map((o)=> {
+            if(deleteProcess.indexOf(o.id) == -1) {
+              resultProcArray.push(o)
+            }
+          })
+          updated_data.removImplant = resultProcArray
+        }
+        
+
         let imageDataObj = {}
         if (req.file !== undefined) {
           let objectLocation = {
@@ -292,7 +323,22 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             updated_data.imageData.splice(0, 1)
           }
           updated_data.imageData.push(imageDataObj)
+        } else {
+          updated_data.imageData = implantDetail.imageData
         }
+
+        //console.log('resultImgArray-------------->', resultImgArray)
+
+
+        //// for delete implant.
+        /*
+        updated_data.removImplant.map((o)=> {
+          let deleteProcess = requestParams.deletedprocess.find(dp => dp == o.id)
+          updated_data.removImplant.put(o);
+        });
+         */
+
+
         updated_data.modifiedOn - new Date()
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
