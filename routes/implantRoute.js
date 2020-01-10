@@ -244,18 +244,14 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
         let updated_data = {}
         // for delete image
         if(requestParams.deletedimage) {
-          console.log('sdasdasddsasda=========================')
           let deleteImage =  JSON.parse(requestParams.deletedimage);
-          console.log('sdasdasddsa++++++++++++', deleteImage)
             let resultImgArray = []
             implantDetail.imageData.map((o)=> {
             if(deleteImage.indexOf(o.id.toString()) == -1) {
               resultImgArray.push(o)
             }
           })
-          console.log('resultImgArray*******************', resultImgArray)
           implantDetail.imageData = resultImgArray
-          console.log('sdasdasddsa---------------------', implantDetail.imageData)
         }
         
 
@@ -286,7 +282,6 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
           updated_data.removImplant = resultProcArray
         }
         
-
         let imageDataObj = {}
         if (req.file !== undefined) {
           let objectLocation = {
@@ -316,17 +311,16 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             userId: requestParams.userId
           }
           updated_data.imageData = implantDetail.imageData
-          if(implantDetail.imageData.length == 0 || Object.keys(implantDetail.imageData).length == 0 || ( implantDetail.imageData[0] &&  implantDetail.imageData[0] == {} )) {
-            updated_data.imageData = []
-          }
-          if(!updated_data.imageData[0].imageName || updated_data.imageData[0].imageName == "") {
-            updated_data.imageData.splice(0, 1)
-          }
+          // if(implantDetail.imageData.length == 0 || Object.keys(implantDetail.imageData).length == 0 || ( implantDetail.imageData[0] &&  implantDetail.imageData[0] == {} )) {
+          //   updated_data.imageData = []
+          // }
+          // if(!updated_data.imageData[0].imageName || updated_data.imageData[0].imageName == "") {
+          //   updated_data.imageData.splice(0, 1)
+          // }
           updated_data.imageData.push(imageDataObj)
         } else {
           updated_data.imageData = implantDetail.imageData
         }
-
         //console.log('resultImgArray-------------->', resultImgArray)
 
 
