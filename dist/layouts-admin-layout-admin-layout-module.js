@@ -27804,7 +27804,7 @@ module.exports = "<style> .resize-bar{ color: blue !important; }</style>\n\n<div
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<style> .resize-bar{ color: blue !important; }</style>\n\n<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Verification Requests</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <span>Fields marked with the asterisk (*) are mandatory</span>\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" name=\"implantManufacture\" >\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [(ngModel)]=\"searchName\" >\n                                                </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <div class=\"row form-group {{i}}\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\"></textarea>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                            name=\"surgeryDate\" *ngIf=\"i > 0\">\n                                                                        <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                            name=\"surgeryDate\" *ngIf=\"i == 0\">\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                      <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" >\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div *ngIf = \"(!implantDetail.isNewImplant) && (implantDetail.removImplant && !implantDetail.removImplant[i].isApproved) && (implantDetail.removImplant && !implantDetail.removImplant[i].isRejected)\" >\n                                                              <button type=\"button\" (click)=\"partialApproveRemovalProcess(implantDetail.removImplant[i].id)\" class=\"btn btn-theme\" >Approve</button>\n                                                              <button type=\"button\" (click)=\"partialRejectRemovalProcess(implantDetail.removImplant[i].id)\" class=\"btn rejectBtn\"  >reject</button>\n                                                              <div>\n                                                              <span><b>Updated By:</b>{{ implantDetail.removImplant[i].userFullName }}</span> <br />\n                                                              <span><b>Updated Date:</b>{{ implantDetail.removImplant[i].createdDate | date: 'MM/dd/yyyy' }}</span>  \n                                                              </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <div *ngIf = \"implantDetail.isNewImplant\">\n                                    <button type=\"button\" (click)=\"approve()\"  class=\"btn btn-theme\" >Approve</button>\n                                    <button type=\"button\" (click)=\"reject()\" class=\"btn rejectBtn\" >reject</button>\n                                    </div>\n                                    <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                   \n                                </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                        <div *ngIf = \"implantDetail.isNewImplant\" >\n                                                <span><b>Updated By:</b>{{ implantDetail.userFullName }}</span> <br />\n                                                <span><b>Updated Date:</b>{{ implantDetail.createdOn | date: 'MM/dd/yyyy' }}</span>\n                                            </div>\n                                    </div>\n                            </div>\n                            <!-- for change image -->\n                            <div class=\"col-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height\" *ngFor=\"let images of implantDetail.imageData; let i=index\">\n                                            <div class=\"image--gallery--container\">\n                                                <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]=\"implantDetail.imageData[i].imageName\">\n                                            </div>\n                                            <div *ngIf = \"(!implantDetail.isNewImplant) && (implantDetail.imageData && !implantDetail.imageData[i].isApproved) && (implantDetail.imageData && !implantDetail.imageData[i].isRejected)\">\n                                                <button type=\"button\" (click)=\"partialApproveImage(implantDetail.imageData[i].id)\" class=\"btn btn-theme\">Approve</button>\n                                                <button type=\"button\" (click)=\"partialRejectImage(implantDetail.imageData[i].id)\" class=\"btn rejectBtn\">reject</button>                          \n                                                <div>\n                                                    <span><b>Updated By:</b>{{ implantDetail.imageData[i].userFullName }}</span> <br />\n                                                    <span><b>Updated Date:</b>{{ implantDetail.imageData[i].createdDate | date: 'MM/dd/yyyy' }}</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            \n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
+module.exports = "<style> .resize-bar{ color: blue !important; }</style>\n\n<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Verification Requests</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <span>Fields marked with the asterisk (*) are mandatory</span>\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" name=\"implantManufacture\" >\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [(ngModel)]=\"searchName\" >\n                                                </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <div class=\"row form-group {{i}}\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\"></textarea>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <!-- <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                            name=\"surgeryDate\" *ngIf=\"i > 0\">\n                                                                        <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                            name=\"surgeryDate\" *ngIf=\"i == 0\">\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                      <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" >\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div> -->\n                                                            <div *ngIf = \"(!implantDetail.isNewImplant) && (implantDetail.removImplant && !implantDetail.removImplant[i].isApproved) && (implantDetail.removImplant && !implantDetail.removImplant[i].isRejected)\" >\n                                                              <button type=\"button\" (click)=\"partialApproveRemovalProcess(implantDetail.removImplant[i].id)\" class=\"btn btn-theme\" >Approve</button>\n                                                              <button type=\"button\" (click)=\"partialRejectRemovalProcess(implantDetail.removImplant[i].id)\" class=\"btn rejectBtn\"  >reject</button>\n                                                              <div>\n                                                              <span><b>Updated By:</b>{{ implantDetail.removImplant[i].userFullName }}</span> <br />\n                                                              <span><b>Updated Date:</b>{{ implantDetail.removImplant[i].createdDate | date: 'MM/dd/yyyy' }}</span>  \n                                                              </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <div *ngIf = \"implantDetail.isNewImplant\">\n                                    <button type=\"button\" (click)=\"approve()\"  class=\"btn btn-theme\" >Approve</button>\n                                    <button type=\"button\" (click)=\"reject()\" class=\"btn rejectBtn\" >reject</button>\n                                    </div>\n                                    <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                   \n                                </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                        <div *ngIf = \"implantDetail.isNewImplant\" >\n                                                <span><b>Updated By:</b>{{ implantDetail.userFullName }}</span> <br />\n                                                <span><b>Updated Date:</b>{{ implantDetail.createdOn | date: 'MM/dd/yyyy' }}</span>\n                                            </div>\n                                    </div>\n                            </div>\n                            <!-- for change image -->\n                            <div class=\"col-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height\" *ngFor=\"let images of implantDetail.imageData; let i=index\">\n                                            <div class=\"image--gallery--container\">\n                                                <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]=\"implantDetail.imageData[i].imageName\">\n                                            </div>\n                                            <div *ngIf = \"(!implantDetail.isNewImplant) && (implantDetail.imageData && !implantDetail.imageData[i].isApproved) && (implantDetail.imageData && !implantDetail.imageData[i].isRejected)\">\n                                                <button type=\"button\" (click)=\"partialApproveImage(implantDetail.imageData[i].id)\" class=\"btn btn-theme\">Approve</button>\n                                                <button type=\"button\" (click)=\"partialRejectImage(implantDetail.imageData[i].id)\" class=\"btn rejectBtn\">reject</button>                          \n                                                <div>\n                                                    <span><b>Updated By:</b>{{ implantDetail.imageData[i].userFullName }}</span> <br />\n                                                    <span><b>Updated Date:</b>{{ implantDetail.imageData[i].createdDate | date: 'MM/dd/yyyy' }}</span>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            \n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -27830,6 +27830,17 @@ module.exports = "<div class=\"col-12 modal--ui p-0\">\n  <div class=\"modal--he
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/index.js!./src/app/implants/append-images/append-images.component.html":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/implants/append-images/append-images.component.html ***!
+  \***********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<style>\n    .resize-bar {\n        color: blue !important;\n    }\n</style>\n\n<div class=\"main-content implant--container\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-danger\">\n                        <h4 class=\"card-title\">Implants Edit</h4>\n                    </div>\n                    <div class=\"card-body\">\n                        <span>Fields marked with the asterisk (*) are mandatory</span>\n                        <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                            <div class=\"row\">\n                                <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\"\n                                                        (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete]=\"auto\" readonly >\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto=\"matAutocomplete\" #MatAutocompleteTrigger>\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\"\n                                                        [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" readonly>\n                                                    <!-- [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" -->\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n\n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\">\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div formArrayName=\"removalSection\">\n                                                <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                    <div [formGroupName]=\"i\">\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                        #autosize=\"cdkTextareaAutosize\" cdkAutosizeMinRows=\"5\"\n                                                                        cdkAutosizeMaxRows=\"5\" readonly></textarea>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <!-- <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                        {{ \"Surgery date is required.\" }}\n                                                                    </mat-error>\n                                                                    <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                    <mat-datepicker #picker></mat-datepicker>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                        {{ \"Surgery location is required.\" }}\n                                                                    </mat-error>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div> -->\n                                                    </div>\n                                                </div>\n                                            </div>\n                                            <!-- <div class=\"add--more mb-1\">\n                                                <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                    <mat-icon>add_circle_outline</mat-icon>Add More\n                                                </button>\n                                            </div> -->\n                                        </div>\n                                    </div>\n                                    <div class=\"row col-md-12 form--bottom\">\n                                        <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n\n                                        <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                    </div>\n                                </div>\n                                <!-- for change image -->\n                                <div class=\"col-6\">\n                                    <div class=\"row\">\n                                    <!--for image upload-->\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 form-group\" *ngIf=\"this.croppedImage == ''\">\n                                            <div class=\"implant--image--container cursor--pointer\">\n                                                <label for=\"implantImage\" class=\"implant--image--lable\">\n                                                        Drop image or click to upload\n                                                </label>\n                                            </div>\n                                            <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                                    {{ \"Select at least one image to uplaod.\" }}\n                                            </mat-error>\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageValidError && !imageError\" >\n                                                    {{ \"Only png, jpg, jpeg file allowed.\" }}\n                                            </mat-error>\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" (click)=\"openImageAginDemo()\" *ngIf=\"this.croppedImage != ''\">\n                                                <mat-icon class=\"icon--delete\" (click)=\"canselImage()\" >delete_forever</mat-icon>\n                                            <img style=\"width: 100%; height: 100%;\" class=\"image--gallery\" [src]=\"this.croppedImage\">\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" *ngFor=\"let images of implantDetail.imageData; let i=index\">\n                                            <mat-icon class=\"icon--delete\" (click)=\"deleteImage(implantDetail.imageData[i], implantDetail._id )\">delete_forever</mat-icon>\n                                            <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]=\"implantDetail.imageData[i].imageName\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
 /***/ "./node_modules/raw-loader/index.js!./src/app/implants/image-view/image-view.component.html":
 /*!*****************************************************************************************!*\
   !*** ./node_modules/raw-loader!./src/app/implants/image-view/image-view.component.html ***!
@@ -27848,7 +27859,7 @@ module.exports = "<!-- <div class=\"header-model\" ><b>Title</b></div> -->\n<div
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main-content implant--container\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-danger\">\n                        <h4 class=\"card-title\">Implants View</h4>\n                    </div>\n                    <div class=\"card-body\">\n                        <form class=\"form mat-form-field-wrapper\">\n                          <div class=\"row\">\n                              <div class=\"col-md-6\">\n                                      <div class=\"row\">\n                                          <div class=\"col-md-12\">\n                                              <div class=\"form-group\">\n                                                  <mat-form-field class=\"example--full--width mat-headline\">\n                                                      <input matInput placeholder=\"Implant manufacture\" class=\"capitalize\" value=\"{{ implantData.implantManufacture }}\" readonly >\n                                                  </mat-form-field>\n                                              </div>\n                                          </div>\n                                          <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"Implant name/brand\" class=\"capitalize\" value=\"{{ implantData.objectName }}\" readonly >\n                                                </mat-form-field>\n                                            </div>\n                                          </div>\n                                      </div>\n                                      <div class=\"row\" >\n                                        <div class=\"col-md-12\">\n                                            <div>\n                                                <div class=\"removal--process\" *ngFor = \"let removalData of implantData.removImplant; let i=index\">\n                                                    <div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\"Removal Process\" [(ngModel)]=\"removalData.removalProcess\" name=\"{{ i }}\" rows=\"5\" readonly ></textarea>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery date\" value=\"{{ removalData.surgeryDate | date: 'MM/dd/yyyy' }}\" readonly >\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" value=\"{{ removalData.surgeryLocation }}\" readonly />\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                </div>  \n                              </div>\n\n                              <div class=\"col-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height\" *ngFor = \"let images of implantData.imageData; let i=index\">\n                                            <!-- <mat-icon class=\"icon--delete\" (click)=\"deleteImage(implantDetail.imageData[i], implantDetail._id )\">delete_forever</mat-icon> -->\n                                            <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]= \"implantData.imageData[i].imageName\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n  "
+module.exports = "<div class=\"main-content implant--container\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-danger\">\n                        <h4 class=\"card-title\">Implants View</h4>\n                    </div>\n                    <div class=\"card-body\">\n                        <form class=\"form mat-form-field-wrapper\">\n                          <div class=\"row\">\n                              <div class=\"col-md-6\">\n                                      <div class=\"row\">\n                                          <div class=\"col-md-12\">\n                                              <div class=\"form-group\">\n                                                  <mat-form-field class=\"example--full--width mat-headline\">\n                                                      <input matInput placeholder=\"Implant manufacture\" class=\"capitalize\" value=\"{{ implantData.implantManufacture }}\" readonly >\n                                                  </mat-form-field>\n                                              </div>\n                                          </div>\n                                          <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"Implant name/brand\" class=\"capitalize\" value=\"{{ implantData.objectName }}\" readonly >\n                                                </mat-form-field>\n                                            </div>\n                                          </div>\n                                      </div>\n                                      <div class=\"row\" >\n                                        <div class=\"col-md-12\">\n                                            <div>\n                                                <div class=\"removal--process\" *ngFor = \"let removalData of implantData.removImplant; let i=index\">\n                                                    <div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\"Removal Process\" [(ngModel)]=\"removalData.removalProcess\" name=\"{{ i }}\" rows=\"5\" readonly ></textarea>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <!-- <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery date\" value=\"{{ removalData.surgeryDate | date: 'MM/dd/yyyy' }}\" readonly >\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" value=\"{{ removalData.surgeryLocation }}\" readonly />\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div> -->\n                                                    </div>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                </div>  \n                              </div>\n\n                              <div class=\"col-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height\" *ngFor = \"let images of implantData.imageData; let i=index\">\n                                            <!-- <mat-icon class=\"icon--delete\" (click)=\"deleteImage(implantDetail.imageData[i], implantDetail._id )\">delete_forever</mat-icon> -->\n                                            <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]= \"implantData.imageData[i].imageName\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n  </div>\n  "
 
 /***/ }),
 
@@ -27859,7 +27870,7 @@ module.exports = "<div class=\"main-content implant--container\">\n    <div clas
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<style>\n    .resize-bar {\n        color: blue !important;\n    }\n</style>\n\n<div class=\"main-content implant--container\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-danger\">\n                        <h4 class=\"card-title\">Implants Edit</h4>\n                    </div>\n                    <div class=\"card-body\">\n                        <span>Fields marked with the asterisk (*) are mandatory</span>\n                        <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                            <div class=\"row\">\n                                <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\"\n                                                        (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete]=\"auto\">\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto=\"matAutocomplete\" #MatAutocompleteTrigger>\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\"\n                                                        [(ngModel)]=\"searchName\" (keyup)=\"filterName()\">\n                                                    <!-- [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" -->\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n\n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\">\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div formArrayName=\"removalSection\">\n                                                <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                    <div [formGroupName]=\"i\">\n                                                        <mat-icon class=\"cursor--pointer icon--delete\" (click)=\"delete(i);\" *ngIf=\"i > 0\">delete</mat-icon>\n                                                        <mat-error class=\"error--handing custome-error\" *ngIf=\"(removaProcessError[i] !==undefined && removaProcessError[i])\">\n                                                            {{ \"If you fill one field of this section. You need to fill all field.\" }}\n                                                        </mat-error>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                        #autosize=\"cdkTextareaAutosize\" cdkAutosizeMinRows=\"5\"\n                                                                        cdkAutosizeMaxRows=\"5\" *ngIf=\"i > 0\"></textarea>\n                                                                    <textarea matInput placeholder=\"* Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                        #autosize=\"cdkTextareaAutosize\" cdkAutosizeMinRows=\"5\"\n                                                                        cdkAutosizeMaxRows=\"5\" *ngIf=\"i == 0\"></textarea>\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                        {{ \"Removal process is required.\" }}\n                                                                    </mat-error>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                        {{ \"Surgery date is required.\" }}\n                                                                    </mat-error>\n                                                                    <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                    <mat-datepicker #picker></mat-datepicker>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                        {{ \"Surgery location is required.\" }}\n                                                                    </mat-error>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                            <div class=\"add--more mb-1\">\n                                                <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                    <mat-icon>add_circle_outline</mat-icon>Add More\n                                                </button>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row col-md-12 form--bottom\">\n                                        <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n\n                                        <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                    </div>\n                                </div>\n                                <!-- for change image -->\n                                <div class=\"col-6\">\n                                    <div class=\"row\">\n                                    <!--for image upload-->\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 form-group\" *ngIf=\"this.croppedImage == ''\">\n                                            <div class=\"implant--image--container cursor--pointer\">\n                                                <label for=\"implantImage\" class=\"implant--image--lable\">\n                                                        Drop image or click to upload\n                                                </label>\n                                            </div>\n                                            <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                                    {{ \"Select at least one image to uplaod.\" }}\n                                            </mat-error>\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageValidError && !imageError\" >\n                                                    {{ \"Only png, jpg, jpeg file allowed.\" }}\n                                            </mat-error>\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" (click)=\"openImageAginDemo()\" *ngIf=\"this.croppedImage != ''\">\n                                                <mat-icon class=\"icon--delete\" (click)=\"canselImage()\" >delete_forever</mat-icon>\n                                            <img style=\"width: 100%; height: 100%;\" class=\"image--gallery\" [src]=\"this.croppedImage\">\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" *ngFor=\"let images of implantDetail.imageData; let i=index\">\n                                            <mat-icon class=\"icon--delete\" (click)=\"deleteImage(implantDetail.imageData[i], implantDetail._id )\">delete_forever</mat-icon>\n                                            <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]=\"implantDetail.imageData[i].imageName\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<style>\n    .resize-bar {\n        color: blue !important;\n    }\n</style>\n\n<div class=\"main-content implant--container\">\n    <div class=\"container-fluid\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <div class=\"card\">\n                    <div class=\"card-header card-header-danger\">\n                        <h4 class=\"card-title\">Implants Edit</h4>\n                    </div>\n                    <div class=\"card-body\">\n                        <span>Fields marked with the asterisk (*) are mandatory</span>\n                        <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                            <div class=\"row\">\n                                <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\"\n                                                        (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete]=\"auto\">\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto=\"matAutocomplete\" #MatAutocompleteTrigger>\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\"\n                                                        [(ngModel)]=\"searchName\" (keyup)=\"filterName()\">\n                                                    <!-- [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" -->\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n\n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\">\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div formArrayName=\"removalSection\">\n                                                <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                    <div [formGroupName]=\"i\">\n                                                        <mat-icon class=\"cursor--pointer icon--delete\" (click)=\"delete(i);\" *ngIf=\"i > 0\">delete</mat-icon>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                        #autosize=\"cdkTextareaAutosize\" cdkAutosizeMinRows=\"5\"\n                                                                        cdkAutosizeMaxRows=\"5\"></textarea>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <!-- <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\"\n                                                                        name=\"surgeryDate\" *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                        {{ \"Surgery date is required.\" }}\n                                                                    </mat-error>\n                                                                    <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                    <mat-datepicker #picker></mat-datepicker>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div>\n                                                        <div class=\"row form-group\">\n                                                            <div class=\"col-lg-12\">\n                                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i > 0\">\n                                                                    <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\"\n                                                                        *ngIf=\"i == 0\">\n                                                                    <mat-error class=\"error--handing\" *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                        {{ \"Surgery location is required.\" }}\n                                                                    </mat-error>\n                                                                </mat-form-field>\n                                                            </div>\n                                                        </div> -->\n                                                    </div>\n                                                </div>\n                                            </div>\n                                            <div class=\"add--more mb-1\">\n                                                <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                    <mat-icon>add_circle_outline</mat-icon>Add More\n                                                </button>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row col-md-12 form--bottom\">\n                                        <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n\n                                        <button type=\"button\" (click)=\"cancel()\" class=\"btn cancelBtn\">Cancel</button>\n                                    </div>\n                                </div>\n                                <!-- for change image -->\n                                <div class=\"col-6\">\n                                    <div class=\"row\">\n                                    <!--for image upload-->\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 form-group\" *ngIf=\"this.croppedImage == ''\">\n                                            <div class=\"implant--image--container cursor--pointer\">\n                                                <label for=\"implantImage\" class=\"implant--image--lable\">\n                                                        Drop image or click to upload\n                                                </label>\n                                            </div>\n                                            <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                                    {{ \"Select at least one image to uplaod.\" }}\n                                            </mat-error>\n                                            <mat-error class=\"error--handing custome-error\" *ngIf= \"imageValidError && !imageError\" >\n                                                    {{ \"Only png, jpg, jpeg file allowed.\" }}\n                                            </mat-error>\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" (click)=\"openImageAginDemo()\" *ngIf=\"this.croppedImage != ''\">\n                                                <mat-icon class=\"icon--delete\" (click)=\"canselImage()\" >delete_forever</mat-icon>\n                                            <img style=\"width: 100%; height: 100%;\" class=\"image--gallery\" [src]=\"this.croppedImage\">\n                                        </div>\n                                        <div class=\"col-sm-12 col-lg-6 col-xl-6 fixed-height cursor--pointer\" *ngFor=\"let images of implantDetail.imageData; let i=index\">\n                                            <mat-icon class=\"icon--delete\" (click)=\"deleteImage(implantDetail.imageData[i], implantDetail._id )\">delete_forever</mat-icon>\n                                            <img class=\"image--gallery\" (click)=\"imageView(i)\" [src]=\"implantDetail.imageData[i].imageName\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </form>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -27881,7 +27892,7 @@ module.exports = "<div class=\"main-content\">\n  <div class=\"container-fluid\"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<style> .resize-bar{ color: blue !important; }</style>\n\n<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <span>Fields marked with the asterisk (*) are mandatory</span>\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('manufacturerValidate') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"Manufacture is already registerd.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\"  #MatAutocompleteTrigger >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    \n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"icon--delete cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <mat-error class=\"error--handing custome-error\"\n                                                                *ngIf=\"(removaProcessError[i] !==undefined && removaProcessError[i])\">\n                                                                {{ \"If you fill one field of this section. You need to fill all field.\" }}\n                                                            </mat-error>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\" *ngIf = \"i > 0\" ></textarea>\n                                                                    <textarea matInput placeholder=\"* Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\" *ngIf = \"i == 0\" ></textarea>\n                                                                    <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\" *ngIf=\"i > 0\" >\n                                                                        <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\" *ngIf=\"i == 0\" >\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" *ngIf=\"i > 0\" >\n                                                                        <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" *ngIf=\"i == 0\" >\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\" *ngIf = \"croppedImage == ''\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div  class=\"implant--image--container cursor--pointer\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\"> \n                                            Drop image or click to upload\n                                        </label>\n                                      </div>\n                                      <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                            {{ \"Select at least one image to uplaod.\" }}\n                                        </mat-error>\n                                        <mat-error class=\"error--handing custome-error\" *ngIf= \"imageValidError && !imageError\" >\n                                            {{ \"Only png, jpg, jpeg file allowed.\" }}\n                                        </mat-error>\n                                    </div>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\" *ngIf = \"croppedImage != ''\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\">\n                                            <mat-icon class=\"icon--delete cursor--pointer \" (click)=\"canselImage()\" >delete_forever</mat-icon>\n                                            <img class=\"previewImg cursor--pointer\" (click)=\"openImageAginDemo()\" [src]=\"croppedImage\" />\n                                        <!-- <label class=\"implant--image--lable\"> \n                                            Click to upload\n                                        </label> -->\n                                      </div>\n                                      <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                            {{ \"Select at least one image to uplaod.\" }}\n                                        </mat-error>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
+module.exports = "<style> .resize-bar{ color: blue !important; }</style>\n\n<div class=\"main-content implant--container\">\n  <div class=\"container-fluid\">\n      <div class=\"row\">\n          <div class=\"col-md-12\">\n              <div class=\"card\">\n                  <div class=\"card-header card-header-danger\">\n                      <h4 class=\"card-title\">Implants</h4>\n                  </div>\n                  <div class=\"card-body\">\n                      <span>Fields marked with the asterisk (*) are mandatory</span>\n                      <form class=\"form mat-form-field-wrapper\" [formGroup]=\"form\" (ngSubmit)=\"saveImplant(form.value)\" #implantForm=\"ngForm\" action=\"#\">\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                    <div class=\"row\">\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant manufacture\" class=\"capitalize\" formControlName=\"implantManufacture\" [(ngModel)]=\"searchByString\" (keyup)=\"filterManufacture()\" name=\"implantManufacture\" [matAutocomplete] = \"auto\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('required') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be blank .\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['implantManufacture'].hasError('maxlength') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"The implant's manufactuerer name cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\" *ngIf=\"form.controls['implantManufacture'].hasError('manufacturerValidate') && (form.controls['implantManufacture'].dirty || form.controls['implantManufacture'].touched)\">\n                                                        {{ \"Manufacture is already registerd.\" }}\n                                                    </mat-error>\n                                                    <mat-autocomplete #auto = \"matAutocomplete\"  #MatAutocompleteTrigger >\n                                                        <mat-option *ngFor=\"let option of filteredOptions\" [value]=\"option.implantManufacture\">\n                                                            {{ option.implantManufacture }}\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                </mat-form-field>\n                                            </div>\n                                        </div>\n                                        <div class=\"col-md-12\">\n                                            <div class=\"form-group\">\n                                                <mat-form-field class=\"example--full--width mat-headline\">\n                                                    <input matInput placeholder=\"* Implant name/brand\" class=\"capitalize\" formControlName=\"label\" name=\"label\" [matAutocomplete]=\"autoName\" [(ngModel)]=\"searchName\" (keyup)=\"filterName()\" >\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('required') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be blank \" }}\n                                                    </mat-error>\n                                                    <mat-error class=\"error--handing\"\n                                                        *ngIf=\"form.controls['label'].hasError('maxlength') && (form.controls['label'].dirty || form.controls['label'].touched)\">\n                                                        {{ \"The implant's name/brand cannot be greater than 150 characters.\" }}\n                                                    </mat-error>\n                                                    \n                                                    <mat-autocomplete #autoName=\"matAutocomplete\">\n                                                        <mat-option class=\"autocomplete--option\" *ngFor=\"let name of filteredNames\" [value]=\"name.objectName\" >\n                                                            <img class=\"example-option-img\" aria-hidden [src]=\"name.imgName\" height=\"25\">\n                                                            <span>{{name.objectName}}</span>\n                                                        </mat-option>\n                                                    </mat-autocomplete>\n                                                    </mat-form-field>\n                                                </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\" >\n                                            <div class=\"col-md-12\">\n                                                <div formArrayName=\"removalSection\">\n                                                    <div class=\"removal--process\" *ngFor=\"let unit of form.controls.removalSection.controls; let i=index\">\n                                                        <div [formGroupName]=\"i\">\n                                                            <mat-icon class=\"cursor--pointer\" (click)=\"delete(i);\" *ngIf=\"i > 0\" >delete</mat-icon>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                    <textarea matInput placeholder=\" Removal Process\" formControlName=\"removalProcess\" name=\"removalProcess\" cdkTextareaAutosize\n                                                                    #autosize=\"cdkTextareaAutosize\"\n                                                                    cdkAutosizeMinRows=\"5\"\n                                                                    cdkAutosizeMaxRows=\"5\" ></textarea>\n                                                                   <!-- <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['removalProcess'].hasError('required') && (unit.controls['removalProcess'].dirty || unit.controls['removalProcess'].touched)\">\n                                                                            {{ \"Removal process is required.\" }}\n                                                                    </mat-error> -->\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <!-- <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\" *ngIf=\"i > 0\" >\n                                                                        <input matInput placeholder=\"* Surgery date\" [matDatepicker]=\"picker\" (focus)=\"picker.open()\" formControlName=\"surgeryDate\" name=\"surgeryDate\" *ngIf=\"i == 0\" >\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryDate'].hasError('required') && (unit.controls['surgeryDate'].dirty || unit.controls['surgeryDate'].touched)\">\n                                                                            {{ \"Surgery date is required.\" }}\n                                                                        </mat-error>\n                                                                        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                                                                        <mat-datepicker #picker></mat-datepicker>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div>\n                                                            <div class=\"row form-group\">\n                                                                <div class=\"col-lg-12\">\n                                                                    <mat-form-field class=\"example--full--width mat-headline\">\n                                                                        <input matInput placeholder=\"Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" *ngIf=\"i > 0\" >\n                                                                        <input matInput placeholder=\"* Surgery Location\" class=\"capitalize\" formControlName=\"surgeryLocation\" name=\"surgeryLocation\" *ngIf=\"i == 0\" >\n                                                                        <mat-error class=\"error--handing\"\n                                                                            *ngIf=\"unit.controls['surgeryLocation'].hasError('required') && (unit.controls['surgeryLocation'].dirty || unit.controls['surgeryLocation'].touched)\">\n                                                                            {{ \"Surgery location is required.\" }}\n                                                                        </mat-error>\n                                                                    </mat-form-field>\n                                                                </div>\n                                                            </div> -->\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <div class=\"add--more mb-1\">\n                                                    <button type=\"button\" mat-button class=\"add--more--btn\" (click)=\"addRow();\">\n                                                        <mat-icon>add_circle_outline</mat-icon>Add More\n                                                    </button>\n                                                </div>\n                                            </div>\n                                    </div>\n                                <div class=\"row col-md-12 form--bottom\">\n                                    <button type=\"submit\" [disabled]=\"!form.valid || disabledSave\" class=\"btn btn-theme\">Save</button>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\" *ngIf = \"croppedImage == ''\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div  class=\"implant--image--container cursor--pointer\">\n                                        <label for=\"implantImage\" class=\"implant--image--lable\"> \n                                            Drop image or click to upload\n                                        </label>\n                                      </div>\n                                      <input type=\"file\" (change)=\"fileChangeEvent($event)\" id=\"implantImage\" accept=\"image/*\" class=\"form-control\" />\n                                      <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                            {{ \"Select at least one image to uplaod.\" }}\n                                        </mat-error>\n                                        <mat-error class=\"error--handing custome-error\" *ngIf= \"imageValidError && !imageError\" >\n                                            {{ \"Only png, jpg, jpeg file allowed.\" }}\n                                        </mat-error>\n                                    </div>\n                                </div>\n                            </div>\n                            <div class=\"col-md-3\" *ngIf = \"croppedImage != ''\">\n                                <div class=\"row form-group \">\n                                    <div class=\"col-md-12\">\n                                      <div class=\"implant--image--container\">\n                                            <mat-icon class=\"icon--delete cursor--pointer \" (click)=\"canselImage()\" >delete_forever</mat-icon>\n                                            <img class=\"previewImg cursor--pointer\" (click)=\"openImageAginDemo()\" [src]=\"croppedImage\" />\n                                        <!-- <label class=\"implant--image--lable\"> \n                                            Click to upload\n                                        </label> -->\n                                      </div>\n                                      <mat-error class=\"error--handing custome-error\" *ngIf= \"imageError\" >\n                                            {{ \"Select at least one image to uplaod.\" }}\n                                        </mat-error>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                      </form>\n                  </div>\n              </div>\n          </div>\n      </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -28906,9 +28917,9 @@ var ImplantVerificationViewComponent = /** @class */ (function () {
             implantManufacture: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
             removalSection: this.fb.array([
                 this.fb.group({
-                    removalProcess: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-                    surgeryDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
-                    surgeryLocation: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+                    removalProcess: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
+                    // surgeryDate: ["", [Validators.required]],
+                    // surgeryLocation: ["", [Validators.required]],
                 })
             ])
         });
@@ -28928,8 +28939,8 @@ var ImplantVerificationViewComponent = /** @class */ (function () {
                         _this.addRow();
                     }
                     _this.form.controls.removalSection['controls'][i]['controls']['removalProcess'].setValue(_this.implantDetail.removImplant[i].removalProcess);
-                    _this.form.controls.removalSection['controls'][i]['controls']['surgeryDate'].setValue(_this.implantDetail.removImplant[i].surgeryDate);
-                    _this.form.controls.removalSection['controls'][i]['controls']['surgeryLocation'].setValue(_this.implantDetail.removImplant[i].surgeryLocation);
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryDate'].setValue(this.implantDetail.removImplant[i].surgeryDate);    
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryLocation'].setValue(this.implantDetail.removImplant[i].surgeryLocation);    
                 }
                 _this.viewImageData = _this.implantDetail.imageData;
                 _this.implantDetail.imageData.map(function (o) {
@@ -28960,20 +28971,6 @@ var ImplantVerificationViewComponent = /** @class */ (function () {
             surgeryLocation: [''],
         });
     };
-    // compare password validate
-    ImplantVerificationViewComponent.prototype.removaProcessValidation = function (control) {
-        var removalProcess = control.get('removalProcess').value;
-        var surgeryDate = control.get('surgeryDate').value;
-        var surgeryLocation = control.get('surgeryLocation').value;
-        if ((removalProcess.trim() == "") && (surgeryDate.trim() == "") && (surgeryLocation.trim() == "")) {
-            control.get('removalProcess').setErrors({ requiredProcess: true });
-            control.get('surgeryDate').setErrors({ requiredProcess: true });
-            control.get('surgeryLocation').setErrors({ requiredProcess: true });
-        }
-        else {
-            return null;
-        }
-    };
     /*
     add removal process
     */
@@ -29000,7 +28997,7 @@ var ImplantVerificationViewComponent = /** @class */ (function () {
         var dialogRefView = this.dialog.open(app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_7__["ImageViewComponent"], {
             width: "620px",
             panelClass: "nopad--modal",
-            disableClose: false,
+            disableClose: true,
             data: this.viewImageData[i]
         });
     };
@@ -29382,6 +29379,434 @@ var AddImageImplantComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/implants/append-images/append-images.component.scss":
+/*!*********************************************************************!*\
+  !*** ./src/app/implants/append-images/append-images.component.scss ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".implant--container .image--cropper {\n  max-width: 500px;\n}\n.implant--container .implant--image--container {\n  height: 350px;\n  margin-bottom: 10px;\n  position: relative;\n}\n.implant--container .implant--image--container .implant--image--lable {\n  display: -webkit-box;\n  display: flex;\n  margin: 10px;\n  color: #545454;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  margin: 0;\n  border: 1px dashed #CCC;\n  text-align: center;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  cursor: pointer;\n  color: #176aba;\n  font-size: 20px;\n}\n.implant--container .crop--preview label {\n  display: block;\n  margin-top: 20px;\n  color: #545454;\n}\n.implant--container .crop--preview img {\n  max-width: 200px;\n}\n.implant--container .cropper {\n  min-width: 100%;\n  max-height: 100%;\n  top: 50px;\n  left: 50px;\n}\n.implant--container .cropper .move {\n  width: 100%;\n  cursor: move;\n  border: 2px solid red !important;\n}\n.autocomplete--option {\n  height: 70px;\n  border-bottom: 1px solid #CCC;\n}\n.example-option-img {\n  height: 50px;\n  vertical-align: middle;\n  margin-right: 8px;\n}\n.cursor--pointer {\n  cursor: pointer;\n}\n.removal--process {\n  border: 1px solid #CCC;\n  margin-bottom: 10px;\n  position: relative;\n}\n.capitalize {\n  text-transform: capitalize;\n}\n.mat-headline {\n  font-size: 20px !important;\n}\n.custome-error {\n  margin-left: 20px;\n  font-size: 20px;\n  font-weight: 500;\n}\n.cropper > span {\n  color: red !important;\n}\n.image--cropper > .cropper > .resize-bar {\n  color: red !important;\n}\n[_nghost-ukt-c11] .cropper[_ngcontent-ukt-c11] {\n  color: #ef1c06 !important;\n}\n#area-border {\n  border: 3px solid red;\n  position: absolute;\n}\n#img-container {\n  max-width: 500px;\n  max-height: 800px;\n  position: relative;\n}\n#img-container img {\n  width: 100%;\n  height: 100%;\n}\n.detailImage {\n  max-width: 700px;\n}\n.m-t-50 {\n  margin-top: 50px;\n}\n.cancelBtn {\n  border: 1px solid #235da8;\n  color: #235da8 !important;\n  background-color: #ffff;\n  margin-left: 25px;\n}\n::ng-deep .cropper {\n  color: #ef1c06 !important;\n}\n::ng-deep .cropper::after {\n  border: 3px solid #ef1c06 !important;\n}\n::ng-deep .cropper .resize .square {\n  background: #ef1c06 !important;\n}\n.m-b-15 {\n  margin-bottom: 15px;\n}\n.image--gallery {\n  min-width: 100%;\n  max-height: 100%;\n}\n.m-t-15 {\n  margin-top: 15px;\n}\n.fixed-height {\n  height: 350px;\n  margin-bottom: 25px;\n  border: 1px solid #ddd;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n  padding: 15px;\n}\n.icon--delete {\n  position: absolute;\n  right: 3px;\n  top: 5px;\n  color: #2d78cb;\n  cursor: pointer;\n  background: #ddd;\n  padding: 2px;\n  border-radius: 50%;\n  height: 30px;\n  width: 30px;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.add--more--btn {\n  padding: 0;\n  color: #2f7fd3;\n  margin-bottom: 30px;\n}\n.add--more--btn .mat-icon {\n  margin-right: 2px;\n}\n@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {\n  .implant--container .implant--image--container,\n.fixed-height {\n    height: 150px;\n  }\n\n  .implant--container .implant--image--container .implant--image--lable {\n    font-size: 16px;\n  }\n}\n@media only screen and (min-width: 1350px) and (max-width: 1605px) {\n  .implant--container .implant--image--container,\n.fixed-height {\n    height: 200px;\n  }\n\n  .implant--container .implant--image--container .implant--image--lable {\n    font-size: 18px;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9vcHQvbGFtcHAvaHRkb2NzL2dpdC9rZXRoYW4vZnJvbnRlbmQvc3JjL2FwcC9pbXBsYW50cy9hcHBlbmQtaW1hZ2VzL2FwcGVuZC1pbWFnZXMuY29tcG9uZW50LnNjc3MiLCJzcmMvYXBwL2ltcGxhbnRzL2FwcGVuZC1pbWFnZXMvYXBwZW5kLWltYWdlcy5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFSTtFQUNFLGdCQUFBO0FDRE47QURHSTtFQUNFLGFBQUE7RUFDQSxtQkFBQTtFQUNBLGtCQUFBO0FDRE47QURHTTtFQUNFLG9CQUFBO0VBQUEsYUFBQTtFQUNFLFlBQUE7RUFDQSxjQUFBO0VBQ0Esa0JBQUE7RUFDQSxNQUFBO0VBQ0EsUUFBQTtFQUNBLFNBQUE7RUFDQSxPQUFBO0VBQ0EsV0FBQTtFQUNBLFlBQUE7RUFDQSxTQUFBO0VBQ0EsdUJBQUE7RUFDQSxrQkFBQTtFQUNBLHlCQUFBO1VBQUEsbUJBQUE7RUFDQSx3QkFBQTtVQUFBLHVCQUFBO0VBQ0EsZUFBQTtFQUNBLGNBQUE7RUFDQSxlQUFBO0FDRFY7QURNTTtFQUNFLGNBQUE7RUFDQSxnQkFBQTtFQUNBLGNBQUE7QUNKUjtBRE1NO0VBQ0UsZ0JBQUE7QUNKUjtBRFFJO0VBQ0UsZUFBQTtFQUNBLGdCQUFBO0VBQ0EsU0FBQTtFQUNBLFVBQUE7QUNOTjtBRFFJO0VBQ0UsV0FBQTtFQUNBLFlBQUE7RUFDQSxnQ0FBQTtBQ05OO0FEU0U7RUFDRSxZQUFBO0VBQ0EsNkJBQUE7QUNOSjtBRFFFO0VBQ0UsWUFBQTtFQUNBLHNCQUFBO0VBQ0EsaUJBQUE7QUNMSjtBRE9FO0VBQ0UsZUFBQTtBQ0pKO0FETUU7RUFDRSxzQkFBQTtFQUNBLG1CQUFBO0VBQ0Esa0JBQUE7QUNISjtBREtFO0VBQ0UsMEJBQUE7QUNGSjtBREtFO0VBQ0UsMEJBQUE7QUNGSjtBRElFO0VBQ0UsaUJBQUE7RUFDQSxlQUFBO0VBQ0EsZ0JBQUE7QUNESjtBREdFO0VBQ0UscUJBQUE7QUNBSjtBREVFO0VBQ0UscUJBQUE7QUNDSjtBREVFO0VBQ0UseUJBQUE7QUNDSjtBREVFO0VBQ0UscUJBQUE7RUFDQSxrQkFBQTtBQ0NKO0FERUU7RUFDRSxnQkFBQTtFQUNBLGlCQUFBO0VBQ0Esa0JBQUE7QUNDSjtBRENFO0VBQ0UsV0FBQTtFQUNBLFlBQUE7QUNFSjtBREFFO0VBQ0UsZ0JBQUE7QUNHSjtBRERFO0VBQ0UsZ0JBQUE7QUNJSjtBREZFO0VBQ0UseUJBQUE7RUFDQSx5QkFBQTtFQUNBLHVCQUFBO0VBQ0EsaUJBQUE7QUNLSjtBRERJO0VBQ0UseUJBQUE7QUNJTjtBREhNO0VBQ0Usb0NBQUE7QUNLUjtBREZRO0VBQ0UsOEJBQUE7QUNJVjtBREVFO0VBQ0UsbUJBQUE7QUNDSjtBREVFO0VBQ0UsZUFBQTtFQUNFLGdCQUFBO0FDQ047QURDRTtFQUNFLGdCQUFBO0FDRUo7QURBRTtFQUNFLGFBQUE7RUFDQSxtQkFBQTtFQUNBLHNCQUFBO0VBQ0Esb0JBQUE7RUFBQSxhQUFBO0VBQ0EseUJBQUE7VUFBQSxtQkFBQTtFQUNBLHdCQUFBO1VBQUEsdUJBQUE7RUFDQSxhQUFBO0FDR0o7QURBRTtFQUNFLGtCQUFBO0VBQ0EsVUFBQTtFQUNBLFFBQUE7RUFDQSxjQUFBO0VBQ0EsZUFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLGtCQUFBO0VBQ0EsWUFBQTtFQUNBLFdBQUE7RUFDQSxvQkFBQTtFQUFBLGFBQUE7RUFDQSx5QkFBQTtVQUFBLG1CQUFBO0VBQ0Esd0JBQUE7VUFBQSx1QkFBQTtBQ0dKO0FEQUU7RUFDRSxVQUFBO0VBQ0EsY0FBQTtFQUNBLG1CQUFBO0FDR0o7QURGSTtFQUNFLGlCQUFBO0FDSU47QURBRTtFQUNFOztJQUVFLGFBQUE7RUNHSjs7RURERTtJQUNFLGVBQUE7RUNJSjtBQUNGO0FERkU7RUFDRTs7SUFFRSxhQUFBO0VDSUo7O0VERkU7SUFDRSxlQUFBO0VDS0o7QUFDRiIsImZpbGUiOiJzcmMvYXBwL2ltcGxhbnRzL2FwcGVuZC1pbWFnZXMvYXBwZW5kLWltYWdlcy5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5pbXBsYW50LS1jb250YWluZXJ7XG5cbiAgICAuaW1hZ2UtLWNyb3BwZXJ7XG4gICAgICBtYXgtd2lkdGg6IDUwMHB4O1xuICAgIH1cbiAgICAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lciB7XG4gICAgICBoZWlnaHQ6IDM1MHB4O1xuICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgXG4gICAgICAuaW1wbGFudC0taW1hZ2UtLWxhYmxlIHtcbiAgICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgICAgICBtYXJnaW46IDEwcHg7XG4gICAgICAgICAgY29sb3I6ICM1NDU0NTQ7XG4gICAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgICAgIHRvcDogMDtcbiAgICAgICAgICByaWdodDogMDtcbiAgICAgICAgICBib3R0b206IDA7XG4gICAgICAgICAgbGVmdDogMDtcbiAgICAgICAgICB3aWR0aDogMTAwJTtcbiAgICAgICAgICBoZWlnaHQ6IDEwMCU7XG4gICAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICAgIGJvcmRlcjogMXB4IGRhc2hlZCAjQ0NDO1xuICAgICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICAgICAgICBjb2xvcjogIzE3NmFiYTtcbiAgICAgICAgICBmb250LXNpemU6IDIwcHg7XG4gICAgICB9XG4gICAgfVxuICAgIC5jcm9wLS1wcmV2aWV3IHtcbiAgICAgIC8vIGRpc3BsYXk6IGZsZXg7XG4gICAgICBsYWJlbCB7XG4gICAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgICBtYXJnaW4tdG9wOiAyMHB4O1xuICAgICAgICBjb2xvcjogIzU0NTQ1NDtcbiAgICAgIH1cbiAgICAgIGltZyB7XG4gICAgICAgIG1heC13aWR0aDogMjAwcHg7XG4gICAgICB9XG4gICAgfVxuICBcbiAgICAuY3JvcHBlciB7XG4gICAgICBtaW4td2lkdGg6IDEwMCU7XG4gICAgICBtYXgtaGVpZ2h0OiAxMDAlO1xuICAgICAgdG9wOiA1MHB4O1xuICAgICAgbGVmdDogNTBweDtcbiAgICB9XG4gICAgLmNyb3BwZXIgLm1vdmUge1xuICAgICAgd2lkdGg6IDEwMCU7XG4gICAgICBjdXJzb3I6IG1vdmU7XG4gICAgICBib3JkZXI6IDJweCBzb2xpZCByZWQgIWltcG9ydGFudDtcbiAgICB9XG4gIH1cbiAgLmF1dG9jb21wbGV0ZS0tb3B0aW9uIHtcbiAgICBoZWlnaHQ6IDcwcHg7XG4gICAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNDQ0M7XG4gIH1cbiAgLmV4YW1wbGUtb3B0aW9uLWltZyB7XG4gICAgaGVpZ2h0OiA1MHB4O1xuICAgIHZlcnRpY2FsLWFsaWduOiBtaWRkbGU7XG4gICAgbWFyZ2luLXJpZ2h0OiA4cHg7XG4gIH1cbiAgLmN1cnNvci0tcG9pbnRlcntcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gIH1cbiAgLnJlbW92YWwtLXByb2Nlc3N7XG4gICAgYm9yZGVyOiAxcHggc29saWQgI0NDQztcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgfVxuICAuY2FwaXRhbGl6ZXtcbiAgICB0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbiAgfVxuICBcbiAgLm1hdC1oZWFkbGluZSB7XG4gICAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG4gIH1cbiAgLmN1c3RvbWUtZXJyb3Ige1xuICAgIG1hcmdpbi1sZWZ0OiAyMHB4O1xuICAgIGZvbnQtc2l6ZTogMjBweDtcbiAgICBmb250LXdlaWdodDogNTAwO1xuICB9XG4gIC5jcm9wcGVyID4gc3BhbiB7XG4gICAgY29sb3I6IHJlZCAhaW1wb3J0YW50O1xuICB9XG4gIC5pbWFnZS0tY3JvcHBlciA+IC5jcm9wcGVyID4gLnJlc2l6ZS1iYXJ7XG4gICAgY29sb3I6IHJlZCAhaW1wb3J0YW50O1xuICB9XG4gIFxuICBbX25naG9zdC11a3QtYzExXSAuY3JvcHBlcltfbmdjb250ZW50LXVrdC1jMTFde1xuICAgIGNvbG9yOiAjZWYxYzA2ICFpbXBvcnRhbnQ7XG4gIH1cblxuICAjYXJlYS1ib3JkZXJ7XG4gICAgYm9yZGVyOiAzcHggc29saWQgcmVkO1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgfVxuICBcbiAgI2ltZy1jb250YWluZXIge1xuICAgIG1heC13aWR0aDogNTAwcHg7XG4gICAgbWF4LWhlaWdodDogODAwcHg7XG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB9XG4gICNpbWctY29udGFpbmVyIGltZyB7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgaGVpZ2h0OiAxMDAlO1xuICB9XG4gIC5kZXRhaWxJbWFnZSB7XG4gICAgbWF4LXdpZHRoOiA3MDBweDtcbiAgfVxuICAubS10LTUwIHtcbiAgICBtYXJnaW4tdG9wOiA1MHB4O1xuICB9XG4gIC5jYW5jZWxCdG4ge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkICMyMzVkYTg7XG4gICAgY29sb3I6ICMyMzVkYTggIWltcG9ydGFudDtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZjtcbiAgICBtYXJnaW4tbGVmdDogMjVweDtcbiAgfVxuXG4gIDo6bmctZGVlcCB7XG4gICAgLmNyb3BwZXJ7XG4gICAgICBjb2xvcjogI2VmMWMwNiAhaW1wb3J0YW50O1xuICAgICAgJjo6YWZ0ZXJ7XG4gICAgICAgIGJvcmRlcjogM3B4IHNvbGlkICNlZjFjMDYgIWltcG9ydGFudDtcbiAgICAgIH1cbiAgICAgIC5yZXNpemUge1xuICAgICAgICAuc3F1YXJlIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiAjZWYxYzA2ICFpbXBvcnRhbnQ7XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG4gIH1cbiAgXG4gIC5tLWItMTUge1xuICAgIG1hcmdpbi1ib3R0b206IDE1cHg7XG4gIH1cblxuICAuaW1hZ2UtLWdhbGxlcnkge1xuICAgIG1pbi13aWR0aDogMTAwJTtcbiAgICAgIG1heC1oZWlnaHQ6IDEwMCU7XG4gIH1cbiAgLm0tdC0xNXtcbiAgICBtYXJnaW4tdG9wOiAxNXB4O1xuICB9XG4gIC5maXhlZC1oZWlnaHR7XG4gICAgaGVpZ2h0OiAzNTBweDtcbiAgICBtYXJnaW4tYm90dG9tOiAyNXB4O1xuICAgIGJvcmRlcjogMXB4IHNvbGlkICNkZGQ7XG4gICAgZGlzcGxheTogZmxleDtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgIHBhZGRpbmc6IDE1cHg7XG4gIH1cblxuICAuaWNvbi0tZGVsZXRle1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICByaWdodDogM3B4O1xuICAgIHRvcDogNXB4O1xuICAgIGNvbG9yOiAjMmQ3OGNiO1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBiYWNrZ3JvdW5kOiAjZGRkO1xuICAgIHBhZGRpbmc6IDJweDtcbiAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgaGVpZ2h0OiAzMHB4O1xuICAgIHdpZHRoOiAzMHB4O1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgfVxuXG4gIC5hZGQtLW1vcmUtLWJ0bntcbiAgICBwYWRkaW5nOiAwO1xuICAgIGNvbG9yOiAjMmY3ZmQzO1xuICAgIG1hcmdpbi1ib3R0b206IDMwcHg7XG4gICAgLm1hdC1pY29ue1xuICAgICAgbWFyZ2luLXJpZ2h0OiAycHg7XG4gICAgfVxuICB9XG5cbiAgQG1lZGlhIG9ubHkgc2NyZWVuIGFuZCAobWluLWRldmljZS13aWR0aDogNDgxcHgpIGFuZCAobWF4LWRldmljZS13aWR0aDogMTAyNHB4KSBhbmQgKG9yaWVudGF0aW9uOmxhbmRzY2FwZSkge1xuICAgIC5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIsXG4gICAgLmZpeGVkLWhlaWdodCB7XG4gICAgICBoZWlnaHQ6IDE1MHB4O1xuICAgIH1cbiAgICAuaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tbGFibGV7XG4gICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgfVxuICB9XG4gIEBtZWRpYSBvbmx5IHNjcmVlbiBhbmQgKG1pbi13aWR0aDogMTM1MHB4KSBhbmQgKG1heC13aWR0aDogMTYwNXB4KXsgXG4gICAgLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lcixcbiAgICAuZml4ZWQtaGVpZ2h0IHtcbiAgICAgIGhlaWdodDogMjAwcHg7XG4gICAgfVxuICAgIC5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1sYWJsZXtcbiAgICAgIGZvbnQtc2l6ZTogMThweDtcbiAgICB9XG4gIH0gIiwiLmltcGxhbnQtLWNvbnRhaW5lciAuaW1hZ2UtLWNyb3BwZXIge1xuICBtYXgtd2lkdGg6IDUwMHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lciB7XG4gIGhlaWdodDogMzUwcHg7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbn1cbi5pbXBsYW50LS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1jb250YWluZXIgLmltcGxhbnQtLWltYWdlLS1sYWJsZSB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIG1hcmdpbjogMTBweDtcbiAgY29sb3I6ICM1NDU0NTQ7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAwO1xuICByaWdodDogMDtcbiAgYm90dG9tOiAwO1xuICBsZWZ0OiAwO1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xuICBtYXJnaW46IDA7XG4gIGJvcmRlcjogMXB4IGRhc2hlZCAjQ0NDO1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICBjdXJzb3I6IHBvaW50ZXI7XG4gIGNvbG9yOiAjMTc2YWJhO1xuICBmb250LXNpemU6IDIwcHg7XG59XG4uaW1wbGFudC0tY29udGFpbmVyIC5jcm9wLS1wcmV2aWV3IGxhYmVsIHtcbiAgZGlzcGxheTogYmxvY2s7XG4gIG1hcmdpbi10b3A6IDIwcHg7XG4gIGNvbG9yOiAjNTQ1NDU0O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcC0tcHJldmlldyBpbWcge1xuICBtYXgtd2lkdGg6IDIwMHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcHBlciB7XG4gIG1pbi13aWR0aDogMTAwJTtcbiAgbWF4LWhlaWdodDogMTAwJTtcbiAgdG9wOiA1MHB4O1xuICBsZWZ0OiA1MHB4O1xufVxuLmltcGxhbnQtLWNvbnRhaW5lciAuY3JvcHBlciAubW92ZSB7XG4gIHdpZHRoOiAxMDAlO1xuICBjdXJzb3I6IG1vdmU7XG4gIGJvcmRlcjogMnB4IHNvbGlkIHJlZCAhaW1wb3J0YW50O1xufVxuXG4uYXV0b2NvbXBsZXRlLS1vcHRpb24ge1xuICBoZWlnaHQ6IDcwcHg7XG4gIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjQ0NDO1xufVxuXG4uZXhhbXBsZS1vcHRpb24taW1nIHtcbiAgaGVpZ2h0OiA1MHB4O1xuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICBtYXJnaW4tcmlnaHQ6IDhweDtcbn1cblxuLmN1cnNvci0tcG9pbnRlciB7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLnJlbW92YWwtLXByb2Nlc3Mge1xuICBib3JkZXI6IDFweCBzb2xpZCAjQ0NDO1xuICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICBwb3NpdGlvbjogcmVsYXRpdmU7XG59XG5cbi5jYXBpdGFsaXplIHtcbiAgdGV4dC10cmFuc2Zvcm06IGNhcGl0YWxpemU7XG59XG5cbi5tYXQtaGVhZGxpbmUge1xuICBmb250LXNpemU6IDIwcHggIWltcG9ydGFudDtcbn1cblxuLmN1c3RvbWUtZXJyb3Ige1xuICBtYXJnaW4tbGVmdDogMjBweDtcbiAgZm9udC1zaXplOiAyMHB4O1xuICBmb250LXdlaWdodDogNTAwO1xufVxuXG4uY3JvcHBlciA+IHNwYW4ge1xuICBjb2xvcjogcmVkICFpbXBvcnRhbnQ7XG59XG5cbi5pbWFnZS0tY3JvcHBlciA+IC5jcm9wcGVyID4gLnJlc2l6ZS1iYXIge1xuICBjb2xvcjogcmVkICFpbXBvcnRhbnQ7XG59XG5cbltfbmdob3N0LXVrdC1jMTFdIC5jcm9wcGVyW19uZ2NvbnRlbnQtdWt0LWMxMV0ge1xuICBjb2xvcjogI2VmMWMwNiAhaW1wb3J0YW50O1xufVxuXG4jYXJlYS1ib3JkZXIge1xuICBib3JkZXI6IDNweCBzb2xpZCByZWQ7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbn1cblxuI2ltZy1jb250YWluZXIge1xuICBtYXgtd2lkdGg6IDUwMHB4O1xuICBtYXgtaGVpZ2h0OiA4MDBweDtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xufVxuXG4jaW1nLWNvbnRhaW5lciBpbWcge1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xufVxuXG4uZGV0YWlsSW1hZ2Uge1xuICBtYXgtd2lkdGg6IDcwMHB4O1xufVxuXG4ubS10LTUwIHtcbiAgbWFyZ2luLXRvcDogNTBweDtcbn1cblxuLmNhbmNlbEJ0biB7XG4gIGJvcmRlcjogMXB4IHNvbGlkICMyMzVkYTg7XG4gIGNvbG9yOiAjMjM1ZGE4ICFpbXBvcnRhbnQ7XG4gIGJhY2tncm91bmQtY29sb3I6ICNmZmZmO1xuICBtYXJnaW4tbGVmdDogMjVweDtcbn1cblxuOjpuZy1kZWVwIC5jcm9wcGVyIHtcbiAgY29sb3I6ICNlZjFjMDYgIWltcG9ydGFudDtcbn1cbjo6bmctZGVlcCAuY3JvcHBlcjo6YWZ0ZXIge1xuICBib3JkZXI6IDNweCBzb2xpZCAjZWYxYzA2ICFpbXBvcnRhbnQ7XG59XG46Om5nLWRlZXAgLmNyb3BwZXIgLnJlc2l6ZSAuc3F1YXJlIHtcbiAgYmFja2dyb3VuZDogI2VmMWMwNiAhaW1wb3J0YW50O1xufVxuXG4ubS1iLTE1IHtcbiAgbWFyZ2luLWJvdHRvbTogMTVweDtcbn1cblxuLmltYWdlLS1nYWxsZXJ5IHtcbiAgbWluLXdpZHRoOiAxMDAlO1xuICBtYXgtaGVpZ2h0OiAxMDAlO1xufVxuXG4ubS10LTE1IHtcbiAgbWFyZ2luLXRvcDogMTVweDtcbn1cblxuLmZpeGVkLWhlaWdodCB7XG4gIGhlaWdodDogMzUwcHg7XG4gIG1hcmdpbi1ib3R0b206IDI1cHg7XG4gIGJvcmRlcjogMXB4IHNvbGlkICNkZGQ7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICBwYWRkaW5nOiAxNXB4O1xufVxuXG4uaWNvbi0tZGVsZXRlIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICByaWdodDogM3B4O1xuICB0b3A6IDVweDtcbiAgY29sb3I6ICMyZDc4Y2I7XG4gIGN1cnNvcjogcG9pbnRlcjtcbiAgYmFja2dyb3VuZDogI2RkZDtcbiAgcGFkZGluZzogMnB4O1xuICBib3JkZXItcmFkaXVzOiA1MCU7XG4gIGhlaWdodDogMzBweDtcbiAgd2lkdGg6IDMwcHg7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGp1c3RpZnktY29udGVudDogY2VudGVyO1xufVxuXG4uYWRkLS1tb3JlLS1idG4ge1xuICBwYWRkaW5nOiAwO1xuICBjb2xvcjogIzJmN2ZkMztcbiAgbWFyZ2luLWJvdHRvbTogMzBweDtcbn1cbi5hZGQtLW1vcmUtLWJ0biAubWF0LWljb24ge1xuICBtYXJnaW4tcmlnaHQ6IDJweDtcbn1cblxuQG1lZGlhIG9ubHkgc2NyZWVuIGFuZCAobWluLWRldmljZS13aWR0aDogNDgxcHgpIGFuZCAobWF4LWRldmljZS13aWR0aDogMTAyNHB4KSBhbmQgKG9yaWVudGF0aW9uOiBsYW5kc2NhcGUpIHtcbiAgLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lcixcbi5maXhlZC1oZWlnaHQge1xuICAgIGhlaWdodDogMTUwcHg7XG4gIH1cblxuICAuaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tbGFibGUge1xuICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgfVxufVxuQG1lZGlhIG9ubHkgc2NyZWVuIGFuZCAobWluLXdpZHRoOiAxMzUwcHgpIGFuZCAobWF4LXdpZHRoOiAxNjA1cHgpIHtcbiAgLmltcGxhbnQtLWNvbnRhaW5lciAuaW1wbGFudC0taW1hZ2UtLWNvbnRhaW5lcixcbi5maXhlZC1oZWlnaHQge1xuICAgIGhlaWdodDogMjAwcHg7XG4gIH1cblxuICAuaW1wbGFudC0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tY29udGFpbmVyIC5pbXBsYW50LS1pbWFnZS0tbGFibGUge1xuICAgIGZvbnQtc2l6ZTogMThweDtcbiAgfVxufSJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/implants/append-images/append-images.component.ts":
+/*!*******************************************************************!*\
+  !*** ./src/app/implants/append-images/append-images.component.ts ***!
+  \*******************************************************************/
+/*! exports provided: AppendImagesComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppendImagesComponent", function() { return AppendImagesComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/text-field */ "./node_modules/@angular/cdk/esm5/text-field.es5.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var app_api_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! app/api.service */ "./src/app/api.service.ts");
+/* harmony import */ var app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! app/sid-loder-component/sid-loder-component.component */ "./src/app/sid-loder-component/sid-loder-component.component.ts");
+/* harmony import */ var app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! app/implants/add-image-implant/add-image-implant.component */ "./src/app/implants/add-image-implant/add-image-implant.component.ts");
+/* harmony import */ var app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! app/implants/image-view/image-view.component */ "./src/app/implants/image-view/image-view.component.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+
+
+
+var AppendImagesComponent = /** @class */ (function () {
+    function AppendImagesComponent(fb, activatedRoute, api, snack, router, dialog) {
+        var _this = this;
+        this.fb = fb;
+        this.activatedRoute = activatedRoute;
+        this.api = api;
+        this.snack = snack;
+        this.router = router;
+        this.dialog = dialog;
+        this.id = "";
+        this.userId = localStorage.getItem("userId") || "";
+        this.imageChangedEvent = '';
+        this.croppedImage = '';
+        this.imageWidth = 0;
+        this.imageHeight = 0;
+        this.labelWidth = 0;
+        this.labelHeight = 0;
+        this.labelOffsetX = 0;
+        this.labelOffsetY = 0;
+        this.disabledSave = false;
+        this.imageValidExtensions = ['jpg', 'png', 'jpeg'];
+        this.optionsAllData = [];
+        this.options = [];
+        this.names = [];
+        this.imageError = false;
+        this.imageValidError = false;
+        this.dialogRef = "";
+        this.dialogRefView = "";
+        this.removaProcessError = [];
+        this.validationError = false;
+        this.implantDetail = {};
+        this.changeImage = false;
+        this.displayHighlite = false;
+        this.data = {};
+        this.viewImageData = {};
+        this.deleteArray = ["5e182eb607a48e077462a735"];
+        //function to filter manufacturer
+        this.filterManufacture = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
+            var manufactureSearch = _this.searchByString.trim().toLowerCase();
+            if (manufactureSearch.length > 2) {
+                var allOptions = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["cloneDeep"])(_this.options);
+                _this.filteredOptions = allOptions.filter(function (o) {
+                    return o.implantManufacture.toLowerCase().indexOf(manufactureSearch) > -1;
+                });
+            }
+            else {
+                _this.filteredOptions = [];
+            }
+        }, 500);
+        this.filterName = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["debounce"])(function () {
+            if (_this.searchByString) {
+                var nameSearch_1 = _this.searchName.trim().toLowerCase();
+                var manufactureSearch = _this.searchByString.trim();
+                if (nameSearch_1.length > 2) {
+                    _this.api.apiRequest('post', 'implant/getImplantName', { implantManufacture: manufactureSearch }).subscribe(function (result) {
+                        if (result.status == "success") {
+                            _this.names = result.data.implantList;
+                            var allNames = Object(lodash__WEBPACK_IMPORTED_MODULE_4__["cloneDeep"])(_this.names);
+                            _this.filteredNames = allNames.filter(function (o) { return o.objectName.toLowerCase().indexOf(nameSearch_1) > -1; });
+                        }
+                    });
+                }
+                else {
+                    _this.names = [];
+                }
+            }
+            else {
+                _this.names = [];
+            }
+        }, 500);
+    }
+    AppendImagesComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        //this.loader()
+        this.activatedRoute.params.subscribe(function (params) {
+            _this.id = params.id;
+            _this.getDetail();
+        });
+        /* Initiate the form structure */
+        this.form = this.fb.group({
+            label: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
+            implantManufacture: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
+            removalSection: this.fb.array([
+                this.fb.group({
+                    removalProcess: [""],
+                })
+            ])
+        });
+        // call get manufacture for auto complete.
+        this.getManufacture();
+    };
+    AppendImagesComponent.prototype.getDetail = function () {
+        var _this = this;
+        this.loader();
+        this.api.apiRequest('post', 'implant/implantView', { id: this.id }).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.implantDetail = result.data.details;
+                _this.form.controls.label.setValue(_this.implantDetail.objectName);
+                _this.form.controls.implantManufacture.setValue(_this.implantDetail.implantManufacture);
+                for (var i = 0; i < _this.implantDetail.removImplant.length; i++) {
+                    if (i > 0) {
+                        _this.addRow();
+                    }
+                    _this.form.controls.removalSection['controls'][i]['controls']['removalProcess'].setValue(_this.implantDetail.removImplant[i].removalProcess);
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryDate'].setValue(this.implantDetail.removImplant[i].surgeryDate);    
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryLocation'].setValue(this.implantDetail.removImplant[i].surgeryLocation);    
+                }
+                _this.viewImageData = _this.implantDetail.imageData;
+                _this.loaderHide();
+            }
+            else {
+                _this.loaderHide();
+            }
+        }, function (err) {
+            _this.loaderHide();
+            console.error(err);
+        });
+    };
+    /**
+     * Create form Removal Process.
+     */
+    AppendImagesComponent.prototype.getRemovalProcess = function () {
+        return this.fb.group({
+            removalProcess: ['',]
+            // surgeryDate: [""],
+            // surgeryLocation: [''],
+        });
+    };
+    /*
+    add removal process
+    */
+    AppendImagesComponent.prototype.addRow = function () {
+        var control = this.form.controls['removalSection'];
+        control.push(this.getRemovalProcess());
+    };
+    AppendImagesComponent.prototype.delete = function (i) {
+        var control = this.form.controls['removalSection'];
+        control.removeAt(i);
+        if (this.implantDetail.removImplant[i] !== undefined) {
+            delete this.implantDetail.removImplant[i];
+        }
+    };
+    //function to save details
+    AppendImagesComponent.prototype.saveImplant = function (implantData) {
+        var _this = this;
+        this.validationError = false;
+        for (var index in implantData.removalSection) {
+            if ((implantData.removalSection[index].removalProcess == "")) {
+                delete implantData.removalSection[index];
+            }
+            else {
+                this.removaProcessError[index] = false;
+                if (this.implantDetail.removImplant[index] !== undefined) {
+                    implantData.removalSection[index].id = this.implantDetail.removImplant[index].id;
+                    implantData.removalSection[index].createdDate = this.implantDetail.removImplant[index].createdDate;
+                    implantData.removalSection[index].isApproved = this.implantDetail.removImplant[index].isApproved;
+                    implantData.removalSection[index].userId = this.implantDetail.removImplant[index].userId;
+                }
+            }
+        }
+        if (!this.validationError) {
+            this.loader();
+            this.disabledSave = true;
+            var formData = {
+                accessToken: localStorage.getItem('token'),
+                userId: this.userId,
+                labelName: implantData.label,
+                implantManufacture: implantData.implantManufacture,
+                imageWidth: this.imageWidth,
+                imageHeight: this.imageHeight,
+                labelWidth: this.labelWidth,
+                labelHeight: this.labelHeight,
+                labelOffsetX: this.labelOffsetX,
+                labelOffsetY: this.labelOffsetY
+            };
+            var fd = new FormData();
+            if ((this.uploadedFile !== undefined && this.uploadedFile.name != "")) { //&& this.uploadedFile.name != ""
+                fd.append('implantPicture', this.uploadedFile, this.uploadedFile.name);
+            }
+            for (var key in formData) {
+                fd.append(key, formData[key]);
+            }
+            fd.append('removeImplant', JSON.stringify(implantData.removalSection));
+            fd.append('addBy', "user");
+            fd.append('implantId', this.id);
+            //   fd.append('deletedimage', JSON.stringify(this.deleteArray ));
+            //fd.append('deletedprocess', JSON.stringify(this.deleteArray ));
+            // this.api.apiRequest('post', 'implant/editImageToCollection', fd).subscribe(result => {
+            this.api.apiRequest('post', 'implant/editImplantApi', fd).subscribe(function (result) {
+                _this.loaderHide();
+                if (result.status == "success") {
+                    _this.snack.open("Successfully updated implant!", 'OK', { duration: 3000 });
+                    _this.uploadedFile = null;
+                    _this.getDetail();
+                    _this.disabledSave = false;
+                    _this.imageError = false;
+                    _this.imageValidError = false;
+                }
+                else {
+                    _this.imageError = false;
+                    _this.imageValidError = true;
+                    _this.snack.open("Something went wrong!", 'OK', { duration: 3000 });
+                }
+                _this.resetValues();
+            }, function (err) {
+                _this.loaderHide();
+                console.error(err);
+                _this.disabledSave = false;
+            });
+        }
+    };
+    AppendImagesComponent.prototype.resetValues = function () {
+        this.uploadedFile = undefined;
+        this.croppedImage = "";
+        this.imageWidth = 0;
+        this.imageHeight = 0;
+        this.labelWidth = 0;
+        this.labelHeight = 0;
+        this.labelOffsetX = 0;
+        this.labelOffsetY = 0;
+        var control = this.form.controls['removalSection'];
+        for (var i = 0; i <= control.length; i++) {
+            if (i > 0) {
+                this.delete(i);
+            }
+        }
+    };
+    AppendImagesComponent.prototype.resetImageValue = function () {
+        this.imageWidth = 0;
+        this.imageHeight = 0;
+        this.labelWidth = 0;
+        this.labelHeight = 0;
+        this.labelOffsetX = 0;
+        this.labelOffsetY = 0;
+        var img = document.getElementById('implantImage');
+        img.value = "";
+    };
+    AppendImagesComponent.prototype.getManufacture = function () {
+        var _this = this;
+        this.api.apiRequest('post', 'implant/getManufacture', {}).subscribe(function (result) {
+            if (result.status == "success") {
+                _this.options = result.data.implantList;
+                _this.optionsAllData = result.data.implantList;
+            }
+        });
+    };
+    // for loder
+    AppendImagesComponent.prototype.loader = function () {
+        this.dialogRef = this.dialog.open(app_sid_loder_component_sid_loder_component_component__WEBPACK_IMPORTED_MODULE_7__["SidLoderComponentComponent"], {
+            panelClass: 'lock--panel',
+            backdropClass: 'lock--backdrop',
+            disableClose: true
+        });
+    };
+    AppendImagesComponent.prototype.loaderHide = function () {
+        this.dialogRef.close();
+    };
+    // for open modele
+    AppendImagesComponent.prototype.fileChangeEvent = function (event) {
+        this.imageChangedEvent = event;
+        this.imageValidError = false;
+        this.imageError = false;
+        var img = document.getElementById('implantImage');
+        var filename = img.files[0].name;
+        var fileExt = filename.split(".").splice(-1)[0].toLowerCase();
+        if (this.imageValidExtensions.indexOf(fileExt) == -1) {
+            this.resetImageValue();
+            this.imageValidError = true;
+        }
+        else {
+            // open model for event.
+            this.uploadedFile = img.files[0];
+            this.imageEvent = event;
+            this.disabledSave = false;
+            this.imageError = false;
+            this.imageUpload(event);
+        }
+    };
+    AppendImagesComponent.prototype.openImageAginDemo = function () {
+        this.imageUpload(this.imageEvent);
+    };
+    AppendImagesComponent.prototype.imageUpload = function (event) {
+        var _this = this;
+        // this.changeImage = true
+        var dialogRef = this.dialog.open(app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_8__["AddImageImplantComponent"], {
+            width: "620px",
+            panelClass: "nopad--modal",
+            disableClose: true,
+            data: event,
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != undefined) {
+                //  this.uploadedFile = result.imageData.uploadedFile 
+                _this.imageWidth = result.imageData.imageWidth;
+                _this.imageHeight = result.imageData.imageHeight;
+                _this.labelWidth = result.imageData.labelWidth;
+                _this.labelHeight = result.imageData.labelHeight;
+                _this.labelOffsetX = result.imageData.labelOffsetX;
+                _this.labelOffsetY = result.imageData.labelOffsetY;
+                // this.croppedImage = result.imageData.image
+                // for image privew.
+                var reader_1 = new FileReader();
+                reader_1.readAsDataURL(_this.uploadedFile);
+                reader_1.onload = function (_event) {
+                    _this.croppedImage = reader_1.result;
+                };
+            }
+            else {
+                //this.imageError = true;
+                // this.croppedImage = ""; 
+                // this.uploadedFile = undefined
+                // this.resetImageValue()
+            }
+        });
+    };
+    AppendImagesComponent.prototype.cancel = function () {
+        this.router.navigate(['/', 'admin', 'implant-list']);
+    };
+    AppendImagesComponent.prototype.canselImage = function () {
+        this.croppedImage = "";
+        this.uploadedFile = undefined;
+        this.resetImageValue();
+    };
+    AppendImagesComponent.prototype.deleteImage = function (implantImageData, implantId) {
+        var _this = this;
+        implantImageData._id = implantId;
+        this.loader();
+        this.api.apiRequest('post', 'implant/deleteImage', implantImageData).subscribe(function (result) {
+            _this.loaderHide();
+            if (result.status == "success") {
+                _this.loaderHide();
+                _this.getDetail();
+                _this.snack.open("Successfully delete image !", 'OK', { duration: 3000 });
+            }
+            else {
+                //  this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 })
+            }
+            // this.resetValues()
+        }, function (err) {
+            _this.loaderHide();
+            console.error(err);
+            _this.disabledSave = false;
+        });
+    };
+    AppendImagesComponent.prototype.imageView = function (i) {
+        this.viewImageData[i].objectName = this.implantDetail.objectName;
+        var dialogRefView = this.dialog.open(app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_9__["ImageViewComponent"], {
+            width: "620px",
+            panelClass: "nopad--modal",
+            disableClose: true,
+            data: this.viewImageData[i]
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('autosize', { static: false }),
+        __metadata("design:type", _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_1__["CdkTextareaAutosize"])
+    ], AppendImagesComponent.prototype, "autosize", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('implantForm', { static: false }),
+        __metadata("design:type", Object)
+    ], AppendImagesComponent.prototype, "implantForm", void 0);
+    AppendImagesComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-append-images',
+            template: __webpack_require__(/*! raw-loader!./append-images.component.html */ "./node_modules/raw-loader/index.js!./src/app/implants/append-images/append-images.component.html"),
+            styles: [__webpack_require__(/*! ./append-images.component.scss */ "./src/app/implants/append-images/append-images.component.scss")]
+        }),
+        __metadata("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"], app_api_service__WEBPACK_IMPORTED_MODULE_6__["APIService"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatSnackBar"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"], _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"]])
+    ], AppendImagesComponent);
+    return AppendImagesComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/implants/image-view/image-view.component.scss":
 /*!***************************************************************!*\
   !*** ./src/app/implants/image-view/image-view.component.scss ***!
@@ -29601,7 +30026,7 @@ var ImplantsDetailsComponent = /** @class */ (function () {
         var dialogRefView = this.dialog.open(app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_5__["ImageViewComponent"], {
             width: "620px",
             panelClass: "nopad--modal",
-            disableClose: false,
+            disableClose: true,
             data: this.viewImageData[i]
         });
     };
@@ -29756,9 +30181,9 @@ var ImplantsEditComponent = /** @class */ (function () {
             implantManufacture: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
             removalSection: this.fb.array([
                 this.fb.group({
-                    removalProcess: ["", _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-                    surgeryDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
-                    surgeryLocation: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
+                    removalProcess: [""]
+                    // surgeryDate: ["", [Validators.required]],
+                    // surgeryLocation: ["", [Validators.required]],
                 })
             ])
         });
@@ -29778,8 +30203,8 @@ var ImplantsEditComponent = /** @class */ (function () {
                         _this.addRow();
                     }
                     _this.form.controls.removalSection['controls'][i]['controls']['removalProcess'].setValue(_this.implantDetail.removImplant[i].removalProcess);
-                    _this.form.controls.removalSection['controls'][i]['controls']['surgeryDate'].setValue(_this.implantDetail.removImplant[i].surgeryDate);
-                    _this.form.controls.removalSection['controls'][i]['controls']['surgeryLocation'].setValue(_this.implantDetail.removImplant[i].surgeryLocation);
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryDate'].setValue(this.implantDetail.removImplant[i].surgeryDate);    
+                    // this.form.controls.removalSection['controls'][i]['controls']['surgeryLocation'].setValue(this.implantDetail.removImplant[i].surgeryLocation);    
                 }
                 _this.viewImageData = _this.implantDetail.imageData;
                 _this.loaderHide();
@@ -29797,24 +30222,10 @@ var ImplantsEditComponent = /** @class */ (function () {
      */
     ImplantsEditComponent.prototype.getRemovalProcess = function () {
         return this.fb.group({
-            removalProcess: ['',],
-            surgeryDate: [""],
-            surgeryLocation: [''],
+            removalProcess: ['',]
+            // surgeryDate: [""],
+            // surgeryLocation: [''],
         });
-    };
-    // compare password validate
-    ImplantsEditComponent.prototype.removaProcessValidation = function (control) {
-        var removalProcess = control.get('removalProcess').value;
-        var surgeryDate = control.get('surgeryDate').value;
-        var surgeryLocation = control.get('surgeryLocation').value;
-        if ((removalProcess.trim() == "") && (surgeryDate.trim() == "") && (surgeryLocation.trim() == "")) {
-            control.get('removalProcess').setErrors({ requiredProcess: true });
-            control.get('surgeryDate').setErrors({ requiredProcess: true });
-            control.get('surgeryLocation').setErrors({ requiredProcess: true });
-        }
-        else {
-            return null;
-        }
     };
     /*
     add removal process
@@ -29835,12 +30246,8 @@ var ImplantsEditComponent = /** @class */ (function () {
         var _this = this;
         this.validationError = false;
         for (var index in implantData.removalSection) {
-            if ((implantData.removalSection[index].removalProcess == "") && (implantData.removalSection[index].surgeryDate == "") && (implantData.removalSection[index].surgeryLocation == "")) {
+            if ((implantData.removalSection[index].removalProcess == "")) {
                 delete implantData.removalSection[index];
-            }
-            else if ((implantData.removalSection[index].removalProcess == "") || (implantData.removalSection[index].surgeryDate == "") || (implantData.removalSection[index].surgeryLocation == "")) {
-                this.removaProcessError[index] = true;
-                this.validationError = true;
             }
             else {
                 this.removaProcessError[index] = false;
@@ -29852,7 +30259,6 @@ var ImplantsEditComponent = /** @class */ (function () {
                 }
             }
         }
-        console.log('implantData.removalSection', implantData.removalSection);
         if (!this.validationError) {
             this.loader();
             this.disabledSave = true;
@@ -29876,7 +30282,7 @@ var ImplantsEditComponent = /** @class */ (function () {
                 fd.append(key, formData[key]);
             }
             fd.append('removeImplant', JSON.stringify(implantData.removalSection));
-            fd.append('addBy', "user");
+            fd.append('addBy', "admin");
             fd.append('implantId', this.id);
             fd.append('deletedimage', JSON.stringify(this.deleteArray));
             //fd.append('deletedprocess', JSON.stringify(this.deleteArray ));
@@ -29980,7 +30386,7 @@ var ImplantsEditComponent = /** @class */ (function () {
         var dialogRef = this.dialog.open(app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_8__["AddImageImplantComponent"], {
             width: "620px",
             panelClass: "nopad--modal",
-            disableClose: false,
+            disableClose: true,
             data: event,
         });
         dialogRef.afterClosed().subscribe(function (result) {
@@ -30002,22 +30408,16 @@ var ImplantsEditComponent = /** @class */ (function () {
             }
             else {
                 //this.imageError = true;
-                _this.croppedImage = "";
-                _this.uploadedFile = undefined;
-                _this.resetImageValue();
+                // this.croppedImage = ""; 
+                // this.uploadedFile = undefined
+                // this.resetImageValue()
             }
         });
     };
-    //  cancelImageChange(){
-    //   this.changeImage = false
-    //   this.imageError = false
-    //   this.imageValidError = false
-    //  }
     ImplantsEditComponent.prototype.cancel = function () {
         this.router.navigate(['/', 'admin', 'implant-list']);
     };
     ImplantsEditComponent.prototype.canselImage = function () {
-        // this.imageError = true;
         this.croppedImage = "";
         this.uploadedFile = undefined;
         this.resetImageValue();
@@ -30043,25 +30443,12 @@ var ImplantsEditComponent = /** @class */ (function () {
             _this.disabledSave = false;
         });
     };
-    // resetImage() {
-    //   this.uploadedFile = null
-    //   this.croppedImage = ""
-    //   this.imageChangedEvent = null
-    //   this.imageWidth = 0
-    //   this.imageHeight = 0
-    //   this.labelWidth = 0
-    //   this.labelHeight = 0
-    //   this.labelOffsetX = 0
-    //   this.labelOffsetY = 0
-    //   let img = document.getElementById('implantImage') as HTMLInputElement
-    //   img.value = ""
-    // }
     ImplantsEditComponent.prototype.imageView = function (i) {
         this.viewImageData[i].objectName = this.implantDetail.objectName;
         var dialogRefView = this.dialog.open(app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_9__["ImageViewComponent"], {
             width: "620px",
             panelClass: "nopad--modal",
-            disableClose: false,
+            disableClose: true,
             data: this.viewImageData[i]
         });
     };
@@ -30350,10 +30737,11 @@ var ImplantsComponent = /** @class */ (function () {
             label: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
             implantManufacture: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].maxLength(150)]],
             removalSection: this.fb.array([
+                // as per client feedback we have remova surgury date and location. and remova as mendetrory removal process
                 this.fb.group({
-                    removalProcess: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
-                    surgeryDate: ["", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]],
-                    surgeryLocation: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]]
+                    removalProcess: ['',]
+                    // surgeryDate: ["", [Validators.required]],
+                    // surgeryLocation: ['', [Validators.required]]
                 })
             ])
         });
@@ -30365,25 +30753,24 @@ var ImplantsComponent = /** @class */ (function () {
      */
     ImplantsComponent.prototype.getRemovalProcess = function () {
         return this.fb.group({
-            removalProcess: ['',],
-            surgeryDate: [""],
-            surgeryLocation: ['']
+            removalProcess: ['',]
+            // surgeryDate: [""],
+            // surgeryLocation: ['']
         });
     };
     // compare password validate
-    ImplantsComponent.prototype.removaProcessValidation = function (control) {
-        var removalProcess = control.get('removalProcess').value;
-        var surgeryDate = control.get('surgeryDate').value;
-        var surgeryLocation = control.get('surgeryLocation').value;
-        if ((removalProcess.trim() == "") && (surgeryDate.trim() == "") && (surgeryLocation.trim() == "")) {
-            control.get('removalProcess').setErrors({ requiredProcess: true });
-            control.get('surgeryDate').setErrors({ requiredProcess: true });
-            control.get('surgeryLocation').setErrors({ requiredProcess: true });
-        }
-        else {
-            return null;
-        }
-    };
+    // removaProcessValidation(control: AbstractControl){
+    //   let removalProcess = control.get('removalProcess').value
+    //   let surgeryDate = control.get('surgeryDate').value
+    //   let surgeryLocation = control.get('surgeryLocation').value
+    //   if ((removalProcess.trim() == "") && (surgeryDate.trim() == "") && (surgeryLocation.trim() == "")) {
+    //       control.get('removalProcess').setErrors( { requiredProcess: true } )
+    //       control.get('surgeryDate').setErrors( { requiredProcess: true } )
+    //       control.get('surgeryLocation').setErrors( { requiredProcess: true } )
+    //   } else {
+    //     return null;
+    //   }
+    // }
     // validation for manufecture
     ImplantsComponent.prototype.manufacturerValidate = function (control) {
         var manufacturer = control.value;
@@ -30411,7 +30798,7 @@ var ImplantsComponent = /** @class */ (function () {
         var _this = this;
         var dialogRef = this.dialog.open(app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_8__["AddImageImplantComponent"], {
             width: "620px",
-            disableClose: false,
+            disableClose: true,
             panelClass: "nopad--modal",
             data: event
         });
@@ -30433,9 +30820,9 @@ var ImplantsComponent = /** @class */ (function () {
                 };
             }
             else {
-                _this.imageError = true;
-                _this.croppedImage = "";
-                _this.uploadedFile = undefined;
+                // this.imageError = true;
+                // this.croppedImage = ""; 
+                // this.uploadedFile = undefined
             }
         });
     };
@@ -30474,15 +30861,8 @@ var ImplantsComponent = /** @class */ (function () {
         var _this = this;
         this.validationError = false;
         for (var index in implantData.removalSection) {
-            if ((implantData.removalSection[index].removalProcess == "") && (implantData.removalSection[index].surgeryDate == "") && (implantData.removalSection[index].surgeryLocation == "")) {
+            if ((implantData.removalSection[index].removalProcess == "")) {
                 delete implantData.removalSection[index];
-            }
-            else if ((implantData.removalSection[index].removalProcess == "") || (implantData.removalSection[index].surgeryDate == "") || (implantData.removalSection[index].surgeryLocation == "")) {
-                this.removaProcessError[index] = true;
-                this.validationError = true;
-            }
-            else {
-                this.removaProcessError[index] = false;
             }
         }
         if (this.uploadedFile !== undefined && this.uploadedFile.name != "" && !this.validationError) {
@@ -30513,7 +30893,7 @@ var ImplantsComponent = /** @class */ (function () {
                 if (result.status == "success") {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
                     _this.implantForm.resetForm();
-                    _this.router.navigate(['/', 'admin', 'implant-edit', result.data.image._id]);
+                    _this.router.navigate(['/', 'admin', 'implant-add', result.data.image._id]);
                 }
                 else {
                     _this.snack.open("Successfully added image for training!", 'OK', { duration: 3000 });
@@ -30757,7 +31137,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! app/implants/image-view/image-view.component */ "./src/app/implants/image-view/image-view.component.ts");
 /* harmony import */ var app_implant_verification_implant_verification_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! app/implant-verification/implant-verification.component */ "./src/app/implant-verification/implant-verification.component.ts");
 /* harmony import */ var app_implant_verification_implant_verification_view_implant_verification_view_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! app/implant-verification/implant-verification-view/implant-verification-view.component */ "./src/app/implant-verification/implant-verification-view/implant-verification-view.component.ts");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var app_implants_append_images_append_images_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! app/implants/append-images/append-images.component */ "./src/app/implants/append-images/append-images.component.ts");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30794,6 +31175,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
 var AdminLayoutModule = /** @class */ (function () {
     function AdminLayoutModule() {
     }
@@ -30804,24 +31186,24 @@ var AdminLayoutModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(_admin_layout_routing__WEBPACK_IMPORTED_MODULE_4__["AdminLayoutRoutes"]),
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["ReactiveFormsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatButtonModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatRippleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatFormFieldModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatInputModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatSelectModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatTooltipModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatTableModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatIconModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatPaginatorModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatSortModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatSlideToggleModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatDatepickerModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatNativeDateModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatAutocompleteModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatButtonModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatRippleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatFormFieldModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatInputModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatSelectModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatTooltipModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatPaginatorModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatSortModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatSlideToggleModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatDatepickerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatNativeDateModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatAutocompleteModule"],
                 ngx_image_cropper__WEBPACK_IMPORTED_MODULE_12__["ImageCropperModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatDialogModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatTabsModule"],
-                _angular_material__WEBPACK_IMPORTED_MODULE_28__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatDialogModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatTabsModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_29__["MatProgressSpinnerModule"],
                 _ckeditor_ckeditor5_angular__WEBPACK_IMPORTED_MODULE_20__["CKEditorModule"]
             ],
             entryComponents: [app_confirm_model_confirm_model_component__WEBPACK_IMPORTED_MODULE_13__["ConfirmModelComponent"], app_users_user_detail_user_detail_component__WEBPACK_IMPORTED_MODULE_14__["UserDetailComponent"], app_supports_support_edit_support_edit_component__WEBPACK_IMPORTED_MODULE_17__["SupportEditComponent"], app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_24__["AddImageImplantComponent"], app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_25__["ImageViewComponent"]],
@@ -30846,7 +31228,8 @@ var AdminLayoutModule = /** @class */ (function () {
                 app_implants_add_image_implant_add_image_implant_component__WEBPACK_IMPORTED_MODULE_24__["AddImageImplantComponent"],
                 app_implants_image_view_image_view_component__WEBPACK_IMPORTED_MODULE_25__["ImageViewComponent"],
                 app_implant_verification_implant_verification_component__WEBPACK_IMPORTED_MODULE_26__["ImplantVerificationComponent"],
-                app_implant_verification_implant_verification_view_implant_verification_view_component__WEBPACK_IMPORTED_MODULE_27__["ImplantVerificationViewComponent"]
+                app_implant_verification_implant_verification_view_implant_verification_view_component__WEBPACK_IMPORTED_MODULE_27__["ImplantVerificationViewComponent"],
+                app_implants_append_images_append_images_component__WEBPACK_IMPORTED_MODULE_28__["AppendImagesComponent"]
             ],
             providers: [app_admin_guard__WEBPACK_IMPORTED_MODULE_11__["AdminGuard"]],
         })
@@ -30883,6 +31266,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var app_implants_implants_edit_implants_edit_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! app/implants/implants-edit/implants-edit.component */ "./src/app/implants/implants-edit/implants-edit.component.ts");
 /* harmony import */ var app_implant_verification_implant_verification_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! app/implant-verification/implant-verification.component */ "./src/app/implant-verification/implant-verification.component.ts");
 /* harmony import */ var app_implant_verification_implant_verification_view_implant_verification_view_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! app/implant-verification/implant-verification-view/implant-verification-view.component */ "./src/app/implant-verification/implant-verification-view/implant-verification-view.component.ts");
+/* harmony import */ var app_implants_append_images_append_images_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! app/implants/append-images/append-images.component */ "./src/app/implants/append-images/append-images.component.ts");
+
 
 
 
@@ -30966,7 +31351,12 @@ var AdminLayoutRoutes = [
     {
         path: 'implant-verification-view/:id',
         component: app_implant_verification_implant_verification_view_implant_verification_view_component__WEBPACK_IMPORTED_MODULE_14__["ImplantVerificationViewComponent"],
-    }
+    },
+    {
+        path: 'implant-add/:id',
+        component: app_implants_append_images_append_images_component__WEBPACK_IMPORTED_MODULE_15__["AppendImagesComponent"],
+        canActivate: [app_admin_guard__WEBPACK_IMPORTED_MODULE_7__["AdminGuard"]]
+    },
 ];
 
 

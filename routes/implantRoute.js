@@ -32,53 +32,6 @@ var multipartUpload = multer({storage: multerS3({
   })
 }).single('implantPicture')
 //function to test
-router.post("/addImageToCollection", [ multipartUpload, auth ], async function (req, res, next) {
-  try {
-      let requestParams = req.body 
-      let implantImage = new ImpantImage()
-      implantImage.objectName = requestParams.labelName
-      implantImage.imgName = req.file.location
-      const objectLocation = {
-        top: parseInt(requestParams.labelOffsetY),
-        left: parseInt(requestParams.labelOffsetX),
-        width: parseInt(requestParams.labelWidth),
-        height: parseInt(requestParams.labelHeight)
-      }
-      implantImage.implantManufacture = requestParams.implantManufacture
-      implantImage.removImplant = JSON.parse(requestParams.removeImplant);
-      implantImage.objectLocation = objectLocation
-      if (requestParams.addBy !== undefined && requestParams.addBy == "admin") {
-        implantImage.isApproved = true
-      } else {
-        implantImage.isApproved = false
-      }
-      implantImage.createdOn = new Date()
-      implantImage.modifiedOn = new Date()
-  
-      if(implantImage.save()){
-        let imgS3Path = implantImage.imgName
-        let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, implantImage.objectName, implantImage.objectLocation, imgS3Path)
-        if (watsonRes.status == "success") {
-          let updatedImplant = await ImpantImage.updateOne({
-            _id: implantImage._id
-          }, {
-            $set: { watsonImage_id: watsonRes.data.images[0].image_id }
-          })
-          if (updatedImplant) {
-            res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
-          } else {
-            res.send(resFormat.rError(messages.watson['1']))
-          }
-        } else {
-          res.send(resFormat.rError(messages.watson['1']))
-        }//end of sending response
-      } else {
-        res.send(resFormat.rError(messages.common['2']))
-      } //end of implant save 
-    } catch(e) {
-      res.send(resFormat.rError(e))
-    }
-})
 
 // test
 router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res, next) {
@@ -165,75 +118,6 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
     }
 })
 
-router.post("/editImageToCollection", [ multipartUpload, auth ], async function (req, res, next) {
-  try {
-    let requestParams = req.body 
-    console.log('sads', requestParams);
-    console.log('dfdf', req.file);
-    let prams = {};
-
-      
-      //let implantImage = new ImpantImage()
-      prams.objectName = requestParams.labelName
-      if (req.file !== undefined) {
-        prams.imgName = req.file.location
-        const objectLocation = {
-          top: parseInt(requestParams.labelOffsetY),
-          left: parseInt(requestParams.labelOffsetX),
-          width: parseInt(requestParams.labelWidth),
-          height: parseInt(requestParams.labelHeight)
-        }
-        prams.objectLocation = objectLocation
-       deleteFileS3(requestParams.implantId);
-      }
-      
-      prams.implantManufacture = requestParams.implantManufacture
-      prams.removImplant = JSON.parse(requestParams.removeImplant);
-      //prams.objectLocation = objectLocation
-      prams.isApproved = true
-      prams.modifiedOn = new Date()
-      // for update data.
-      let updatedImplant = await ImpantImage.updateOne({
-        _id: requestParams.implantId
-      }, {
-        $set: prams
-      })
-
-      if(updatedImplant){
-       // res.send(resFormat.rSuccess({mesage:"Implant Update successfully."}))
-          ImpantImage.findOne({_id: requestParams.implantId}, async function(err, details) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              // add implant to watson for AI
-              deleteImplant(details.watsonImage_id);
-              let imgS3Path = details.imgName
-              let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, details.objectName, details.objectLocation, imgS3Path)
-             // console.log(watsonRes.data);
-              if (watsonRes.status == "success") {
-                let updatedImplant = await ImpantImage.updateOne({
-                  _id: details._id
-                }, {
-                  $set: { watsonImage_id: watsonRes.data.images[0].image_id }
-                })
-                if (updatedImplant) {
-                  res.send(resFormat.rSuccess({image:details, watson:watsonRes }))
-                } else {
-                  res.send(resFormat.rError(messages.watson['1']))
-                }
-              } else {
-                res.send(resFormat.rError(messages.watson['1']))
-              }
-            }
-          })
-      } else {
-        res.send(resFormat.rError(messages.common['2']))
-      } 
-    } catch(e) {
-      res.send(resFormat.rError(e))
-    }
-})
-
 
 router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, res, next) {
   try {
@@ -311,28 +195,10 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             userId: requestParams.userId
           }
           updated_data.imageData = implantDetail.imageData
-          // if(implantDetail.imageData.length == 0 || Object.keys(implantDetail.imageData).length == 0 || ( implantDetail.imageData[0] &&  implantDetail.imageData[0] == {} )) {
-          //   updated_data.imageData = []
-          // }
-          // if(!updated_data.imageData[0].imageName || updated_data.imageData[0].imageName == "") {
-          //   updated_data.imageData.splice(0, 1)
-          // }
           updated_data.imageData.push(imageDataObj)
         } else {
           updated_data.imageData = implantDetail.imageData
         }
-        //console.log('resultImgArray-------------->', resultImgArray)
-
-
-        //// for delete implant.
-        /*
-        updated_data.removImplant.map((o)=> {
-          let deleteProcess = requestParams.deletedprocess.find(dp => dp == o.id)
-          updated_data.removImplant.put(o);
-        });
-         */
-
-
         updated_data.modifiedOn - new Date()
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
@@ -373,76 +239,6 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
     }
 })
 
-// test implant
-router.post("/editImageToCollectionTest", [ multipartUpload, auth ], async function (req, res, next) {
-  try {
-    let requestParams = req.body 
-    console.log('sads', requestParams);
-    console.log('dfdf', req.file);
-    let prams = {};
-
-      
-      //let implantImage = new ImpantImage()
-      prams.objectName = requestParams.labelName
-      if (req.file !== undefined) {
-        prams.imgName = req.file.location
-        const objectLocation = {
-          top: parseInt(requestParams.labelOffsetY),
-          left: parseInt(requestParams.labelOffsetX),
-          width: parseInt(requestParams.labelWidth),
-          height: parseInt(requestParams.labelHeight)
-        }
-        prams.objectLocation = objectLocation
-       //deleteFileS3(requestParams.implantId);
-      }
-      
-      prams.implantManufacture = requestParams.implantManufacture
-      prams.removImplant = JSON.parse(requestParams.removeImplant);
-      //prams.objectLocation = objectLocation
-      prams.isApproved = true
-      prams.modifiedOn = new Date()
-      // for update data.
-      let updatedImplant = await ImpantImage.updateOne({
-        _id: requestParams.implantId
-      }, {
-        $set: prams
-      })
-
-      if(updatedImplant){
-       // res.send(resFormat.rSuccess({mesage:"Implant Update successfully."}))
-          ImpantImage.findOne({_id: requestParams.implantId}, async function(err, details) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              // add implant to watson for AI
-              //deleteImplant(details.watsonImage_id);
-              let imgS3Path = details.imgName
-              let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, details.objectName, details.objectLocation, imgS3Path)
-             // console.log(watsonRes.data);
-              if (watsonRes.status == "success") {
-                let updatedImplant = await ImpantImage.updateOne({
-                  _id: details._id
-                }, {
-                  $set: { watsonImage_id: watsonRes.data.images[0].image_id }
-                })
-                if (updatedImplant) {
-                  res.send(resFormat.rSuccess({image:details, watson:watsonRes }))
-                } else {
-                  res.send(resFormat.rError(messages.watson['1']))
-                }
-              } else {
-                res.send(resFormat.rError(messages.watson['1']))
-              }
-            }
-          })
-      } else {
-        res.send(resFormat.rError(messages.common['2']))
-      } 
-    } catch(e) {
-      res.send(resFormat.rError(e))
-    }
-})
-
 
 
 
@@ -476,53 +272,7 @@ router.post("/addImplantUser", [ multipartUpload, auth ], async function (req, r
     }
 })
 
-// function approve implant by admin
-async function implantApproved (req,res) {
-  ImpantImage.findOne({_id: req.body.id}, async function(err, details) {
-    if (err) {
-      res.send(resFormat.rError(err))
-    } else {
-      // add implant to watson for AI
-      let imgS3Path = details.imgName
-      let watsonRes = await watsonLibrary.addImage(constants.watson.collectionID, details.objectName, details.objectLocation, imgS3Path)
-      if (watsonRes.status == "success") {
-        let updatedImplant = await ImpantImage.updateOne({
-          _id: details._id
-        }, {
-          $set: { watsonImage_id: watsonRes.data.images[0].image_id }
-        })
-        if (updatedImplant) {
-          res.send(resFormat.rSuccess({image:implantImage, watson:watsonRes}))
-        } else {
-          res.send(resFormat.rError(messages.watson['1']))
-        }
-      } else {
-        res.send(resFormat.rError(messages.watson['1']))
-      }
-    }
-  })
-}
 
-// Implant rejected.
-
-async function implantRejected (req,res) {
-  ImpantImage.findOne({_id: req.body.id}, async function(err, details) {
-    if (err) {
-      res.send(resFormat.rError(err))
-    } else {
-      let updatedImplant = await ImpantImage.updateOne({
-          _id: details._id
-        }, {
-          $set: { isRejected: true }
-        })
-        if (updatedImplant) {
-          res.send(resFormat.rSuccess({ message:'Implant successfully rejected' }))
-        } else {
-          res.send(resFormat.rError(messages.watson['1']))
-        }
-    }
-  })
-}
 
 
 
