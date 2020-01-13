@@ -765,14 +765,14 @@ router.post("/getManufactureAndBrandName",auth, getManufactureAndBrandName);
 router.post("/getImplantName",auth, getImplantName);
 router.post("/getImplantDetail",auth, getImplantDetail);
 router.post("/list", auth, list) //, auth
-router.post("/implantView", implantView) //,auth
-router.post("/listImage",listImage) //, auth
+router.post("/implantView",auth, implantView) //,auth
+router.post("/listImage",auth,listImage) //, auth
 router.post("/getTotalManufactureName", getTotalManufactureName)
-router.post("/searchByText", searchByText)
+router.post("/searchByText", auth, searchByText)
 router.post("/updateList", updateList)
-router.post("/deleteImage", deleteImage)
-router.post("/deleteImplant", deleteImplant)
-router.post("/checkDuplicateBrand", checkDuplicateBrand)
-router.post("/checkDuplicateManufactur", checkDuplicateManufactur)
-router.post("/getMenufectueBrandName", getMenufectueBrandName)
+router.post("/deleteImage",auth, deleteImage)
+router.post("/deleteImplant",auth, deleteImplant)
+router.post("/checkDuplicateBrand",auth, checkDuplicateBrand)
+router.post("/checkDuplicateManufactur",auth, checkDuplicateManufactur)
+router.post("/getMenufectueBrandName",auth, getMenufectueBrandName)
 module.exports = router

@@ -29737,6 +29737,12 @@ var AppendImagesComponent = /** @class */ (function () {
                 reader_1.readAsDataURL(_this.uploadedFile);
                 reader_1.onload = function (_event) {
                     _this.croppedImage = reader_1.result;
+                    var imgSize = new Image();
+                    imgSize.onload = function () {
+                        _this.imageWidth = imgSize.width;
+                        _this.imageHeight = imgSize.height;
+                    };
+                    imgSize.src = _this.croppedImage;
                 };
             }
             else {
@@ -30407,13 +30413,13 @@ var ImplantsEditComponent = /** @class */ (function () {
                 reader_1.readAsDataURL(_this.uploadedFile);
                 reader_1.onload = function (_event) {
                     _this.croppedImage = reader_1.result;
+                    var imgSize = new Image();
+                    imgSize.onload = function () {
+                        _this.imageWidth = imgSize.width;
+                        _this.imageHeight = imgSize.height;
+                    };
+                    imgSize.src = _this.croppedImage;
                 };
-                var img_1 = new Image();
-                img_1.onload = function () {
-                    _this.imageWidth = img_1.width;
-                    _this.imageHeight = img_1.height;
-                };
-                img_1.src = _this.croppedImage;
             }
             else {
                 //this.imageError = true;
