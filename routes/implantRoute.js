@@ -55,13 +55,17 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
         width: parseInt(requestParams.labelWidth),
         height: parseInt(requestParams.labelHeight)
       }
+      let adminIplant = false
+      if(requestParams.addBy == "admin") {
+        adminIplant = true
+      }
       let imageData = [{
         imageName: req.file.location,
         objectLocation: objectLocation,
         imageObjective: imageObjective,
         id: generateId(),
         createdDate: new Date(),
-        isApproved: false,
+        isApproved: adminIplant,
         isRejected: false,
         userId: requestParams.userId
       }]
@@ -71,7 +75,7 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
         for (let r = 0; r < implantImage.removImplant.length; r++) {
           implantImage.removImplant[r].id = generateId()
           implantImage.removImplant[r].createdDate = new Date()
-          implantImage.removImplant[r].isApproved = false,
+          implantImage.removImplant[r].isApproved = adminIplant,
           implantImage.removImplant[r].isRejected = false,
           implantImage.removImplant[r].userId = requestParams.userId
         }
@@ -81,6 +85,7 @@ router.post("/addImpnatApi", [ multipartUpload, auth ], async function (req, res
       implantImage.isNewImplant = true
       if(requestParams.addBy == "admin") {
         implantImage.isNewImplant = false
+        implantImage.isApproved = true
       }
       implantImage.createdUserId = requestParams.userId
       implantImage.createdOn = new Date()
@@ -124,7 +129,7 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
     let requestParams = req.body 
     let prams = {};
     let implantDetail = await ImpantImage.findOne({ "_id": requestParams.implantId });
-      if(implantDetail){
+      if(implantDetail) {
         let updated_data = {}
         // for delete image
         if(requestParams.deletedimage) {
@@ -137,6 +142,11 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
           })
           implantDetail.imageData = resultImgArray
         }
+        let adminImplant = false
+        if(requestParams.addBy == "admin") {
+          adminImplant = true
+        }
+
         
 
         if(requestParams.removeImplant !== undefined){
@@ -146,7 +156,7 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             if( removalProcess[r]["id"] === undefined ) {
               removalProcess[r].id = generateId()
               removalProcess[r].createdDate = new Date()
-              removalProcess[r].isApproved = false
+              removalProcess[r].isApproved = adminImplant
               removalProcess[r].isRejected = false
               removalProcess[r].userId = requestParams.userId
             }
@@ -190,7 +200,7 @@ router.post("/editImplantApi", [ multipartUpload, auth ], async function (req, r
             imageObjective:imageObjective,
             id: generateId(),
             createdDate: new Date(),
-            isApproved: false,
+            isApproved: adminImplant,
             isRejected: false,
             userId: requestParams.userId
           }
@@ -678,6 +688,78 @@ function deleteFileS3( name ){
     return true;
 }
 
+async function checkDuplicateBrand( req,res ){
+  let totalUsers = 0
+  let query = {}
+  query['objectName'] = req.body.name
+  query['isApproved'] = true
+  
+  //console.log(query);  
+  let implantList = await ImpantImage.find(query);
+  if(implantList){
+    totalImplant = implantList.length
+    if(totalImplant > 0){
+      res.status(401).send(resFormat.rError({message:"Brand/Namre alredy exists"}))
+    } else {
+      res.send(resFormat.rSuccess({}))  
+    }
+  }
+  else{
+    res.send(resFormat.rSuccess({}))  
+  }
+}
+
+async function checkDuplicateManufactur( req,res ){
+  let totalUsers = 0
+  let query = {}
+  query['implantManufacture'] = req.body.name
+  query['isApproved'] = true
+  
+  //console.log(query);  
+  let implantList = await ImpantImage.find(query);
+  if(implantList){
+    totalImplant = implantList.length
+    if(totalImplant > 0){
+      res.status(401).send(resFormat.rError({message:"Manufacture alredy exists"}))
+    } else {
+      res.send(resFormat.rSuccess({}))  
+    }
+  }
+  else{
+    res.send(resFormat.rSuccess({}))  
+  }
+}
+
+
+async function getMenufectueBrandName( req,res ){
+  let totalUsers = 0
+  let query = {}
+  query['implantManufacture'] = req.body.name
+  query['isApproved'] = true
+  
+  let data = ImpantImage.aggregate([
+    {
+        $group: {
+            _id: "$implantManufacture",
+            obj: { $push: { name: "$objectName" } }
+        }
+    },
+    {
+        $replaceRoot: {
+            newRoot: {
+                $let: {
+                    vars: { obj: [ { k: {$substr:["$_id", 0, -1 ]}, v: "$obj" } ] },
+                    in: { $arrayToObject: "$$obj" }
+                }
+            }
+        }
+    }
+])
+res.send(resFormat.rSuccess({data}))  
+
+}
+
+
 router.post("/getManufacture",auth, getManufacture);getManufactureAndBrandName
 router.post("/getManufactureAndBrandName",auth, getManufactureAndBrandName);
 router.post("/getImplantName",auth, getImplantName);
@@ -690,4 +772,7 @@ router.post("/searchByText", searchByText)
 router.post("/updateList", updateList)
 router.post("/deleteImage", deleteImage)
 router.post("/deleteImplant", deleteImplant)
+router.post("/checkDuplicateBrand", checkDuplicateBrand)
+router.post("/checkDuplicateManufactur", checkDuplicateManufactur)
+router.post("/getMenufectueBrandName", getMenufectueBrandName)
 module.exports = router
