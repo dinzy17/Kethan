@@ -20,7 +20,9 @@ module.exports = (req, res, next) => {
             }
             else {
                 User.findOne({ accessToken: token }, function(err, user) {
-                    if (err || !user) {
+                    if (err) {
+                        return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
+                    } else if (!user) {
                         return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
                     } else {
                         if(!user.active) {

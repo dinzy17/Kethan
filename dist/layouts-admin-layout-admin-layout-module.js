@@ -30410,8 +30410,8 @@ var ImplantsEditComponent = /** @class */ (function () {
                 };
                 var img_1 = new Image();
                 img_1.onload = function () {
-                    _this.imageWidth = img_1.height;
-                    _this.imageHeight = img_1.width;
+                    _this.imageWidth = img_1.width;
+                    _this.imageHeight = img_1.height;
                 };
                 img_1.src = _this.croppedImage;
             }
@@ -30828,8 +30828,8 @@ var ImplantsComponent = /** @class */ (function () {
                     _this.croppedImage = reader_1.result;
                     var img = new Image();
                     img.onload = function () {
-                        _this.imageWidth = img.height;
-                        _this.imageHeight = img.width;
+                        _this.imageWidth = img.width;
+                        _this.imageHeight = img.height;
                     };
                     img.src = _this.croppedImage;
                     // console.log('reader.result.height', event)
