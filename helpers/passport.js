@@ -44,10 +44,9 @@ passport.use('webUser',new LocalStrategy({
         } else {
           return done(null, false, { message: 'Your email is not verify.' })
         }
-      }
-        // else if (!user.active) {
-      //   return done(null, false, { message: 'User is not Active' })
-      // }
+      } else if (!user.active) {
+         return done(null, false, { message: 'Your account is in-active. contact to admin for active your account.' })
+       }
       // decript password.
       //const passwordDecript = common.decryptPassword(password);
       const passwordDecript = password

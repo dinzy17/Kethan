@@ -20,7 +20,8 @@ var messages = {
           14: 'Link has been expired',
           15: 'Invalid link',
           16: 'No token provided',
-          17: 'Token authentication failed'
+          17: 'Token authentication failed',
+          18: 'Your account is in-active. contact to admin for active your account.'
       },
       common: {
           1: 'User not found',

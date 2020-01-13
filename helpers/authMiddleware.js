@@ -23,9 +23,13 @@ module.exports = (req, res, next) => {
                     if (err || !user) {
                         return res.send(resFormat.rError({auth: false, message:Message.auth[17]}))
                     } else {
-                        req.headers.userId = user._id;
-                        req.body.userId = user._id;
-                        next();
+                        if(!user.active) {
+                            return res.send(resFormat.rError({auth: false, message:Message.auth[18]}))
+                        } else {
+                            req.headers.userId = user._id;
+                            req.body.userId = user._id;
+                            next();
+                        }
                     }
                 })
             }

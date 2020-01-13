@@ -230,10 +230,30 @@ async function adminProfileUpdate(req, res) {
     }
 }
 
+async function statusUpdate( req, res ){
+  let userList = await User.find();
+  if(userList){
+    let keyLegth = (userList.length -1 )
+    for (key in userList){
+      let params = {
+        "active":true
+      }
+     await User.update({ _id:userList[key]._id },{ $set: params })
+     if(keyLegth == key){
+      res.send(resFormat.rSuccess({ userList}))
+     }
+    }
+  }
+  else{
+    res.status(401).send(resFormat.rError(err))
+  }  
+}
+
 router.post("/updateProfile", [ multipartUpload, auth ], updateProfile)
 router.post("/list",list) //, auth
 router.post("/profile", auth, profile) 
 router.post("/adminProfileUpdate", adminProfileUpdate) //auth,updateUserStatus
 router.post("/updateUserStatus", updateUserStatus)
+router.post("/statusUpdate", statusUpdate)
 
 module.exports = router
