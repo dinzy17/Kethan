@@ -43,7 +43,7 @@ async function signUp(req, res) {
           user.useReferralCode = req.body.referralCode;
           user.userImage = req.body.userImage;
           user.userType = "appUser";
-          user.active = false;
+          user.active = true;
           user.createdOn = new Date();
           user.save(async function(err, newUser) {
             if (err) {
