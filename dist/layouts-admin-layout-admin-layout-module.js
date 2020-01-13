@@ -29319,6 +29319,7 @@ var AddImageImplantComponent = /** @class */ (function () {
     };
     //function to assign cropper
     AddImageImplantComponent.prototype.imageCropped = function (event) {
+        console.log('event', event);
         this.croppedImage = event.base64;
         this.imageWidth = event.imagePosition.x2;
         this.imageHeight = event.imagePosition.y2;
@@ -29866,6 +29867,8 @@ var ImageViewComponent = /** @class */ (function () {
         img.onload = function () {
             var height = img.height;
             var width = img.width;
+            console.log('height', height);
+            console.log('width', width);
             // code here to use the dimensions
             var dispyaImgage = document.getElementById('displayImage');
             var currWidth = dispyaImgage.clientWidth;
@@ -30405,6 +30408,12 @@ var ImplantsEditComponent = /** @class */ (function () {
                 reader_1.onload = function (_event) {
                     _this.croppedImage = reader_1.result;
                 };
+                var img_1 = new Image();
+                img_1.onload = function () {
+                    _this.imageWidth = img_1.height;
+                    _this.imageHeight = img_1.width;
+                };
+                img_1.src = _this.croppedImage;
             }
             else {
                 //this.imageError = true;
@@ -30817,6 +30826,15 @@ var ImplantsComponent = /** @class */ (function () {
                 reader_1.readAsDataURL(_this.uploadedFile);
                 reader_1.onload = function (_event) {
                     _this.croppedImage = reader_1.result;
+                    var img = new Image();
+                    img.onload = function () {
+                        _this.imageWidth = img.height;
+                        _this.imageHeight = img.width;
+                    };
+                    img.src = _this.croppedImage;
+                    // console.log('reader.result.height', event)
+                    // console.log('this.imageWidth', this.imageWidth)
+                    // console.log('this.imageHeight', this.imageWidth)
                 };
             }
             else {
