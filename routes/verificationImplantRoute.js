@@ -74,6 +74,7 @@ async function list (req, res) {
         let updated_data = {}
         let imageDataObj = {}
         updated_data.modifiedOn = new Date()
+        updated_data.isNewImplant = false;
         let updateImplant = await ImpantImage.findOneAndUpdate({ _id: implantDetail._id }, updated_data)
          if( updateImplant ) {
           let implantUpdated = await ImpantImage.findOne({ "_id": implantDetail._id });
